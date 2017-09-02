@@ -2,6 +2,8 @@
 WPF/MVVM control to implement a textbox on top of other elements like a
 TreeViewItem or ListViewItem (use case: perform in place edit of a displayed item)
 
+<img src"https://github.com/Dirkster99/InplaceEditBoxLib/blob/master/00_Docu/screenshot.png" width="600"/>
+
 Check thiming here:
 - [FileExplorer in Edi](https://github.com/Dirkster99/Edi/wiki/File-Explorer-Tool-Window)
 
