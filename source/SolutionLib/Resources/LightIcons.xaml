@@ -1,0 +1,14 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    >
+
+    <!-- Setup TreeView Icons as StaticResource -->
+    <BitmapImage x:Key="FileIcon" UriSource="/SolutionLib;component/Resources/Files/Light/Document_16x.png" />
+
+    <BitmapImage x:Key="FolderIcon" UriSource="/SolutionLib;component/Resources/Folders/Light/Folder_32x.png" DecodePixelHeight="16" DecodePixelWidth="16" />
+    <BitmapImage x:Key="FolderOpenIcon" UriSource="/SolutionLib;component/Resources/Folders/Light/FolderOpen_32x.png" DecodePixelHeight="16" DecodePixelWidth="16" />
+
+    <BitmapImage x:Key="ProjectIcon" UriSource="/SolutionLib;component/Resources/Projects/Light/Application_16x.png" />
+
+    <BitmapImage x:Key="SolutionIcon" UriSource="/SolutionLib;component/Resources/Solutions/Light/AppFlyout_16x.png" />
+</ResourceDictionary>

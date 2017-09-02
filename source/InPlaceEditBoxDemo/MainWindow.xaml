@@ -1,0 +1,131 @@
+﻿<Window x:Class="InPlaceEditBoxDemo.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="650" Width="525"
+        >
+    <Grid xmlns:conv="clr-namespace:SolutionLib.Converters;assembly=SolutionLib"
+          xmlns:EditInPlace="clr-namespace:InplaceEditBoxLib.Views;assembly=InplaceEditBoxLib"
+          xmlns:bindLocal="clr-namespace:InplaceEditBoxLib.Views;assembly=InplaceEditBoxLib"
+          xmlns:behav="clr-namespace:InPlaceEditBoxDemo.Behaviours"
+          >
+        
+        <Grid.Resources>
+            <!-- Source: https://social.msdn.microsoft.com/Forums/vstudio/en-US/f260871d-1318-43fb-abfb-188832e3eedd/treeview-virtualizingstackpanel-problem-with-scrollviewer?forum=wpf
+                 Virtualizing the tree will cause problems when trying to bring a selected item into view :-(
+            -->
+            <!-- Style x:Key="TreeViewStyle">
+                <Setter Property="TreeView.Background" Value="Transparent"/>
+                <Setter Property="VirtualizingStackPanel.IsVirtualizing" Value="True"/>
+                <Setter Property="VirtualizingStackPanel.VirtualizationMode" Value="Recycling"/>
+                <Setter Property="TreeView.SnapsToDevicePixels" Value="True" />
+                <Setter Property="TreeView.OverridesDefaultStyle" Value="True" />
+                <Setter Property="ItemsControl.ItemsPanel">
+                    <Setter.Value>
+                        <ItemsPanelTemplate>
+                            <VirtualizingStackPanel IsItemsHost="True"/>
+                        </ItemsPanelTemplate>
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="TreeView.Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="TreeView">
+                            <ScrollViewer Focusable="False" CanContentScroll="True" Padding="3">
+                                <ItemsPresenter HorizontalAlignment="Stretch"/>
+                            </ScrollViewer>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style -->
+
+            <!-- Use a proxy to bind items to root properties of this collection -->
+            <bindLocal:BindingProxy x:Key="DataContextProxy"  Data="{Binding Solution}" />
+            <conv:ISolutionBaseItemToImageConverter x:Key="ISolutionBaseItemToImageConverter" />
+
+        </Grid.Resources>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+
+<!--
+    Virtualizing the tree will cause problems when trying to bring a selected item into view :-(
+
+    VirtualizingStackPanel.IsVirtualizing="True"
+    VirtualizingStackPanel.VirtualizationMode="Recycling"
+    Style="{StaticResource TreeViewStyle}"
+    ItemTemplateSelector="{StaticResource SolutionItemDataTemplateSelector}"
+-->
+        <TreeView
+            Grid.Row="1"
+            ItemsSource="{Binding Solution.Root}"
+            behav:TreeViewSelectionChangedBehavior.ChangedCommand="{Binding Solution.SelectionChangedCommand}"
+            >
+            <TreeView.ItemTemplate>
+                <HierarchicalDataTemplate ItemsSource="{Binding Children}">
+                    <Grid xmlns:loc="clr-namespace:InplaceEditBoxLib.Local;assembly=InplaceEditBoxLib"
+                        >
+                        <Grid.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem Command="{Binding Path=Data.StartRenameCommand, Source={StaticResource DataContextProxy}}"
+                                          CommandParameter="{Binding}"
+                                          Header="Rename"
+                                          ToolTip="Rename this item"
+                                          />
+                            </ContextMenu>
+                        </Grid.ContextMenu>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+
+                        <Image Grid.Column="0" Height="16" Margin="3,0"
+                               Focusable="False"
+                               Source="{Binding Converter={StaticResource ISolutionBaseItemToImageConverter}}"
+                               VerticalAlignment="Center" />
+
+                        <EditInPlace:EditBox Grid.Column="1" Name="EditItemBox"
+                                             Text="{Binding Path=DisplayName, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                             DisplayText="{Binding Path=DisplayName,StringFormat={}{0} (File), Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                             ToolTip="{Binding Description, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                             Focusable="True"
+                                    
+                                             VerticalAlignment="Stretch"
+                                             HorizontalAlignment="Left"
+                                             IsReadOnly="{Binding IsReadOnly}"
+                                             RenameCommand="{Binding Path=Data.RenameCommand, Source={StaticResource DataContextProxy}}"
+                                             RenameCommandParameter="{Binding}"
+                                             ToolTipService.ShowOnDisabled="True"
+                                             InvalidInputCharacters="{x:Static loc:Strings.ForbiddenRenameKeys}"
+                                             InvalidInputCharactersErrorMessage="{x:Static loc:Strings.ForbiddenRenameKeysMessage}"
+                                             InvalidInputCharactersErrorMessageTitle="{x:Static loc:Strings.ForbiddenRenameKeysTitle}"
+                                             Margin="2,0"
+                                             />
+                        <!-- Its important to use margin Margin="2,0" since overlay will otherwise not work -->
+                    </Grid>
+                </HierarchicalDataTemplate>
+            </TreeView.ItemTemplate>
+            <TreeView.ItemContainerStyle>
+                <Style TargetType="{x:Type TreeViewItem}" BasedOn="{StaticResource {x:Type TreeViewItem}}">
+                    <Style.Resources>
+                        <InputBindingCollection x:Key="InputCollection" x:Shared="False">
+                            <KeyBinding Key="F2"
+                                        Command="{Binding Path=Data.StartRenameCommand, Source={StaticResource DataContextProxy}}"
+                                        CommandParameter="{Binding Path=Data.SelectedItem, Source={StaticResource DataContextProxy}}"
+                                        />
+                        </InputBindingCollection>
+                    </Style.Resources>
+                    <Setter Property="behav:TreeViewItemBehaviour.IsBroughtIntoViewWhenSelected" Value="True" />
+                    <!-- Setter Property="behav:TreeViewItemExpanded.Command" Value="{Binding Path=Data.ExpandCommand, Source={StaticResource DataContextProxy}}" / -->
+                    <Setter Property="IsExpanded" Value="{Binding IsItemExpanded, Mode=TwoWay}" />
+                    <Setter Property="IsSelected" Value="{Binding IsItemSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+                    <!-- https://stackoverflow.com/questions/2660760/defining-inputbindings-within-a-style#7808997 -->
+                    <Setter Property="EditInPlace:Attach.InputBindings" Value="{DynamicResource InputCollection}" />
+                </Style>
+            </TreeView.ItemContainerStyle>
+        </TreeView>
+    </Grid>
+</Window>
