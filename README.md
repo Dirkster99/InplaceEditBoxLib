@@ -46,21 +46,19 @@ The confirmation of editing does not change either of the above dependency prope
 
 The view invokes the bound **RenameCommand** and passes the **RenameCommandParameter** as parameter along. 
 
-```
-<EditInPlace:EditBox Text="{Binding Path=DisplayName, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
-  DisplayText="{Binding Path=DisplayName,StringFormat={}{0} (File), Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
-  ToolTip="{Binding Description, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
-  Focusable="True"
+    <EditInPlace:EditBox Text="{Binding Path=DisplayName, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+      DisplayText="{Binding Path=DisplayName,StringFormat={}{0} (File), Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+      ToolTip="{Binding Description, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+      Focusable="True"
 
-  VerticalAlignment="Stretch"
-  HorizontalAlignment="Left"
-  IsReadOnly="{Binding IsItemReadOnly}"
-  **RenameCommand="{Binding Path=Data.RenameCommand, Source={StaticResource DataContextProxy}}"**
-  **RenameCommandParameter="{Binding}"**
-  ToolTipService.ShowOnDisabled="True"
- 
-  Margin="2,0" />
-```
+      VerticalAlignment="Stretch"
+      HorizontalAlignment="Left"
+      IsReadOnly="{Binding IsItemReadOnly}"
+      **RenameCommand="{Binding Path=Data.RenameCommand, Source={StaticResource DataContextProxy}}"**
+      **RenameCommandParameter="{Binding}"**
+      ToolTipService.ShowOnDisabled="True"
+      
+      Margin="2,0" />
 
 The actual renaming (changing the data structure and checking for quality issues, such as, minimal length of string, is then performed by the code invoked in the viewmodel. The viewmodel can then choose to show an error notification and refuse the renaming or perform the renaming and close the process (see Demo in [SolutionViewModel.cs](https://github.com/Dirkster99/InplaceEditBoxLib/blob/master/source/SolutionLib/ViewModels/Browser/SolutionViewModel.cs)).
 
