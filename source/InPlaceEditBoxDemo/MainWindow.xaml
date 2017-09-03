@@ -6,7 +6,8 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="650" Width="525"
         >
-    <Grid xmlns:conv="clr-namespace:SolutionLib.Converters;assembly=SolutionLib"
+    <Grid xmlns:convDemo="clr-namespace:InPlaceEditBoxDemo.Converters"
+          xmlns:conv="clr-namespace:SolutionLib.Converters;assembly=SolutionLib"
           xmlns:EditInPlace="clr-namespace:InplaceEditBoxLib.Views;assembly=InplaceEditBoxLib"
           xmlns:bindLocal="clr-namespace:InplaceEditBoxLib.Views;assembly=InplaceEditBoxLib"
           xmlns:behav="clr-namespace:InPlaceEditBoxDemo.Behaviours"
@@ -43,6 +44,7 @@
             <!-- Use a proxy to bind items to root properties of this collection -->
             <bindLocal:BindingProxy x:Key="DataContextProxy"  Data="{Binding Solution}" />
             <conv:ISolutionBaseItemToImageConverter x:Key="ISolutionBaseItemToImageConverter" />
+            <convDemo:ItemTypeDisplayNameToTextConverter x:Key="ISolutionBaseItemToTextConverter"/>
 
         </Grid.Resources>
         <Grid.ColumnDefinitions>
@@ -88,7 +90,6 @@
 
                         <EditInPlace:EditBox Grid.Column="1" Name="EditItemBox"
                                              Text="{Binding Path=DisplayName, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
-                                             DisplayText="{Binding Path=DisplayName,StringFormat={}{0} (File), Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                              ToolTip="{Binding Description, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                              Focusable="True"
                                     
@@ -102,7 +103,14 @@
                                              InvalidInputCharactersErrorMessage="{x:Static loc:Strings.ForbiddenRenameKeysMessage}"
                                              InvalidInputCharactersErrorMessageTitle="{x:Static loc:Strings.ForbiddenRenameKeysTitle}"
                                              Margin="2,0"
-                                             />
+                                             >
+                            <EditInPlace:EditBox.DisplayText>
+                                <MultiBinding Converter="{StaticResource ISolutionBaseItemToTextConverter}">
+                                    <Binding Path="DisplayName"/>
+                                    <Binding Path="ItemType"/>
+                                </MultiBinding>
+                            </EditInPlace:EditBox.DisplayText>
+                        </EditInPlace:EditBox>
                         <!-- Its important to use margin Margin="2,0" since overlay will otherwise not work -->
                     </Grid>
                 </HierarchicalDataTemplate>

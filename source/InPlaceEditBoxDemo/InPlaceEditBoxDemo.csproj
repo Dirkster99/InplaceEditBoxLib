@@ -59,6 +59,7 @@
     </ApplicationDefinition>
     <Compile Include="Behaviours\TreeViewItemBehaviour.cs" />
     <Compile Include="Behaviours\TreeViewSelectionChangedBehavior.cs" />
+    <Compile Include="converters\ItemTypeDisplayNameToTextConverter.cs" />
     <Compile Include="Demo\Create.cs" />
     <Compile Include="Demo\CreateTestObject.cs" />
     <Compile Include="ViewModels\AppViewModel.cs" />
