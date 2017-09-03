@@ -46,7 +46,8 @@ The confirmation of editing does not change either of the above dependency prope
 
 The view generates a command parameter of this command. The parameter is a **Tuple** of the new string and the object bound in the **RenameCommandParameter** of the edit-in-place control.
 
-```<EditInPlace:EditBox Text="{Binding Path=DisplayName, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+```
+&lt;EditInPlace:EditBox Text="{Binding Path=DisplayName, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
 						DisplayText="{Binding Path=DisplayName,StringFormat={}{0} (File), Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
 						ToolTip="{Binding Description, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
 						Focusable="True"
@@ -58,7 +59,7 @@ The view generates a command parameter of this command. The parameter is a **Tup
 					**RenameCommandParameter="{Binding}"**
 						ToolTipService.ShowOnDisabled="True"
  
-						Margin="2,0" />```
+						Margin="2,0" /&gt;```
 
 ### Initiate Editing Text from the ViewModel ###
 
