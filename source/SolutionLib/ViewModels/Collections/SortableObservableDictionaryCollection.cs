@@ -60,6 +60,7 @@
         {
             _dictionary.Remove(item.DisplayName);
             item.SetDisplayName(newName);
+            
             item.SortKey = GenSortKey(item);
             _dictionary.Add(newName, item);
         }

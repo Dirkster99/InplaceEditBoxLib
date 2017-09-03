@@ -110,7 +110,7 @@
 
         /// <summary>
         /// Renames a child item int the collection of children in this item.
-        /// A re-sort and IsItemSelected is applied after the rename such that
+        /// A re-sort and IsItemSelected should be applied after the rename such that
         /// the renamed it should re-appear at the correct position in the sorted
         /// list of items.
         /// </summary>

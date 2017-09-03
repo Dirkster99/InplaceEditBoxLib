@@ -604,10 +604,10 @@ namespace InplaceEditBoxLib.Views
         /// <param name="e"></param>
         private static void OnTextChangedCallback(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            ////d.CoerceValue(EditBox.TextProperty);
-            var vm = (EditBox)d;
-
-            vm.Text = (string)e.NewValue;
+            d.CoerceValue(EditBox.TextProperty);
+            ////var vm = (EditBox)d;
+            ////
+            ////vm.Text = (string)e.NewValue;
         }
 
         /// <summary>
@@ -716,25 +716,25 @@ namespace InplaceEditBoxLib.Views
         /// </summary>
         private void OnSwitchToEditingMode()
         {
-            lock (this._lockObject)
+            lock (_lockObject)
             {
-                if (this.IsReadOnly == false && this.IsEditing == false)
+                if (IsReadOnly == false && IsEditing == false)
                 {
-                    if (this._PART_MeasureTextBlock != null && this._PART_TextBlock != null)
+                    if (_PART_MeasureTextBlock != null && _PART_TextBlock != null)
                     {
-                        if (this._TextBox == null)
-                            this.HookItemsControlEvents();
+                        if (_TextBox == null)
+                            HookItemsControlEvents();
 
-                        this._PART_TextBlock.Visibility = System.Windows.Visibility.Hidden;
-                        this._PART_MeasureTextBlock.Visibility = System.Windows.Visibility.Hidden;
+                        _PART_TextBlock.Visibility = System.Windows.Visibility.Hidden;
+                        _PART_MeasureTextBlock.Visibility = System.Windows.Visibility.Hidden;
 
                         // Bugfix: Need to do this instead of = this.mPART_TextBlock.Text;
                         // in order to display one string
                         // but use the correct string in edit mode.
-                        this._TextBox.Text = this.Text;
+                        _TextBox.Text = Text;
                     }
 
-                    this.IsEditing = true;
+                    IsEditing = true;
                 }
             }
         }
