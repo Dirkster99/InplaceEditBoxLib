@@ -153,6 +153,9 @@
         /// <summary>
         /// Gets/sets whether the <see cref="DisplayName"/> of this treeview item
         /// can be renamed by the user or not.
+        /// 
+        /// This property is part of the <see cref="InplaceEditBoxLib.Interfaces.IEditBox"/>
+        /// interface and should, therefore, not be renamed.
         /// </summary>
         public bool IsReadOnly
         {
@@ -201,7 +204,7 @@
         /// Sets the value of the <seealso cref="IsReadOnly"/> property.
         /// </summary>
         /// <param name="value"></param>
-        public void SetIsItemReadOnly(bool value)
+        public void SetIsReadOnly(bool value)
         {
             IsReadOnly = value;
         }

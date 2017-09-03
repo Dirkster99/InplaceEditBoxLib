@@ -82,6 +82,12 @@
         void SetDescription(string description);
 
         /// <summary>
+        /// Sets the value of the <seealso cref="IsReadOnly"/> property.
+        /// </summary>
+        /// <param name="value"></param>
+        void SetIsReadOnly(bool value);
+
+        /// <summary>
         /// Sets the <see cref="Parent"/> property object
         /// where this object is the child in the treeview.
         /// </summary>

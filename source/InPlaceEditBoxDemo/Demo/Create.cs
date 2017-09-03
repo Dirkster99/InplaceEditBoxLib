@@ -8,8 +8,11 @@
     {
         internal static void Objects(ISolution solutionRoot)
         {
-            var root = solutionRoot.AddSolutionRootItem("Microsoft Projects");
+            var root = solutionRoot.AddSolutionRootItem("GitHub Projects");
             root.IsItemExpanded = true;
+
+            // Assume for this demo that the root item cannot be renamed
+            root.SetIsReadOnly(true);
 
             var xmlFolder = solutionRoot.AddRootChild("XML", SolutionItemType.Folder);
             xmlFolder.IsItemExpanded = true;
