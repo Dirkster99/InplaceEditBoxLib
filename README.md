@@ -15,6 +15,16 @@ The best and well known example of an edit-in-place text control is the textbox 
 
 Change of focus (activation of a different window), pressing escapee leads to canceling of the rename process and pressing enter leads to confirmation of the new string.
 
+# Editing with Text Overlay
+Here is a sequence of screenshots that shows the normal steps when renaming an item with an overlay TextBox control:
+![](https://github.com/Dirkster99/InplaceEditBoxLib/blob/master/00_Docu/00_Docu/EditOverlay/Step1.png)
+Press F2 to start renaming
+![](https://github.com/Dirkster99/InplaceEditBoxLib/blob/master/00_Docu/00_Docu/EditOverlay/Step2.png)
+Type a different sequence of characters
+![](https://github.com/Dirkster99/InplaceEditBoxLib/blob/master/00_Docu/00_Docu/EditOverlay/Step3.png)
+Press enter to confirm the new name
+![](https://github.com/Dirkster99/InplaceEditBoxLib/blob/master/00_Docu/00_Docu/EditOverlay/Step4_Result.png)
+
 ## Features ##
 
 This edit-in-place control in this project can be used in the collection of any **ItemsControl** (Treeview, ListBox, ListView etc).
@@ -118,9 +128,9 @@ The EditBox in-place overlay control should not exceed the view port area of the
 
 The following sequence of images shows the application behavior when the user enters the string 'The quick fox jumps over the river' in a limited space scenario:
 
-![](./00_Docu/SpaceLimits/Step1.png) ![](./00_Docu/SpaceLimits/Step2.png)
-![](./00_Docu/SpaceLimits/Step3.png) ![](./00_Docu/SpaceLimits/Step4.png)
- ![](./00_Docu/SpaceLimits/Step5_Result.png)
+![](https://github.com/Dirkster99/InplaceEditBoxLib/blob/master/00_Docu/00_Docu/SpaceLimits/Step1.png) ![](https://github.com/Dirkster99/InplaceEditBoxLib/blob/master/00_Docu/00_Docu/SpaceLimits/Step2.png)
+![](https://github.com/Dirkster99/InplaceEditBoxLib/blob/master/00_Docu/00_Docu/SpaceLimits/Step1.png) ![](https://github.com/Dirkster99/InplaceEditBoxLib/blob/master/00_Docu/00_Docu/SpaceLimits/Step4.png)
+ ![](https://github.com/Dirkster99/InplaceEditBoxLib/blob/master/00_Docu/00_Docu/SpaceLimits/Step5_Result.png)
 
 ### Cancel and Confirm ###
 
@@ -155,7 +165,7 @@ The EditBox control contains properties that can be used to define a blacklist o
 
 The control implements a pop-up message element to show hints to the user if he types invalid characters.
 
-![](./00_Docu/ErrorHandling/PopUpMessage.png)
+![](https://github.com/Dirkster99/InplaceEditBoxLib/blob/master/00_Docu/00_Docu/ErrorHandling/PopUpMessage.png?raw=true)
 
 ## Known Limitations ##
 
