@@ -44,7 +44,7 @@ This setup enables application developers to show more than just a name in each 
 
 The confirmation of editing does not change either of the above dependency properties. The edit-in-place control executes instead the command that is bound to the **RenameCommand** dependency property to let the viewmodel adjust all relevant strings.
 
-The view generates a command parameter of this command. The parameter is a **Tuple** of the new string and the object bound in the **RenameCommandParameter** of the edit-in-place control.
+The view invokes the bound **RenameCommand** and passes the **RenameCommandParameter** as parameter along. 
 
 ```
 <EditInPlace:EditBox Text="{Binding Path=DisplayName, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
@@ -60,6 +60,43 @@ The view generates a command parameter of this command. The parameter is a **Tup
   ToolTipService.ShowOnDisabled="True"
  
   Margin="2,0" />
+```
+
+The actual renaming (changing the data structure and checking for quality issues, such as, minimal length of string, is then performed by the code invoked in the viewmodel. The viewmodel can then choose to show an error notification and refuse the renaming or perform the renaming and close the process (see Demo in [SolutionViewModel.cs](https://github.com/Dirkster99/InplaceEditBoxLib/blob/master/source/SolutionLib/ViewModels/Browser/SolutionViewModel.cs)).
+
+```
+// Do we already know this item?
+if (string.IsNullOrEmpty(newName) == true ||
+  newName.Length < 1 || newName.Length > 254)
+{
+    solutionItem.RequestEditMode(RequestEditEvent.StartEditMode);
+    solutionItem.ShowNotification("Invalid legth of name",
+        "A name must be between 1 and 254 characters long.");
+    return;
+}
+
+var parent = solutionItem.Parent;
+
+if (parent != null)
+{
+    // Do we already know this item?
+    var existingItem = parent.FindChild(newName);
+    if (existingItem != null)
+    {
+        solutionItem.RequestEditMode(RequestEditEvent.StartEditMode);
+        solutionItem.ShowNotification("Item Already Exists",
+            "An item with this name exists already. All names must be unique.");
+        return;
+    }
+
+    parent.RenameChild(solutionItem, newName);
+
+    // This parent selection + sort + child selection
+    // scrolls the renamed item into view...
+    parent.IsItemSelected = true;
+    parent.IsItemExpanded = true;   // Ensure parent is expanded
+    parent.SortChildren();
+solutionItem.IsItemSelected = true;
 ```
 
 ### Initiate Editing Text from the ViewModel ###
