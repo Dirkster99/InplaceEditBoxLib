@@ -47,19 +47,20 @@ The confirmation of editing does not change either of the above dependency prope
 The view generates a command parameter of this command. The parameter is a **Tuple** of the new string and the object bound in the **RenameCommandParameter** of the edit-in-place control.
 
 ```
-&lt;EditInPlace:EditBox Text="{Binding Path=DisplayName, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
-						DisplayText="{Binding Path=DisplayName,StringFormat={}{0} (File), Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
-						ToolTip="{Binding Description, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
-						Focusable="True"
-                                    
-						VerticalAlignment="Stretch"
-						HorizontalAlignment="Left"
-						IsReadOnly="{Binding IsItemReadOnly}"
-					**RenameCommand="{Binding Path=Data.RenameCommand, Source={StaticResource DataContextProxy}}"**
-					**RenameCommandParameter="{Binding}"**
-						ToolTipService.ShowOnDisabled="True"
+<EditInPlace:EditBox Text="{Binding Path=DisplayName, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+  DisplayText="{Binding Path=DisplayName,StringFormat={}{0} (File), Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+  ToolTip="{Binding Description, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+  Focusable="True"
+
+  VerticalAlignment="Stretch"
+  HorizontalAlignment="Left"
+  IsReadOnly="{Binding IsItemReadOnly}"
+  **RenameCommand="{Binding Path=Data.RenameCommand, Source={StaticResource DataContextProxy}}"**
+  **RenameCommandParameter="{Binding}"**
+  ToolTipService.ShowOnDisabled="True"
  
-						Margin="2,0" /&gt;```
+  Margin="2,0" />
+```
 
 ### Initiate Editing Text from the ViewModel ###
 
