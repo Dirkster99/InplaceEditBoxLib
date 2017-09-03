@@ -4,7 +4,7 @@ TreeViewItem or ListViewItem (use case: perform in place edit of a displayed ite
 
 <p><img src="https://github.com/Dirkster99/InplaceEditBoxLib/blob/master/00_Docu/screenshot.png" align="right" width="500" ></p>
 <br/><br/><br/>
-
+[![Build status](https://ci.appveyor.com/api/projects/status/7g6bx6uku9e1qow8?svg=true)](https://ci.appveyor.com/project/Dirkster99/inplaceeditboxlib)
 # Use Case: Edit-In-Place
 
 The edit-in-place text control contained in this project can be used as a base for developing applications where users would like to edit text strings as overlay over the normally displayed string.
