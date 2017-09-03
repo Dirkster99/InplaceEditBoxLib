@@ -45,8 +45,8 @@ The demo program shows how the control can be used in a treeview with:
 * Context Menu - Click Rename in context Menu to rename an item
 * Double Click - Double click the text portion to start renaming
 
-<video src="https://github.com/Dirkster99/Docu/blob/master/InplaceEditBoxLib/RenametreeViewItem.mp4" width="320" height="200" controls preload></video>
-
+**Watch this video on youtube**
+https://www.youtube.com/watch?v=iOiveZ214M0&feature=youtu.be
 
 and Handling Errors, such as:
 
