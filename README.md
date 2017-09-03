@@ -34,7 +34,7 @@ and Handling Errors, such as:
 
 * Renaming with an invalid character (Press ? in Edit Mode to see a pop-up message)
 * Attempting to name 2 items with the same name (Name 2 items 'a' should invoke a pop-up message on the 2nd items rename)
-* Minimum and Maximum length of a name should between 1 - 254 Characters (nameing item with empty string '' should invoke a pop-up message)
+* Minimum and Maximum length of a name should between 1 - 254 Characters (naming item with empty string '' should invoke a pop-up message)
 
 ### Editing text with Text and DisplayText properties ###
 
