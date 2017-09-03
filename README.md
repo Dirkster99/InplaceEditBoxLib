@@ -18,10 +18,13 @@ Change of focus (activation of a different window), pressing escapee leads to ca
 # Editing with Text Overlay
 Here is a sequence of screenshots that shows the normal steps when renaming an item with an overlay TextBox control:
 ![](https://github.com/Dirkster99/InplaceEditBoxLib/blob/master/00_Docu/00_Docu/EditOverlay/Step1.png)
+
 Press F2 to start renaming
 ![](https://github.com/Dirkster99/InplaceEditBoxLib/blob/master/00_Docu/00_Docu/EditOverlay/Step2.png)
+
 Type a different sequence of characters
 ![](https://github.com/Dirkster99/InplaceEditBoxLib/blob/master/00_Docu/00_Docu/EditOverlay/Step3.png)
+
 Press enter to confirm the new name
 ![](https://github.com/Dirkster99/InplaceEditBoxLib/blob/master/00_Docu/00_Docu/EditOverlay/Step4_Result.png)
 
