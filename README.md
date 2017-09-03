@@ -6,6 +6,7 @@ TreeViewItem or ListViewItem (use case: perform in place edit of a displayed ite
 <br/><br/><br/>
 
 [![Build status](https://ci.appveyor.com/api/projects/status/7g6bx6uku9e1qow8?svg=true)](https://ci.appveyor.com/project/Dirkster99/inplaceeditboxlib)
+[![Release](https://img.shields.io/github/release/Dirkster99/inplaceeditboxlib.svg)](https://github.com/Dirkster99/inplaceeditboxlib/releases/latest)
 
 # Use Case: Edit-In-Place
 
