@@ -142,9 +142,11 @@ The following sequence of images shows the application behavior when the user en
 
 ### Cancel and Confirm ###
 
-Editing text with the edit-in-place control can be canceled by pressing the 'Esc' key or changing the input focus to another windows or control. The application shows the text as it was before the editing started.
+* Editing text with the edit-in-place control can be canceled by pressing the 'Esc' key or changing the input focus to another windows or control. The application shows the text as it was before the editing started.
 
-Editing text can be confirmed pressing the enter key. The application shows the entered text instead of the text before the editing started.
+* Editing text can be confirmed pressing the enter key. The application shows the entered text instead of the text before the editing started.
+
+* Clicking on the background of the ItemsControl (TreeView, ListView etc) cancels the edit mode (thanks to Alaa Ben Fatma for useful hints).
 
 ### IsReadOnly property ###
 
@@ -176,8 +178,6 @@ The control implements a pop-up message element to show hints to the user if he 
 ![](https://github.com/Dirkster99/InplaceEditBoxLib/blob/master/00_Docu/00_Docu/ErrorHandling/PopUpMessage.png?raw=true)
 
 ## Known Limitations ##
-
-- Clicking on the background of the ItemsControl (TreeView, ListView etc) does not cancel the edit mode (I would like to implement this but do not have a solution).
 
 - Key definitions entered in the in-place textbox cannot be defined through a white-list. The textbox does not support input masks.
 
