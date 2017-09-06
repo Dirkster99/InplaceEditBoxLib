@@ -210,7 +210,7 @@ namespace InplaceEditBoxLib.Views
         /// </summary>
         public EditBox()
         {
-            this._TextBox = null;
+            _TextBox = null;
 
             this.DataContextChanged += this.OnDataContextChanged;
 
@@ -294,8 +294,8 @@ namespace InplaceEditBoxLib.Views
             {
                 SetValue(EditBox.IsEditingProperty, value);
 
-                if (this._Adorner != null)
-                    this._Adorner.UpdateVisibilty(value);
+                if (_Adorner != null)
+                    _Adorner.UpdateVisibilty(value);
             }
         }
 
@@ -479,13 +479,13 @@ namespace InplaceEditBoxLib.Views
                 return;
 
             double timeBetweenClicks = (DateTime.Now - _LastClicked).TotalMilliseconds;
-            this._LastClicked = DateTime.Now;
+            _LastClicked = DateTime.Now;
 
             if (timeBetweenClicks > MinimumClickTime && timeBetweenClicks < MaximumClickTime)
             {
                 this.OnSwitchToEditingMode();
 
-                var t = this._TextBox as TextBox;
+                var t = _TextBox as TextBox;
 
                 if (t != null)
                     t.SelectAll();
@@ -506,7 +506,7 @@ namespace InplaceEditBoxLib.Views
             {
                 this.OnSwitchToEditingMode();
 
-                var t = this._TextBox as TextBox;
+                var t = _TextBox as TextBox;
 
                 if (t != null)
                     t.SelectAll();
@@ -532,16 +532,16 @@ namespace InplaceEditBoxLib.Views
         /// <param name="notifiedFromViewmodel"></param>
         private void ShowNotification(string title, string message, bool notifiedFromViewmodel)
         {
-            lock (this._lockObject)
+            lock (_lockObject)
             {
-                this._DestroyNotificationOnFocusChange = notifiedFromViewmodel;
+                _DestroyNotificationOnFocusChange = notifiedFromViewmodel;
 
-                if (this._Tip == null)
+                if (_Tip == null)
                 {
-                    this._Tip = new SimpleNotificationWindow();
+                    _Tip = new SimpleNotificationWindow();
 
                     var ownerWindow = this.GetDpObjectFromVisualTree(this, typeof(Window)) as Window;
-                    this._Tip.Owner = ownerWindow;
+                    _Tip.Owner = ownerWindow;
                 }
 
                 NotificationViewModel vm = new NotificationViewModel()
@@ -551,7 +551,7 @@ namespace InplaceEditBoxLib.Views
                     IsTopmost = false
                 };
 
-                this._Tip.ShowNotification(vm, this);
+                _Tip.ShowNotification(vm, this);
             }
         }
         #endregion ShowNotification
@@ -572,7 +572,7 @@ namespace InplaceEditBoxLib.Views
             if (e == null)
                 return;
 
-            lock (this._lockObject)
+            lock (_lockObject)
             {
                 if (this.IsEditing == true)
                 {
@@ -675,38 +675,43 @@ namespace InplaceEditBoxLib.Views
         {
             lock (_lockObject)
             {
-                if (this._DestroyNotificationOnFocusChange == false)
-                    this.DestroyTip();
+                if (_DestroyNotificationOnFocusChange == false)
+                    DestroyTip();
 
-                if (this.IsEditing == true)
+                if (IsEditing == true)
                 {
                     string sNewName = string.Empty;
 
-                    if (this._TextBox != null)
-                        sNewName = this._TextBox.Text;
+                    if (_TextBox != null)
+                        sNewName = _TextBox.Text;
 
                     if (bCancelEdit == false)
                     {
-                        if (this._TextBox != null)
+                        if (_TextBox != null)
                         {
                             // Tell the ViewModel (if any) that we'd like to rename this item
-                            if (this.RenameCommand != null)
+                            if (RenameCommand != null)
                             {
                                 var tuple = new Tuple<string, object>(sNewName, RenameCommandParameter);
-                                this.RenameCommand.Execute(tuple);
+                                RenameCommand.Execute(tuple);
                             }
                         }
                     }
                     else
                     {
-                        if (this._TextBox != null)
-                            this._TextBox.Text = this.Text;
+                        if (_TextBox != null)
+                            _TextBox.Text = this.Text;
                     }
 
-                    this.IsEditing = false;
-                    this._PART_TextBlock.Focus();
-                    this._PART_TextBlock.Visibility = System.Windows.Visibility.Visible;
-                    this._PART_MeasureTextBlock.Visibility = System.Windows.Visibility.Hidden;
+                    IsEditing = false;
+
+                    Mouse.RemovePreviewMouseDownOutsideCapturedElementHandler(this, OnMouseDownOutsideElement);
+                    ReleaseMouseCapture();
+
+                    _PART_TextBlock.Focus();
+                    _PART_TextBlock.Visibility = System.Windows.Visibility.Visible;
+
+                    _PART_MeasureTextBlock.Visibility = System.Windows.Visibility.Hidden;
                 }
             }
         }
@@ -752,43 +757,49 @@ namespace InplaceEditBoxLib.Views
         /// </summary>
         private void HookItemsControlEvents()
         {
-            if (this._PART_MeasureTextBlock == null)
+            if (_PART_MeasureTextBlock == null)
                 return;
 
-            this._TextBox = new TextBox();
+            _TextBox = new TextBox();
 
-            this._Adorner = new EditBoxAdorner(this._PART_MeasureTextBlock, this._TextBox, this);
-            AdornerLayer layer = AdornerLayer.GetAdornerLayer(this._PART_MeasureTextBlock);
-            layer.Add(this._Adorner);
+            _Adorner = new EditBoxAdorner(_PART_MeasureTextBlock, _TextBox, this);
+            AdornerLayer layer = AdornerLayer.GetAdornerLayer(_PART_MeasureTextBlock);
+            layer.Add(_Adorner);
 
-            this._TextBox.PreviewTextInput += OnPreviewTextInput;
-            this._TextBox.KeyDown += new KeyEventHandler(this.OnTextBoxKeyDown);
-            this._TextBox.LostKeyboardFocus += new KeyboardFocusChangedEventHandler(this.OnTextBoxLostKeyboardFocus);
+            // try to get the text box focused when layout finishes.
+            _TextBox.LayoutUpdated += new EventHandler(this.OnTextBoxLayoutUpdated);
 
-            this._TextBox.LostFocus += new RoutedEventHandler(this.OnLostFocus);
+            CaptureMouse();
+            Mouse.AddPreviewMouseDownOutsideCapturedElementHandler(this, OnMouseDownOutsideElement);
 
-            this._ParentItemsControl = this.GetDpObjectFromVisualTree(this, typeof(ItemsControl)) as ItemsControl;
-            Debug.Assert(this._ParentItemsControl != null, "DEBUG ISSUE: No FolderTreeView found.");
+            _TextBox.PreviewTextInput += OnPreviewTextInput;
+            _TextBox.KeyDown += new KeyEventHandler(this.OnTextBoxKeyDown);
+            _TextBox.LostKeyboardFocus += new KeyboardFocusChangedEventHandler(this.OnTextBoxLostKeyboardFocus);
 
-            if (this._ParentItemsControl != null)
+            _TextBox.LostFocus += new RoutedEventHandler(this.OnLostFocus);
+
+            _ParentItemsControl = this.GetDpObjectFromVisualTree(this, typeof(ItemsControl)) as ItemsControl;
+            Debug.Assert(_ParentItemsControl != null, "DEBUG ISSUE: No FolderTreeView found.");
+
+            if (_ParentItemsControl != null)
             {
                 // Handle events on parent control and determine whether to switch to Normal mode or stay in editing mode
-                this._ParentItemsControl.AddHandler(ScrollViewer.ScrollChangedEvent, new RoutedEventHandler(this.OnScrollViewerChanged));
-                this._ParentItemsControl.AddHandler(ScrollViewer.MouseWheelEvent, new RoutedEventHandler((s, e) => this.OnSwitchToNormalMode()), true);
+                _ParentItemsControl.AddHandler(ScrollViewer.ScrollChangedEvent, new RoutedEventHandler(this.OnScrollViewerChanged));
+                _ParentItemsControl.AddHandler(ScrollViewer.MouseWheelEvent, new RoutedEventHandler((s, e) => this.OnSwitchToNormalMode()), true);
 
-                this._ParentItemsControl.MouseDown += new MouseButtonEventHandler((s, e) => this.OnSwitchToNormalMode());
-                this._ParentItemsControl.SizeChanged += new SizeChangedEventHandler((s, e) => this.OnSwitchToNormalMode());
+                _ParentItemsControl.MouseDown += new MouseButtonEventHandler((s, e) => this.OnSwitchToNormalMode());
+                _ParentItemsControl.SizeChanged += new SizeChangedEventHandler((s, e) => this.OnSwitchToNormalMode());
 
                 // Restrict text box to visible area of scrollviewer
-                this.ParentScrollViewer = this.GetDpObjectFromVisualTree(this._ParentItemsControl, typeof(ScrollViewer)) as ScrollViewer;
+                this.ParentScrollViewer = this.GetDpObjectFromVisualTree(_ParentItemsControl, typeof(ScrollViewer)) as ScrollViewer;
 
                 if (this.ParentScrollViewer == null)
-                    this.ParentScrollViewer = FindVisualChild<ScrollViewer>(this._ParentItemsControl);
+                    this.ParentScrollViewer = FindVisualChild<ScrollViewer>(_ParentItemsControl);
 
                 Debug.Assert(this.ParentScrollViewer != null, "DEBUG ISSUE: No ScrollViewer found.");
 
                 if (this.ParentScrollViewer != null)
-                    this._TextBox.MaxWidth = this.ParentScrollViewer.ViewportWidth;
+                    _TextBox.MaxWidth = this.ParentScrollViewer.ViewportWidth;
             }
         }
 
@@ -846,16 +857,47 @@ namespace InplaceEditBoxLib.Views
         /// </summary>
         private void DestroyTip()
         {
-            lock (this._lockObject)
+            lock (_lockObject)
             {
-                if (this._Tip != null)
+                if (_Tip != null)
                 {
-                    this._Tip.HideNotification();
-                    this._Tip.CloseInvokedByParent();
+                    _Tip.HideNotification();
+                    _Tip.CloseInvokedByParent();
 
-                    this._Tip = null;
+                    _Tip = null;
                 }
             }
+        }
+
+        /// <summary>
+        /// When Layout finish, if in editable mode, update focus status on TextBox.
+        /// </summary>
+        private void OnTextBoxLayoutUpdated(object sender, EventArgs e)
+        {
+            if (_TextBox == null)
+                return;
+
+            if (_TextBox.IsVisible == true)
+            {
+                if (_TextBox.IsFocused == false)
+                {
+                    _TextBox.Focus();
+                }
+            }
+        }
+
+        /// <summary>
+        /// Escape Edit Mode when the user clicks outside of the textbox
+        /// https://stackoverflow.com/questions/6489032/wpf-remove-focus-when-clicking-outside-of-a-textbox#6489274
+        /// 
+        /// Thanks for helpful hints to Alaa Ben Fatma.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void OnMouseDownOutsideElement(object sender, MouseButtonEventArgs e)
+        {
+            e.Handled = true;
+            OnSwitchToNormalMode();
         }
         #endregion methods
     }
