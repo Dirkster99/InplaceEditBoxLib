@@ -99,7 +99,7 @@ namespace InplaceEditBoxLib.Views
         /// <summary>
         /// Gets whether the textbox is currently visible or not.
         /// </summary>
-        public bool IsVisible
+        public bool IsTextBoxVisible
         {
             get
             {

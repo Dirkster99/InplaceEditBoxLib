@@ -874,10 +874,10 @@ namespace InplaceEditBoxLib.Views
         /// </summary>
         private void OnTextBoxLayoutUpdated(object sender, EventArgs e)
         {
-            if (_TextBox == null)
+            if (_Adorner == null)
                 return;
 
-            if (_TextBox.IsVisible == true)
+            if (_Adorner.IsTextBoxVisible == true)
             {
                 if (_TextBox.IsFocused == false)
                 {
