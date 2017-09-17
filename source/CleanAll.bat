@@ -29,6 +29,9 @@ RMDIR /S /Q InPlaceEditBoxDemo\obj
 RMDIR /S /Q InplaceEditBoxLib\bin
 RMDIR /S /Q InplaceEditBoxLib\obj
 
+RMDIR /S /Q SolutionLib\bin
+RMDIR /S /Q SolutionLib\obj
+
 PAUSE
 
 :EndOfBatch
