@@ -11,39 +11,17 @@
           xmlns:EditInPlace="clr-namespace:InplaceEditBoxLib.Views;assembly=InplaceEditBoxLib"
           xmlns:bindLocal="clr-namespace:InplaceEditBoxLib.Views;assembly=InplaceEditBoxLib"
           xmlns:behav="clr-namespace:InPlaceEditBoxDemo.Behaviours"
+          
+          xmlns:sitemtype="clr-namespace:SolutionLib.Models;assembly=SolutionLib"
           >
-        
+
         <Grid.Resources>
-            <!-- Source: https://social.msdn.microsoft.com/Forums/vstudio/en-US/f260871d-1318-43fb-abfb-188832e3eedd/treeview-virtualizingstackpanel-problem-with-scrollviewer?forum=wpf
-                 Virtualizing the tree will cause problems when trying to bring a selected item into view :-(
-            -->
-            <!-- Style x:Key="TreeViewStyle">
-                <Setter Property="TreeView.Background" Value="Transparent"/>
-                <Setter Property="VirtualizingStackPanel.IsVirtualizing" Value="True"/>
-                <Setter Property="VirtualizingStackPanel.VirtualizationMode" Value="Recycling"/>
-                <Setter Property="TreeView.SnapsToDevicePixels" Value="True" />
-                <Setter Property="TreeView.OverridesDefaultStyle" Value="True" />
-                <Setter Property="ItemsControl.ItemsPanel">
-                    <Setter.Value>
-                        <ItemsPanelTemplate>
-                            <VirtualizingStackPanel IsItemsHost="True"/>
-                        </ItemsPanelTemplate>
-                    </Setter.Value>
-                </Setter>
-                <Setter Property="TreeView.Template">
-                    <Setter.Value>
-                        <ControlTemplate TargetType="TreeView">
-                            <ScrollViewer Focusable="False" CanContentScroll="True" Padding="3">
-                                <ItemsPresenter HorizontalAlignment="Stretch"/>
-                            </ScrollViewer>
-                        </ControlTemplate>
-                    </Setter.Value>
-                </Setter>
-            </Style -->
 
             <!-- Use a proxy to bind items to root properties of this collection -->
             <bindLocal:BindingProxy x:Key="DataContextProxy"  Data="{Binding Solution}" />
             <conv:ISolutionBaseItemToImageConverter x:Key="ISolutionBaseItemToImageConverter" />
+            
+            <convDemo:ISolutionItemItemTypeToTupleConverter x:Key="ISolutionItemItemTypeToTupleConverter" />
             <convDemo:ItemTypeDisplayNameToTextConverter x:Key="ISolutionBaseItemToTextConverter"/>
 
         </Grid.Resources>
@@ -52,14 +30,6 @@
             <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
 
-<!--
-    Virtualizing the tree will cause problems when trying to bring a selected item into view :-(
-
-    VirtualizingStackPanel.IsVirtualizing="True"
-    VirtualizingStackPanel.VirtualizationMode="Recycling"
-    Style="{StaticResource TreeViewStyle}"
-    ItemTemplateSelector="{StaticResource SolutionItemDataTemplateSelector}"
--->
         <TreeView
             Grid.Row="1"
             ItemsSource="{Binding Solution.Root}"
@@ -75,6 +45,49 @@
                                           CommandParameter="{Binding}"
                                           Header="Rename"
                                           ToolTip="Rename this item"
+                                          />
+                                <Separator/>
+                                <MenuItem Command="{Binding Path=Data.ItemAddCommand, Source={StaticResource DataContextProxy}}"
+                                          Header="Add File"
+                                          ToolTip="Adds a file under this item"
+                                          >
+                                    <MenuItem.CommandParameter>
+                                        <MultiBinding Converter="{StaticResource ISolutionItemItemTypeToTupleConverter}">
+                                            <Binding />
+                                            <Binding Source="{x:Static sitemtype:SolutionItemType.File}"/>
+                                        </MultiBinding>
+                                    </MenuItem.CommandParameter>
+                                </MenuItem>
+                                <MenuItem Command="{Binding Path=Data.ItemAddCommand, Source={StaticResource DataContextProxy}}"
+                                          Header="Add Folder"
+                                          ToolTip="Adds a folder under this item">
+                                    <MenuItem.CommandParameter>
+                                    <MultiBinding Converter="{StaticResource ISolutionItemItemTypeToTupleConverter}">
+                                        <Binding />
+                                        <Binding Source="{x:Static sitemtype:SolutionItemType.Folder}"/>
+                                    </MultiBinding>
+                                    </MenuItem.CommandParameter>
+                                </MenuItem>
+                                <MenuItem Command="{Binding Path=Data.ItemAddCommand, Source={StaticResource DataContextProxy}}"
+                                          Header="Add Project"
+                                          ToolTip="Adds a project under this item">
+                                    <MenuItem.CommandParameter>
+                                    <MultiBinding Converter="{StaticResource ISolutionItemItemTypeToTupleConverter}">
+                                        <Binding />
+                                        <Binding Source="{x:Static sitemtype:SolutionItemType.Project}"/>
+                                    </MultiBinding>
+                                    </MenuItem.CommandParameter>
+                                </MenuItem>
+                                <Separator/>
+                                <MenuItem Command="{Binding Path=Data.ItemRemoveCommand, Source={StaticResource DataContextProxy}}"
+                                          CommandParameter="{Binding}"
+                                          Header="Remove"
+                                          ToolTip="Remove this item"
+                                          />
+                                <MenuItem Command="{Binding Path=Data.ItemClearCommand, Source={StaticResource DataContextProxy}}"
+                                          CommandParameter="{Binding}"
+                                          Header="Clear"
+                                          ToolTip="Remove all items below this item"
                                           />
                             </ContextMenu>
                         </Grid.ContextMenu>

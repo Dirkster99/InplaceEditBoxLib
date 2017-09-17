@@ -6,6 +6,7 @@
     using System;
     using System.Collections.ObjectModel;
     using System.Windows.Input;
+    using System.Windows.Threading;
 
     /// <summary>
     /// A Solution root is the viewmodel that hosts all other solution related items.
@@ -22,6 +23,9 @@
 
         private ICommand _SelectionChangedCommand;
         private ISolutionBaseItem _SelectedItem;
+        private ICommand _ItemAddCommand;
+        private ICommand _ItemRemoveCommand;
+        private ICommand _ItemClearCommand;
         #endregion fields
 
         #region constructors
@@ -51,6 +55,145 @@
         }
 
         /// <summary>
+        /// Gets a command that adds a new item into the treeview.
+        /// 
+        /// Parameter is a Tuple with the <see cref="ISolutionItem"/> that is the
+        /// parent of the to be creaed item and a <see cref="SolutionItemType"/>
+        /// that is the type of the child that should be added here.
+        /// </summary>
+        public ICommand ItemAddCommand
+        {
+            get
+            {
+                if (_ItemAddCommand == null)
+                    _ItemAddCommand = new Base.RelayCommand<object>(p =>
+                    {
+                        var tuple = p as Tuple<ISolutionItem, SolutionItemType>;
+
+                        if (tuple == null)
+                            return;
+
+                        var parentItem = tuple.Item1;
+                        var addType = tuple.Item2;
+
+                        string nextChildItemName = parentItem.SuggestNextChildName(addType);
+
+                        if (string.IsNullOrEmpty(nextChildItemName) == true)
+                            return;
+
+                        ISolutionBaseItem item = null;
+
+                        item = parentItem.AddChild(nextChildItemName, addType);
+                        parentItem.IsItemExpanded = true;
+                        parentItem.SortChildren();
+
+                        if (item != null)
+                        {
+                            // Request EditMode will only work if this is done with LOW priority
+                            Dispatcher.CurrentDispatcher.BeginInvoke(DispatcherPriority.Background, (Action)delegate
+                            {
+                                item.IsItemSelected = true;
+                                item.RequestEditMode(InplaceEditBoxLib.Events.RequestEditEvent.StartEditMode);
+                            });
+                        }
+                    },
+                    ((p) =>
+                    {
+                        var tuple = p as Tuple<ISolutionItem, SolutionItemType>;
+
+                        if (tuple == null)
+                            return false;
+
+                        var parentItem = tuple.Item1;
+                        var addType = tuple.Item2;
+
+                        switch (parentItem.ItemType)
+                        {
+                            // Folder and SolutionRoot should be able to contain anything
+                            case SolutionItemType.Folder:
+                            case SolutionItemType.SolutionRootItem:
+                                return true;
+
+                            // Files should not have any children of their own
+                            case SolutionItemType.File:
+                                return false;
+
+                            // Projects can contain anything except for Projects
+                            case SolutionItemType.Project:
+                                if (addType == SolutionItemType.Project)
+                                    return false;
+                                else
+                                    return true;
+
+                            default:
+                                throw new ArgumentOutOfRangeException(parentItem.ItemType.ToString());
+                        }
+                    }));
+
+                return _ItemAddCommand;
+            }
+        }
+
+        /// <summary>
+        /// Gets a command that removes an item from the treeview.
+        /// </summary>
+        public ICommand ItemRemoveCommand
+        {
+            get
+            {
+                if (_ItemRemoveCommand == null)
+                    _ItemRemoveCommand = new Base.RelayCommand<object>(p =>
+                    {
+                        var item = p as ISolutionBaseItem;
+
+                        if (p == null)
+                            return;
+
+                        item.Parent.RemoveChild(item);
+                    }, (p =>
+                    {
+                        var item = p as ISolutionBaseItem;
+
+                        if (p == null)
+                            return false;
+
+                        // Lets disable removal of root since that does not
+                        // seem to make a lot of sense here
+                        if (item.Parent == null)
+                            return false;
+
+                        return true;
+                    }));
+
+                return _ItemRemoveCommand;
+            }
+        }
+
+        /// <summary>
+        /// Gets a command that removes all items below a given item.
+        /// </summary>
+        public ICommand ItemClearCommand
+        {
+            get
+            {
+                if (_ItemClearCommand == null)
+                {
+                    _ItemClearCommand = new Base.RelayCommand<object>(p =>
+                    {
+                        var item = p as ISolutionBaseItem;
+
+                        if (item == null)
+                            return;
+
+                        item.RemoveAllChild();
+                    });
+                }
+
+                return _ItemClearCommand;
+            }
+        }
+
+        /// <summary>
         /// Starts the rename folder process by that renames the folder
         /// that is represented by this viewmodel.
         /// 
@@ -68,13 +211,18 @@
         {
             get
             {
-                if (this._StartRenameCommand == null)
-                    this._StartRenameCommand = new Base.RelayCommand<object> (it =>
+                if (_StartRenameCommand == null)
+                    _StartRenameCommand = new Base.RelayCommand<object> (it =>
                     {
                         var item = it as ISolutionBaseItem;
 
                         if (item != null)
-                            item.RequestEditMode(InplaceEditBoxLib.Events.RequestEditEvent.StartEditMode);
+                        {
+                            Dispatcher.CurrentDispatcher.BeginInvoke(DispatcherPriority.Background, (Action)delegate
+                            {
+                                item.RequestEditMode(InplaceEditBoxLib.Events.RequestEditEvent.StartEditMode);
+                            });
+                         }
                     },
                     (it) =>
                     {
@@ -135,11 +283,12 @@
                                 {
                                     // Do we already know this item?
                                     var existingItem = parent.FindChild(newName);
-                                    if (existingItem != null)
+                                    if (existingItem != null && existingItem != solutionItem)
                                     {
                                         solutionItem.RequestEditMode(RequestEditEvent.StartEditMode);
                                         solutionItem.ShowNotification("Item Already Exists",
                                             "An item with this name exists already. All names must be unique.");
+
                                         return;
                                     }
 
@@ -151,6 +300,18 @@
                                     parent.IsItemExpanded = true;   // Ensure parent is expanded
                                     parent.SortChildren();
                                     solutionItem.IsItemSelected = true;
+                                }
+                                else
+                                {
+                                    // Is this a root item - it could then rename itself
+                                    var solutionRootItem = tuple.Item2 as ISolutionRootItem;
+                                    newName = tuple.Item1;
+
+                                    if (solutionRootItem != null &&
+                                        string.IsNullOrEmpty( newName ) == false)
+                                    {
+                                        solutionRootItem.RenameRootItem(newName);
+                                    }
                                 }
                             }
                         }
@@ -193,7 +354,6 @@
                 }
             }     
         }
-
 
         /// <summary>
         /// Renames the  displayed string in the <paramref name="solutionItem"/>

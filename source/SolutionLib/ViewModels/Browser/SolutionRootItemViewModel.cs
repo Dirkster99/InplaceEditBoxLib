@@ -32,6 +32,15 @@
 
         #region methods
         /// <summary>
+        /// Rename the display item of the root item.
+        /// </summary>
+        /// <param name="newName"></param>
+        public void RenameRootItem(string newName)
+        {
+            SetDisplayName(newName);
+        }
+
+        /// <summary>
         /// Adds another folder (child) item in the given collection of items.
         /// </summary>
         /// <param name="displayName"></param>

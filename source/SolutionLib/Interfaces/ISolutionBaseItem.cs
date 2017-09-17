@@ -102,6 +102,25 @@
         ISolutionBaseItem AddChild(ISolutionBaseItem item);
 
         /// <summary>
+        /// Adding a new next child item via Inplace Edit Box requires that
+        /// we know whether 'New Folder','New Folder 1', 'New Folder 2' ...
+        /// is the next appropriate name - this method determines that name
+        /// and returns it for a given type of a (to be created) child item.
+        /// </summary>
+        /// <param name="addType"></param>
+        /// <returns></returns>
+        string SuggestNextChildName(SolutionItemType addType);
+
+        /// <summary>
+        /// Adds a child item with the given type
+        /// (<see cref="SolutionItemType.SolutionRootItem"/> cannot be added here).
+        /// </summary>
+        /// <param name="displayName"></param>
+        /// <param name="type"></param>
+        /// <returns></returns>
+        ISolutionBaseItem AddChild(string displayName, SolutionItemType type);
+
+        /// <summary>
         /// Removes a child item from the collection of children in this item.
         /// </summary>
         /// <param name="item"></param>
@@ -142,6 +161,11 @@
         /// Sorts all items for display in a sorted fashion.
         /// </summary>
         void SortChildren();
+
+        /// <summary>
+        /// Removes all children (if any) below this item.
+        /// </summary>
+        void RemoveAllChild();
         #endregion methods
     }
 }

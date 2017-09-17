@@ -12,7 +12,7 @@
             root.IsItemExpanded = true;
 
             // Assume for this demo that the root item cannot be renamed
-            root.SetIsReadOnly(true);
+            // root.SetIsReadOnly(true);
 
             var xmlFolder = solutionRoot.AddRootChild("XML", SolutionItemType.Folder);
             xmlFolder.IsItemExpanded = true;

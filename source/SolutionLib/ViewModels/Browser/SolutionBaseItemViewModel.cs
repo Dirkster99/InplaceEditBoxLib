@@ -183,6 +183,32 @@
 
         #region methods
         /// <summary>
+        /// Adds a child item with the given type
+        /// (<see cref="SolutionItemType.SolutionRootItem"/> cannot be added here).
+        /// </summary>
+        /// <param name="displayName"></param>
+        /// <param name="type"></param>
+        /// <returns></returns>
+        public ISolutionBaseItem AddChild(string displayName, SolutionItemType type)
+        {
+            switch (type)
+            {
+                case SolutionItemType.File:
+                    return AddChild(displayName, new FileViewModel(this, displayName));
+
+                case SolutionItemType.Folder:
+                    return AddChild(displayName, new FolderViewModel(this, displayName));
+
+                case SolutionItemType.Project:
+                    return AddChild(displayName, new ProjectViewModel(this, displayName));
+
+                default:
+                case SolutionItemType.SolutionRootItem:
+                    throw new System.ArgumentOutOfRangeException(type.ToString());
+            }
+        }
+
+        /// <summary>
         /// Sets the value of the <seealso cref="DisplayName"/> property.
         /// </summary>
         /// <param name="displayName"></param>
@@ -220,6 +246,46 @@
             return AddChild(item.DisplayName, item);
         }
 
+        public string SuggestNextChildName(SolutionItemType nextTypeTpAdd)
+        {
+            string suggestMask = null;
+
+            switch (nextTypeTpAdd)
+            {
+                case SolutionItemType.SolutionRootItem:
+                    suggestMask = "New Solution";
+                    break;
+                case SolutionItemType.File:
+                    suggestMask = "New File";
+                    break;
+                case SolutionItemType.Folder:
+                    suggestMask = "New Folder";
+                    break;
+                case SolutionItemType.Project:
+                    suggestMask = "New Project";
+                    break;
+
+                default:
+                    throw new ArgumentOutOfRangeException(nextTypeTpAdd.ToString());
+            }
+
+            var nextChild = _Children.TryGet(suggestMask);
+            if (nextChild == null)
+                return suggestMask;
+
+            string suggestChild = null;
+            for (int i = 1; i < _Children.Count + 100; i++)
+            {
+                suggestChild = string.Format("{0} {1}", suggestMask, i);
+
+                nextChild = _Children.TryGet(suggestChild);
+                if (nextChild == null)
+                    break;
+            }
+
+            return suggestChild;
+        }
+
         /// <summary>
         /// Removes a child item from the collection of children in this item.
         /// </summary>
@@ -232,7 +298,28 @@
 
             item.SetParent(null);
 
-            return _Children.RemoveItem(item);
+            var itemIsSelected = item.IsItemSelected;
+            var idx = _Children.IndexOf(item);
+            var removedItem = _Children.RemoveItem(item);
+
+            if (itemIsSelected == false)
+                return removedItem;
+
+            // Removed item was selected so lets try and select something nearby
+            if (idx <= 0)
+                this.IsItemSelected = true;
+            else
+                _Children[idx-1].IsItemSelected = true;
+
+            return removedItem;
+        }
+
+        /// <summary>
+        /// Removes all children (if any) below this item.
+        /// </summary>
+        public void RemoveAllChild()
+        {
+            _Children.Clear();
         }
 
         /// <summary>

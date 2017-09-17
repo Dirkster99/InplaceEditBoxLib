@@ -1,6 +1,7 @@
 ﻿namespace SolutionLib.ViewModels.Browser
 {
     using SolutionLib.Interfaces;
+    using SolutionLib.Models;
 
     internal class FolderViewModel : SolutionBaseItemViewModel, IFolder
     {
@@ -31,7 +32,7 @@
         /// <returns></returns>
         ISolutionBaseItem ISolutionItem.AddFolder(string displayName)
         {
-            return AddChild(displayName, new FolderViewModel(this, displayName));
+            return AddChild(displayName,  SolutionItemType.Folder);
         }
 
         /// <summary>
@@ -41,7 +42,7 @@
         /// <returns></returns>
         ISolutionBaseItem ISolutionItem.AddProject(string displayName)
         {
-            return AddChild(displayName, new ProjectViewModel(this, displayName));
+            return AddChild(displayName, SolutionItemType.Project);
         }
 
         /// <summary>
@@ -51,7 +52,7 @@
         /// <returns></returns>
         ISolutionBaseItem ISolutionItem.AddFile(string displayName)
         {
-            return AddChild(displayName, new FileViewModel(this, displayName));
+            return AddChild(displayName, SolutionItemType.File);
         }
         #endregion methods
     }

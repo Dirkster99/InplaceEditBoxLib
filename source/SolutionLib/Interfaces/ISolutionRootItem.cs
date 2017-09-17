@@ -7,5 +7,10 @@
     /// </summary>
     public interface ISolutionRootItem : ISolutionItem
     {
+        /// <summary>
+        /// Rename the display item of the root item.
+        /// </summary>
+        /// <param name="newName"></param>
+        void RenameRootItem(string newName);
     }
 }

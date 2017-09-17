@@ -91,19 +91,23 @@
             string prefix = "";
             switch (itemType)
             {
-                case SolutionItemType.File:
-                    prefix = "35_";
-                    break;
-                case SolutionItemType.Folder:
-                    prefix = "15_";
-                    break;
-                case SolutionItemType.Project:
-                    prefix = "65_";
-                    break;
                 case SolutionItemType.SolutionRootItem:
                 default:
-                    prefix = "";
+                    prefix = "000_";
                     break;
+
+                case SolutionItemType.Folder:
+                    prefix = "222_";
+                    break;
+
+                case SolutionItemType.Project:
+                    prefix = "444_";
+                    break;
+
+                case SolutionItemType.File:
+                    prefix = "666_";
+                    break;
+
             }
 
             return prefix + key;
