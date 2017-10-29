@@ -41,6 +41,19 @@
             _ItemType = itemType;
         }
 
+        /// <summary>
+        /// Class constructor
+        /// </summary>
+        protected SolutionBaseItemViewModel()
+        {
+            _Children = new SortableObservableDictionaryCollection();
+            _IsItemExpanded = false;
+            _IsItemSelected = false;
+
+            _IsReadOnly = false;
+        }
+        #endregion constructors
+
         #region events
         /// <summary>
         /// Expose an event that is triggered when the viewmodel tells its view:
@@ -54,19 +67,6 @@
         /// </summary>
         public event InplaceEditBoxLib.Events.RequestEditEventHandler RequestEdit;
         #endregion events
-
-        /// <summary>
-        /// Class constructor
-        /// </summary>
-        protected SolutionBaseItemViewModel()
-        {
-            _Children = new SortableObservableDictionaryCollection();
-            _IsItemExpanded = false;
-            _IsItemSelected = false;
-
-            _IsReadOnly = false;
-        }
-        #endregion constructors
 
         #region properties
         /// <summary>
