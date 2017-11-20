@@ -9,12 +9,17 @@
         internal static void Objects(ISolution solutionRoot)
         {
             var root = solutionRoot.AddSolutionRootItem("GitHub Projects");
+
             root.IsItemExpanded = true;
 
             // Assume for this demo that the root item cannot be renamed
             // root.SetIsReadOnly(true);
 
-            var xmlFolder = solutionRoot.AddRootChild("XML", SolutionItemType.Folder);
+            var xmlFolder = solutionRoot.AddRootChild("XML", SolutionItemType.Folder) as IBaseItemChildren;
+
+            if (xmlFolder == null)
+                throw new System.NotSupportedException();
+
             xmlFolder.IsItemExpanded = true;
 
             // XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
@@ -37,21 +42,28 @@
 
             CreateProject(solutionRoot, newTest.Project, xmlFolder, newTest.Folders, newTest.Files);
 
-            var lastItem = xmlFolder.FindChild("Open-XML-SDK");
+            var lastItem = xmlFolder.FindChild("Open-XML-SDK") as IBaseItemChildren;
+
+            if (lastItem == null)
+                throw new System.NotSupportedException();
+
             if (lastItem != null)
             {
                 lastItem.IsItemExpanded = true;
 
-                lastItem = lastItem.FindChild("DocumentFormat.OpenXml.Tests");
+                lastItem = lastItem.FindChild("DocumentFormat.OpenXml.Tests") as IBaseItemChildren;
+
+                if (lastItem == null)
+                    throw new System.NotSupportedException();
+
                 if (lastItem != null)
                 {
                     lastItem.IsItemExpanded = true;
 
-                    lastItem = lastItem.FindChild("file_99");
-                    if (lastItem != null)
-                    {
-                        lastItem.IsItemSelected = true;
-                    }
+                    var lastFileItem = lastItem.FindChild("file_99");
+
+                    if (lastFileItem != null)
+                        lastFileItem.IsItemSelected = true;
                 }
             }
 
@@ -162,12 +174,16 @@
         private static void CreateProject(
             ISolution solutionRoot
             , string project
-            , ISolutionBaseItem parent
+            , IBaseItemChildren parent
             , List<string> folders
             , List<string> files
             )
         {
-            var projectItem = solutionRoot.AddChild(project, SolutionItemType.Project, parent);
+            var projectItem = solutionRoot.AddChild(project, SolutionItemType.Project, parent) as IBaseItemChildren;
+
+            if (projectItem == null)
+                throw new System.NotImplementedException();
+
             var projectItemChanged = false;
 
             for (int i = 0; i < 13; i++)
@@ -181,7 +197,10 @@
             {
                 foreach (var item in folders)
                 {
-                    var folder = solutionRoot.AddChild(item, SolutionItemType.Folder, projectItem);
+                    var folder = solutionRoot.AddChild(item, SolutionItemType.Folder, projectItem) as IBaseItemChildren;
+
+                    if (folder == null)
+                        throw new System.NotImplementedException();
 
                     for (int i = 0; i < 123; i++)
                     {

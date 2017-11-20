@@ -7,12 +7,12 @@
     using System.Windows.Data;
 
     /// <summary>
-    /// XAML converter to convert <seealso cref="ISolutionItem"/> and
+    /// XAML converter to convert <seealso cref="IBaseItemChildren"/> and
     /// <seealso cref="SolutionItemType"/> enum members
     /// into a <seealso cref="Tuple{T1, T2}"/> representaton for command binding.
     /// </summary>
-    [ValueConversion(typeof(ISolutionItem), typeof(Tuple<ISolutionItem, SolutionItemType>))]
-    [ValueConversion(typeof(SolutionItemType), typeof(Tuple<ISolutionItem, SolutionItemType>))]
+    [ValueConversion(typeof(IBaseItemChildren), typeof(Tuple<IBaseItemChildren, SolutionItemType>))]
+    [ValueConversion(typeof(SolutionItemType), typeof(Tuple<IBaseItemChildren, SolutionItemType>))]
     public class ISolutionItemItemTypeToTupleConverter : IMultiValueConverter
     {
         /// <summary>
@@ -31,7 +31,7 @@
             if (values.Length != 2)
                 return Binding.DoNothing;
 
-            var item = values[0] as ISolutionItem;
+            var item = values[0] as IBaseItemChildren;
 
             if (item == null)
                 return Binding.DoNothing;
@@ -41,7 +41,7 @@
 
             var itemType = (SolutionItemType)values[1];
 
-            return new Tuple<ISolutionItem, SolutionItemType>(item, itemType);
+            return new Tuple<IBaseItemChildren, SolutionItemType>(item, itemType);
         }
 
         /// <summary>

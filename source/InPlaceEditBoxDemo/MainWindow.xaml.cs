@@ -1,6 +1,7 @@
 ﻿namespace InPlaceEditBoxDemo
 {
     using InPlaceEditBoxDemo.ViewModels;
+    using ServiceLocator;
     using System.Windows;
 
     /// <summary>
@@ -12,6 +13,7 @@
         {
             InitializeComponent();
 
+            ServiceInjector.InjectServices();      // Start-up services
             this.DataContext = new AppViewModel();
         }
     }

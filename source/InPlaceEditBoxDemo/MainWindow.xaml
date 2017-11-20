@@ -14,7 +14,6 @@
           
           xmlns:sitemtype="clr-namespace:SolutionLib.Models;assembly=SolutionLib"
           >
-
         <Grid.Resources>
 
             <!-- Use a proxy to bind items to root properties of this collection -->
@@ -27,8 +26,21 @@
         </Grid.Resources>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <ToolBarTray Grid.Row="0" Background="Transparent">
+            <ToolBar Background="Transparent">
+                <Button Content="Save"
+                        Command="{Binding SaveSolutionCommand}"
+                        CommandParameter="{Binding Solution}"
+                        ToolTip="Save solution to storage." Margin="3"/>
+                
+                <Button Content="Load" ToolTip="Load solution from storage."  Margin="3"/>
+            </ToolBar>
+        </ToolBarTray>
 
         <TreeView
             Grid.Row="1"
@@ -86,7 +98,7 @@
                                           />
                                 <MenuItem Command="{Binding Path=Data.ItemClearCommand, Source={StaticResource DataContextProxy}}"
                                           CommandParameter="{Binding}"
-                                          Header="Clear"
+                                          Header="Remove All Items"
                                           ToolTip="Remove all items below this item"
                                           />
                             </ContextMenu>

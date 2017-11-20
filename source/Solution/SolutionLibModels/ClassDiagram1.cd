@@ -1,0 +1,123 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="SolutionModelsLib.Models.FileItemModel" Collapsed="true">
+    <Position X="9" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\FileItemModel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="SolutionModelsLib.Models.FolderItemModel" Collapsed="true">
+    <Position X="11" Y="4.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\FolderItemModel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="SolutionModelsLib.Models.ProjectItemModel" Collapsed="true">
+    <Position X="9" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\ProjectItemModel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="SolutionModelsLib.Models.SolutionModel" Collapsed="true">
+    <Position X="13.25" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAECAAAAAAAAQAAgAAAAAAAAABAAAAAAA=</HashCode>
+      <FileName>Models\SolutionModel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="SolutionModelsLib.Models.BaseItemModel" Collapsed="true">
+    <Position X="11" Y="2.25" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AABCEAAAAAAAAAAQAAAAQAAAAAAAAAAAAAAAAAAAAgA=</HashCode>
+      <FileName>Models\BaseItemModel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="SolutionModelsLib.Models.SolutionRootItemModel" Collapsed="true">
+    <Position X="13.25" Y="4.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\SolutionRootItemModel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="SolutionModelsLib.Models.BaseItemChildrenModel" Collapsed="true">
+    <Position X="11" Y="3.25" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAIAAAAAAAEAAAAAAUAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\BaseItemChildrenModel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Interface Name="SolutionModelsLib.Interfaces.IBaseItemModel" Collapsed="true">
+    <Position X="2.5" Y="2.25" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AABCEAAAAAAAAAAQAAAAQAAAAAAAAAAAAAAAAAAAAgA=</HashCode>
+      <FileName>Interfaces\IBaseItemModel.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="SolutionModelsLib.Interfaces.IBaseItemChildrenModel" Collapsed="true">
+    <Position X="2.5" Y="3.25" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAIAAAAAAAEAAAAAAEAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Interfaces\IBaseItemChildrenModel.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="SolutionModelsLib.Interfaces.IFileItemModel" Collapsed="true">
+    <Position X="0.5" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Interfaces\IFileItemModel.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="SolutionModelsLib.Interfaces.IFolderItemModel" Collapsed="true">
+    <Position X="2.75" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Interfaces\IFolderItemModel .cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="SolutionModelsLib.Interfaces.IPrjectItemModel" Collapsed="true">
+    <Position X="0.5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Interfaces\IPrjectItemModel.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="SolutionModelsLib.Interfaces.ISolutionRootItemModel" Collapsed="true">
+    <Position X="4.75" Y="4.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Interfaces\ISolutionRootItemModel.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="SolutionModelsLib.Interfaces.IModelBase" Collapsed="true">
+    <Position X="4" Y="1" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Interfaces\IModelBase.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="SolutionModelsLib.Interfaces.ISolutionModel" Collapsed="true">
+    <Position X="5" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAECAAAAAAAAQAAgAAAAAAAAABAAAAAAA=</HashCode>
+      <FileName>Interfaces\ISolutionModel.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Enum Name="SolutionModelsLib.Enums.SolutionModelItemType">
+    <Position X="6.75" Y="2.25" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAACAAAAAAEAAAAAAAAAAQABAA=</HashCode>
+      <FileName>Enums\SolutionItemType.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
