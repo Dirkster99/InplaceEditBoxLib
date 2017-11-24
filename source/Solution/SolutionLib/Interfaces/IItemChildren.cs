@@ -7,12 +7,12 @@
     /// and does provide functions to manipulate the collection of children
     /// (remove, rename, add child etc.)
     /// </summary>
-    public interface IBaseItemChildren : IBaseItem
+    public interface IItemChildren : IItem
     {
         /// <summary>
         /// Gets all children items of this (parent) item.
         /// </summary>
-        IEnumerable<IBaseItem> Children { get; }
+        IEnumerable<IItem> Children { get; }
 
         #region methods
         /// <summary>
@@ -20,7 +20,7 @@
         /// </summary>
         /// <param name="displyName"></param>
         /// <returns></returns>
-        IBaseItem FindChild(string displyName);
+        IItem FindChild(string displyName);
 
         /// <summary>
         /// Adding a new next child item via Inplace Edit Box requires that
@@ -33,12 +33,12 @@
         string SuggestNextChildName(Models.SolutionItemType nextTypeTpAdd);
 
         /// <summary>
-        /// Adds a child item of type <see cref="IBaseItem"/> to this parent
-        /// which can also be typed with <see cref="IBaseItem"/>.
+        /// Adds a child item of type <see cref="IItem"/> to this parent
+        /// which can also be typed with <see cref="IItem"/>.
         /// </summary>
         /// <param name="item"></param>
         /// <returns></returns>
-        IBaseItem AddChild(IBaseItem item);
+        IItem AddChild(IItem item);
 
         /// <summary>
         /// Adds a child item with the given type
@@ -47,14 +47,14 @@
         /// <param name="displayName"></param>
         /// <param name="type"></param>
         /// <returns></returns>
-        IBaseItem AddChild(string displayName, Models.SolutionItemType type);
+        IItem AddChild(string displayName, Models.SolutionItemType type);
 
         /// <summary>
         /// Removes a child item from the collection of children in this item.
         /// </summary>
         /// <param name="item"></param>
         /// <returns></returns>
-        bool RemoveChild(IBaseItem item);
+        bool RemoveChild(IItem item);
 
         /// <summary>
         /// Renames a child item int the collection of children in this item.
@@ -65,7 +65,7 @@
         /// <param name="item"></param>
         /// <param name="newName"></param>
         /// <returns></returns>
-        void RenameChild(IBaseItem item, string newName);
+        void RenameChild(IItem item, string newName);
 
         /// <summary>
         /// Removes all children (if any) below this item.
@@ -82,21 +82,21 @@
         /// </summary>
         /// <param name="displayName"></param>
         /// <returns></returns>
-        IBaseItem AddFolder(string displayName);
+        IItem AddFolder(string displayName);
 
         /// <summary>
         /// Adds another project (child) item in the given collection of items.
         /// </summary>
         /// <param name="displayName"></param>
         /// <returns></returns>
-        IBaseItem AddProject(string displayName);
+        IItem AddProject(string displayName);
 
         /// <summary>
         /// Adds another file (child) item in the given collection of items.
         /// </summary>
         /// <param name="displayName"></param>
         /// <returns></returns>
-        IBaseItem AddFile(string displayName);
+        IItem AddFile(string displayName);
         #endregion methods
     }
 }

@@ -4,10 +4,12 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="MainWindow" Height="650" Width="525"
+        Title="MainWindow"
+        Height="650" Width="525"
         >
     <Grid xmlns:convDemo="clr-namespace:InPlaceEditBoxDemo.Converters"
           xmlns:conv="clr-namespace:SolutionLib.Converters;assembly=SolutionLib"
+          xmlns:views="clr-namespace:SolutionLib.Views;assembly=SolutionLib"
           xmlns:EditInPlace="clr-namespace:InplaceEditBoxLib.Views;assembly=InplaceEditBoxLib"
           xmlns:bindLocal="clr-namespace:InplaceEditBoxLib.Views;assembly=InplaceEditBoxLib"
           xmlns:behav="clr-namespace:InPlaceEditBoxDemo.Behaviours"
@@ -15,105 +17,107 @@
           xmlns:sitemtype="clr-namespace:SolutionLib.Models;assembly=SolutionLib"
           >
         <Grid.Resources>
+            <convDemo:BoolToVisibilityConverter x:Key="boolToHiddenVisibilityConverter"
+                                            False="Hidden" True="Visible" />
 
-            <!-- Use a proxy to bind items to root properties of this collection -->
-            <bindLocal:BindingProxy x:Key="DataContextProxy"  Data="{Binding Solution}" />
             <conv:ISolutionBaseItemToImageConverter x:Key="ISolutionBaseItemToImageConverter" />
             
             <convDemo:ISolutionItemItemTypeToTupleConverter x:Key="ISolutionItemItemTypeToTupleConverter" />
             <convDemo:ItemTypeDisplayNameToTextConverter x:Key="ISolutionBaseItemToTextConverter"/>
 
-        </Grid.Resources>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" />
-        </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
-        <ToolBarTray Grid.Row="0" Background="Transparent">
-            <ToolBar Background="Transparent">
-                <Button Content="Save"
-                        Command="{Binding SaveSolutionCommand}"
-                        CommandParameter="{Binding Solution}"
-                        ToolTip="Save solution to storage." Margin="3"/>
-                
-                <Button Content="Load" ToolTip="Load solution from storage."  Margin="3"/>
-            </ToolBar>
-        </ToolBarTray>
+            <Style x:Key="TreeViewStyle" TargetType="{x:Type TreeView}">
+                <Setter Property="TreeView.Background" Value="Transparent"/>
+                <Setter Property="VirtualizingStackPanel.IsVirtualizing" Value="True"/>
+                <Setter Property="VirtualizingStackPanel.VirtualizationMode" Value="Recycling"/>
+                <Setter Property="TreeView.SnapsToDevicePixels" Value="True" />
+                <Setter Property="TreeView.OverridesDefaultStyle" Value="True" />
+                <Setter Property="ItemsControl.ItemsPanel">
+                    <Setter.Value>
+                        <ItemsPanelTemplate>
+                            <VirtualizingStackPanel IsItemsHost="True"/>
+                        </ItemsPanelTemplate>
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="TreeView.Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="TreeView">
+                            <ScrollViewer Focusable="False" CanContentScroll="True" Padding="3">
+                                <ItemsPresenter HorizontalAlignment="Stretch"/>
+                            </ScrollViewer>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
 
-        <TreeView
-            Grid.Row="1"
-            ItemsSource="{Binding Solution.Root}"
-            behav:TreeViewSelectionChangedBehavior.ChangedCommand="{Binding Solution.SelectionChangedCommand}"
-            >
-            <TreeView.ItemTemplate>
-                <HierarchicalDataTemplate ItemsSource="{Binding Children}">
-                    <Grid xmlns:loc="clr-namespace:InplaceEditBoxLib.Local;assembly=InplaceEditBoxLib"
-                        >
-                        <Grid.ContextMenu>
-                            <ContextMenu>
-                                <MenuItem Command="{Binding Path=Data.StartRenameCommand, Source={StaticResource DataContextProxy}}"
+            <!-- Use a proxy to bind items to root properties of this collection -->
+            <bindLocal:BindingProxy x:Key="DataContextProxy"  Data="{Binding Solution}" />
+
+            <ControlTemplate  x:Key="TreeItemContentPresenter">
+                <Grid xmlns:loc="clr-namespace:InplaceEditBoxLib.Local;assembly=InplaceEditBoxLib"
+                  >
+                    <Grid.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Command="{Binding Path=Data.StartRenameCommand, Source={StaticResource DataContextProxy}}"
                                           CommandParameter="{Binding}"
                                           Header="Rename"
                                           ToolTip="Rename this item"
                                           />
-                                <Separator/>
-                                <MenuItem Command="{Binding Path=Data.ItemAddCommand, Source={StaticResource DataContextProxy}}"
+                            <Separator/>
+                            <MenuItem Command="{Binding Path=Data.ItemAddCommand, Source={StaticResource DataContextProxy}}"
                                           Header="Add File"
                                           ToolTip="Adds a file under this item"
                                           >
-                                    <MenuItem.CommandParameter>
-                                        <MultiBinding Converter="{StaticResource ISolutionItemItemTypeToTupleConverter}">
-                                            <Binding />
-                                            <Binding Source="{x:Static sitemtype:SolutionItemType.File}"/>
-                                        </MultiBinding>
-                                    </MenuItem.CommandParameter>
-                                </MenuItem>
-                                <MenuItem Command="{Binding Path=Data.ItemAddCommand, Source={StaticResource DataContextProxy}}"
+                                <MenuItem.CommandParameter>
+                                    <MultiBinding Converter="{StaticResource ISolutionItemItemTypeToTupleConverter}">
+                                        <Binding />
+                                        <Binding Source="{x:Static sitemtype:SolutionItemType.File}"/>
+                                    </MultiBinding>
+                                </MenuItem.CommandParameter>
+                            </MenuItem>
+                            <MenuItem Command="{Binding Path=Data.ItemAddCommand, Source={StaticResource DataContextProxy}}"
                                           Header="Add Folder"
                                           ToolTip="Adds a folder under this item">
-                                    <MenuItem.CommandParameter>
+                                <MenuItem.CommandParameter>
                                     <MultiBinding Converter="{StaticResource ISolutionItemItemTypeToTupleConverter}">
                                         <Binding />
                                         <Binding Source="{x:Static sitemtype:SolutionItemType.Folder}"/>
                                     </MultiBinding>
-                                    </MenuItem.CommandParameter>
-                                </MenuItem>
-                                <MenuItem Command="{Binding Path=Data.ItemAddCommand, Source={StaticResource DataContextProxy}}"
+                                </MenuItem.CommandParameter>
+                            </MenuItem>
+                            <MenuItem Command="{Binding Path=Data.ItemAddCommand, Source={StaticResource DataContextProxy}}"
                                           Header="Add Project"
                                           ToolTip="Adds a project under this item">
-                                    <MenuItem.CommandParameter>
+                                <MenuItem.CommandParameter>
                                     <MultiBinding Converter="{StaticResource ISolutionItemItemTypeToTupleConverter}">
                                         <Binding />
                                         <Binding Source="{x:Static sitemtype:SolutionItemType.Project}"/>
                                     </MultiBinding>
-                                    </MenuItem.CommandParameter>
-                                </MenuItem>
-                                <Separator/>
-                                <MenuItem Command="{Binding Path=Data.ItemRemoveCommand, Source={StaticResource DataContextProxy}}"
+                                </MenuItem.CommandParameter>
+                            </MenuItem>
+                            <Separator/>
+                            <MenuItem Command="{Binding Path=Data.ItemRemoveCommand, Source={StaticResource DataContextProxy}}"
                                           CommandParameter="{Binding}"
                                           Header="Remove"
                                           ToolTip="Remove this item"
                                           />
-                                <MenuItem Command="{Binding Path=Data.ItemClearCommand, Source={StaticResource DataContextProxy}}"
+                            <MenuItem Command="{Binding Path=Data.ItemRemoveAllCommand, Source={StaticResource DataContextProxy}}"
                                           CommandParameter="{Binding}"
                                           Header="Remove All Items"
                                           ToolTip="Remove all items below this item"
                                           />
-                            </ContextMenu>
-                        </Grid.ContextMenu>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="*" />
-                        </Grid.ColumnDefinitions>
+                        </ContextMenu>
+                    </Grid.ContextMenu>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
 
-                        <Image Grid.Column="0" Height="16" Margin="3,0"
+                    <Image Grid.Column="0" Height="16" Margin="3,0"
                                Focusable="False"
                                Source="{Binding Converter={StaticResource ISolutionBaseItemToImageConverter}}"
                                VerticalAlignment="Center" />
 
-                        <EditInPlace:EditBox Grid.Column="1" Name="EditItemBox"
+                    <EditInPlace:EditBox Grid.Column="1" Name="EditItemBox"
                                              Text="{Binding Path=DisplayName, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                              ToolTip="{Binding Description, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                              Focusable="True"
@@ -129,17 +133,62 @@
                                              InvalidInputCharactersErrorMessageTitle="{x:Static loc:Strings.ForbiddenRenameKeysTitle}"
                                              Margin="2,0"
                                              >
-                            <EditInPlace:EditBox.DisplayText>
-                                <MultiBinding Converter="{StaticResource ISolutionBaseItemToTextConverter}">
-                                    <Binding Path="DisplayName"/>
-                                    <Binding Path="ItemType"/>
-                                </MultiBinding>
-                            </EditInPlace:EditBox.DisplayText>
-                        </EditInPlace:EditBox>
-                        <!-- Its important to use margin Margin="2,0" since overlay will otherwise not work -->
-                    </Grid>
-                </HierarchicalDataTemplate>
-            </TreeView.ItemTemplate>
+                        <EditInPlace:EditBox.DisplayText>
+                            <MultiBinding Converter="{StaticResource ISolutionBaseItemToTextConverter}">
+                                <Binding Path="DisplayName"/>
+                                <Binding Path="ItemType"/>
+                            </MultiBinding>
+                        </EditInPlace:EditBox.DisplayText>
+                    </EditInPlace:EditBox>
+                    <!-- Its important to use margin Margin="2,0" since overlay will otherwise not work -->
+                </Grid>
+            </ControlTemplate>
+
+            <DataTemplate x:Key="TreeItemTemplate">
+                <ContentControl Template="{StaticResource TreeItemContentPresenter}" />
+            </DataTemplate>
+            <HierarchicalDataTemplate x:Key="ChildrenItem" ItemsSource="{Binding Children}">
+                <ContentControl Template="{StaticResource TreeItemContentPresenter}" />
+            </HierarchicalDataTemplate>
+            <views:TreeViewItemSelector x:Key="TreeItemSelector"
+                                        FileTemplate="{StaticResource TreeItemTemplate}"
+                                        ChildrenItemTemplate="{StaticResource ChildrenItem}"/>
+        </Grid.Resources>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <ToolBarTray Grid.Row="0" Background="Transparent">
+            <ToolBar Background="Transparent">
+                <Button Content="Save"
+                        Command="{Binding SaveSolutionCommand}"
+                        CommandParameter="{Binding Solution}"
+                        ToolTip="Save solution to storage." Margin="3"/>
+                
+                <Button Content="Load"
+                        Command="{Binding LoadSolutionCommand}"
+                        CommandParameter="{Binding Solution}"
+                        ToolTip="Load solution from storage."  Margin="3"/>
+            </ToolBar>
+        </ToolBarTray>
+
+        <ProgressBar Height="6" Grid.Row="1" IsIndeterminate="True"
+                     Visibility="{Binding IsProcessing,Mode=OneWay,UpdateSourceTrigger=PropertyChanged, Converter={StaticResource boolToHiddenVisibilityConverter}}" />
+
+        <TreeView Grid.Row="2"
+                  ItemsSource="{Binding Solution.Root}"
+            
+                  VirtualizingStackPanel.IsVirtualizing="True"
+                  VirtualizingStackPanel.VirtualizationMode="Standard"
+                  Style="{StaticResource TreeViewStyle}"
+                  ItemTemplateSelector="{StaticResource TreeItemSelector}"
+                  behav:TreeViewSelectionChangedBehavior.ChangedCommand="{Binding Solution.SelectionChangedCommand}"
+                  behav:TreeViewVirtualItemBehaviour.SelectedItem="{Binding Solution.SelectedItem}"
+                 >
             <TreeView.ItemContainerStyle>
                 <Style TargetType="{x:Type TreeViewItem}" BasedOn="{StaticResource {x:Type TreeViewItem}}">
                     <Style.Resources>

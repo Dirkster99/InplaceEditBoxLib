@@ -1,7 +1,8 @@
-﻿using SolutionModelsLib.Interfaces;
-
-namespace SolutionModelsLib.Models
+﻿namespace SolutionModelsLib.Models
 {
+    using SolutionModelsLib.Interfaces;
+    using SolutionModelsLib.Models.Base;
+
     /// <summary>
     /// Implements an interface to a viewmodel of a folder item in
     /// a tree structured collection of items.
@@ -15,9 +16,9 @@ namespace SolutionModelsLib.Models
     /// 
     /// 2) thrpigh enumeration in <see cref="SolutionLib.Models.SolutionItemType"/>.
     /// </summary>
-    public class FolderItemModel : BaseItemChildrenModel, IFolderItemModel
+    public class FolderItemModel : ItemChildrenModel, IFolderItemModel
     {
-        public FolderItemModel(IBaseItemModel parent, string displayName)
+        public FolderItemModel(IItemModel parent, string displayName)
             : base(parent, displayName, Enums.SolutionModelItemType.Folder)
         {
         }

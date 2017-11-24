@@ -3,9 +3,15 @@
     using SolutionLib.Interfaces;
     using SolutionLib.Models;
     using System.Collections.Generic;
+    using System.Threading.Tasks;
 
     internal class Create
     {
+        internal static Task ObjectsAsync(ISolution solutionRoot)
+        {
+            return Task.Run(() => { Objects(solutionRoot); });
+        }
+
         internal static void Objects(ISolution solutionRoot)
         {
             var root = solutionRoot.AddSolutionRootItem("GitHub Projects");
@@ -15,7 +21,7 @@
             // Assume for this demo that the root item cannot be renamed
             // root.SetIsReadOnly(true);
 
-            var xmlFolder = solutionRoot.AddRootChild("XML", SolutionItemType.Folder) as IBaseItemChildren;
+            var xmlFolder = solutionRoot.AddRootChild("XML", SolutionItemType.Folder) as IItemChildren;
 
             if (xmlFolder == null)
                 throw new System.NotSupportedException();
@@ -41,32 +47,6 @@
             );
 
             CreateProject(solutionRoot, newTest.Project, xmlFolder, newTest.Folders, newTest.Files);
-
-            var lastItem = xmlFolder.FindChild("Open-XML-SDK") as IBaseItemChildren;
-
-            if (lastItem == null)
-                throw new System.NotSupportedException();
-
-            if (lastItem != null)
-            {
-                lastItem.IsItemExpanded = true;
-
-                lastItem = lastItem.FindChild("DocumentFormat.OpenXml.Tests") as IBaseItemChildren;
-
-                if (lastItem == null)
-                    throw new System.NotSupportedException();
-
-                if (lastItem != null)
-                {
-                    lastItem.IsItemExpanded = true;
-
-                    var lastFileItem = lastItem.FindChild("file_99");
-
-                    if (lastFileItem != null)
-                        lastFileItem.IsItemSelected = true;
-                }
-            }
-
             // XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
             newTest = new CreateTestObject("XmlNotePad"
                             , new string[]{ "images"
@@ -161,6 +141,35 @@
             {
                 CreateProject(solutionRoot, item, root, null, null);
            }
+
+
+            var lastItem = xmlFolder.FindChild("Open-XML-SDK") as IItemChildren;
+
+            if (lastItem == null)
+                throw new System.NotSupportedException();
+
+            if (lastItem != null)
+            {
+                lastItem.IsItemExpanded = true;
+
+                lastItem = lastItem.FindChild("DocumentFormat.OpenXml.Tests") as IItemChildren;
+
+                if (lastItem == null)
+                    throw new System.NotSupportedException();
+
+                if (lastItem != null)
+                {
+                    lastItem.IsItemExpanded = true;
+
+                    var lastFileItem = lastItem.FindChild("file_99");
+
+                    if (lastFileItem != null)
+                    {
+                        solutionRoot.SelectionChangedCommand.Execute(lastFileItem);
+                        //lastFileItem.IsItemSelected = true;
+                    }
+                }
+            }
         }
 
         /// <summary>
@@ -174,12 +183,12 @@
         private static void CreateProject(
             ISolution solutionRoot
             , string project
-            , IBaseItemChildren parent
+            , IItemChildren parent
             , List<string> folders
             , List<string> files
             )
         {
-            var projectItem = solutionRoot.AddChild(project, SolutionItemType.Project, parent) as IBaseItemChildren;
+            var projectItem = solutionRoot.AddChild(project, SolutionItemType.Project, parent) as IItemChildren;
 
             if (projectItem == null)
                 throw new System.NotImplementedException();
@@ -197,7 +206,7 @@
             {
                 foreach (var item in folders)
                 {
-                    var folder = solutionRoot.AddChild(item, SolutionItemType.Folder, projectItem) as IBaseItemChildren;
+                    var folder = solutionRoot.AddChild(item, SolutionItemType.Folder, projectItem) as IItemChildren;
 
                     if (folder == null)
                         throw new System.NotImplementedException();

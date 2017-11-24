@@ -1,6 +1,7 @@
-﻿namespace SolutionLib.ViewModels.Browser
+﻿namespace SolutionLib.ViewModels.Browser.Base
 {
     using InplaceEditBoxLib.Events;
+    using SolutionLib.ViewModels.Base;
     using SolutionLib.Interfaces;
     using SolutionLib.Models;
     using System;
@@ -15,7 +16,7 @@
     /// at implementing items, such as files, that may not even have
     /// children themselves.
     /// </summary>
-    internal abstract class BaseItemViewModel : Base.BaseViewModel, IBaseItem
+    internal abstract class ItemViewModel : BaseViewModel, IItem
     {
         #region fields
         private readonly SolutionItemType _ItemType;
@@ -25,16 +26,17 @@
         private bool _IsItemExpanded;
         private bool _IsItemSelected;
 
-        private IBaseItem _Parent = null;
+        private IItem _Parent = null;
 
         private bool _IsReadOnly;
+        private long _ItemId = -1;
         #endregion fields
 
         #region constructors
         /// <summary>
         /// Class constructor
         /// </summary>
-        protected BaseItemViewModel(IBaseItem parent, SolutionItemType itemType)
+        protected ItemViewModel(IItem parent, SolutionItemType itemType)
             : this()
         {
             SetParent(parent);
@@ -44,7 +46,7 @@
         /// <summary>
         /// Class constructor
         /// </summary>
-        protected BaseItemViewModel()
+        protected ItemViewModel()
         {
             _IsItemExpanded = false;
             _IsItemSelected = false;
@@ -160,7 +162,7 @@
         /// <summary>
         /// Gets the parent object where this object is the child in the treeview.
         /// </summary>
-        public IBaseItem Parent { get { return _Parent; } }
+        public IItem Parent { get { return _Parent; } }
 
         /// <summary>
         /// Gets/sets a string that determines the order in which items are displayed.
@@ -201,10 +203,27 @@
         /// where this object is the child in the treeview.
         /// </summary>
         /// <param name="parent"></param>
-        public void SetParent(IBaseItem parent)
+        public void SetParent(IItem parent)
         {
             _Parent = parent;
             NotifyPropertyChanged(() => Parent);
+        }
+
+        /// <summary>
+        /// Sets the ID of an item in the collection.
+        /// </summary>
+        /// <param name="itemId"></param>
+        void IItem.SetId(long itemId)
+        {
+            _ItemId = itemId;
+        }
+
+        /// <summary>
+        /// Gets the ID of an item in the collection.
+        /// </summary>
+        long IItem.GetId()
+        {
+            return _ItemId;
         }
 
         #region IEditBox Members

@@ -1,6 +1,6 @@
 ﻿namespace SolutionModelsLib.Interfaces
 {
-    public interface IFileItemModel : IBaseItemModel
+    public interface IFileItemModel : IItemModel
     {
     }
 }

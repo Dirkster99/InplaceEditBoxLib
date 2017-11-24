@@ -13,7 +13,7 @@
     /// 
     /// 2) thrpigh enumeration in <see cref="SolutionLib.Models.SolutionItemType"/>.
     /// </summary>
-    public interface IFolder : IBaseItemChildren
+    public interface IFolder : IItemChildren
     {
 
     }

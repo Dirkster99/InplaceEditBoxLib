@@ -2,20 +2,25 @@
 {
     using SolutionLib.Interfaces;
 
-    internal class ProjectViewModel : BaseItemChildrenViewModel, IProject
+    internal class ProjectViewModel : Base.ItemChildrenViewModel, IProject
     {
         #region constructors
         /// <summary>
         /// Class constructor
         /// </summary>
-        public ProjectViewModel(IBaseItem parent, string displayName)
-            : base(parent, Models.SolutionItemType.Project)
+        /// <param name="parent"></param>
+        /// <param name="displayName"></param>
+        /// <param name="addDummyChild"></param>
+        public ProjectViewModel(IItem parent
+                                , string displayName
+                                , bool addDummyChild = true)
+            : base(parent, Models.SolutionItemType.Project, addDummyChild)
         {
             SetDisplayName(displayName);
         }
 
         /// <summary>
-        /// Class constructor
+        /// Standard Class constructor
         /// </summary>
         protected ProjectViewModel()
            : base(null, Models.SolutionItemType.Project)

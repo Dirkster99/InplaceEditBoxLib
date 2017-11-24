@@ -9,7 +9,7 @@
     /// <summary>
     /// Defines properties and members of all objects displayed in a solution.
     /// </summary>
-    public interface IBaseItem : IEditBox,IViewModelBase, INotifyPropertyChanged
+    public interface IItem : IEditBox, IViewModelBase, IParent
     {
         #region properties
         /// <summary>
@@ -45,11 +45,6 @@
         bool IsReadOnly { get; }
 
         /// <summary>
-        /// Gets the parent object where this object is the child in the treeview.
-        /// </summary>
-        IBaseItem Parent { get; }
-
-        /// <summary>
         /// Gets/sets a string that determines the order in which items are displayed.
         /// </summary>
         string SortKey { get; set; }
@@ -75,10 +70,21 @@
         void SetIsReadOnly(bool value);
 
         /// <summary>
-        /// Sets the <see cref="Parent"/> property object
+        /// Sets the Parent property object
         /// where this object is the child in the treeview.
         /// </summary>
-        void SetParent(IBaseItem parent);
+        void SetParent(IItem parent);
+
+        /// <summary>
+        /// Sets the ID of an item in the collection.
+        /// </summary>
+        /// <param name="itemId"></param>
+        void SetId(long itemId);
+
+        /// <summary>
+        /// Gets the ID of an item in the collection.
+        /// </summary>
+        long GetId();
 
         #region IEditBox Members
         /// <summary>

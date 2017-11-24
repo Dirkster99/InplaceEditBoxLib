@@ -5,13 +5,13 @@
     /// <summary>
     /// Implements a viewmodel for file items in a tree structured viewmodel collection.
     /// </summary>
-    internal class FileViewModel : BaseItemViewModel, IFile
+    internal class FileViewModel : Base.ItemViewModel, IFile
     {
         #region constructors
         /// <summary>
         /// Class constructor
         /// </summary>
-        public FileViewModel(IBaseItem parent, string displayName)
+        public FileViewModel(IItem parent, string displayName)
             : base(parent, Models.SolutionItemType.File)
         {
             SetDisplayName(displayName);

@@ -1,7 +1,8 @@
-﻿using SolutionModelsLib.Interfaces;
-
-namespace SolutionModelsLib.Models
+﻿namespace SolutionModelsLib.Models
 {
+    using SolutionModelsLib.Interfaces;
+    using SolutionModelsLib.Models.Base;
+
     /// <summary>
     /// Implements an interface to a viewmodel of a file item in
     /// a tree structured collection of items.
@@ -15,9 +16,9 @@ namespace SolutionModelsLib.Models
     /// 
     /// 2) thrpigh enumeration in <see cref="SolutionLib.Models.SolutionItemType"/>.
     /// </summary>
-    public class FileItemModel : BaseItemModel, IFileItemModel
+    public class FileItemModel : ItemModel, IFileItemModel
     {
-        public FileItemModel(IBaseItemModel parent, string displayName)
+        public FileItemModel(IItemModel parent, string displayName)
             : base(parent, displayName, Enums.SolutionModelItemType.File)
         {
         }

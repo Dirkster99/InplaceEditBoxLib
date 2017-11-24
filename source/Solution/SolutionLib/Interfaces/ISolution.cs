@@ -1,8 +1,7 @@
 ﻿namespace SolutionLib.Interfaces
 {
     using SolutionLib.Models;
-    using System.Collections.ObjectModel;
-    using System.ComponentModel;
+    using System.Collections.Generic;
     using System.Windows.Input;
 
     /// <summary>
@@ -10,17 +9,17 @@
     /// Even the SolutionRootItem that is part of the displayed collection is hosted in
     /// the collection below.
     /// </summary>
-    public interface ISolution : INotifyPropertyChanged, IViewModelBase
+    public interface ISolution : IViewModelBase
     {
         #region properties
         /// <summary>
         /// Gets the root of the treeview. That is, there is only
         /// 1 item in the ObservableCollection and that item is the root.
         /// 
-        /// The Children property of that one <see cref="IBaseItemChildren"/>
+        /// The Children property of that one <see cref="IItemChildren"/>
         /// represents the rest of the tree.
         /// </summary>
-        ObservableCollection<IBaseItem> Root { get; }
+        IEnumerable<IItem> Root { get; }
 
         /// <summary>
         /// Gets a command that Renames the item that is represented by this viewmodel.
@@ -35,11 +34,11 @@
         /// <summary>
         /// Gets the currently selected from the collection of tree items.
         /// </summary>
-        IBaseItem SelectedItem { get; }
+        IItem SelectedItem { get; }
 
         /// <summary>
         /// Gets a command that changes the currently <see cref="SelectedItem"/>
-        /// to the item that is supplied as <see cref="IBaseItem"/> parameter
+        /// to the item that is supplied as <see cref="IItem"/> parameter
         /// of this command.
         /// </summary>
         ICommand SelectionChangedCommand { get; }
@@ -53,6 +52,15 @@
 
         #region methods
         /// <summary>
+        /// Returns the first visible item in the treeview (if any) or null.
+        /// 
+        /// This method is a convinience wrapper that unwinds the <see cref="Root"/> property
+        /// since the viewmodel does support only ONE root at all times.
+        /// </summary>
+        /// <returns></returns>
+        IItemChildren GetRootItem();
+
+        /// <summary>
         /// Adds a solution root into the collection of solution items.
         /// 
         /// Be careful here (!) since the current root item (if any) is discarded
@@ -61,7 +69,7 @@
         /// </summary>
         /// <param name="displayName"></param>
         /// <returns></returns>
-        IBaseItemChildren AddSolutionRootItem(string displayName);
+        IItemChildren AddSolutionRootItem(string displayName);
 
         /// <summary>
         /// Adds another child item below the root item in the collection.
@@ -70,7 +78,7 @@
         /// <param name="itemName"></param>
         /// <param name="itemType"></param>
         /// <returns></returns>
-        IBaseItem AddRootChild(string itemName,
+        IItem AddRootChild(string itemName,
                                 SolutionItemType itemType);
 
         /// <summary>
@@ -81,9 +89,14 @@
         /// <param name="parent"></param>
         /// <param name="itemType"></param>
         /// <returns></returns>
-        IBaseItem AddChild(string itemName,
+        IItem AddChild(string itemName,
                             SolutionItemType itemType,
-                            IBaseItemChildren parent);
+                            IItemChildren parent);
+
+        /// <summary>
+        /// Resets all viewmodel items to initial states of construction time.
+        /// </summary>
+        void ResetToDefaults();
         #endregion methods
     }
 }

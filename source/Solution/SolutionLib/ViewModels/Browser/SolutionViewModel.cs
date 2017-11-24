@@ -3,8 +3,12 @@
     using InplaceEditBoxLib.Events;
     using SolutionLib.Interfaces;
     using SolutionLib.Models;
+    using SolutionLib.ViewModels.Base;
     using System;
+    using System.Collections.Generic;
     using System.Collections.ObjectModel;
+    using System.Linq;
+    using System.Windows;
     using System.Windows.Input;
     using System.Windows.Threading;
 
@@ -13,19 +17,21 @@
     /// Even the SolutionRootItem that is part of the displayed collection is hosted in
     /// the collection below.
     /// </summary>
-    internal class SolutionViewModel : Base.BaseViewModel, ISolution
+    internal class SolutionViewModel : ViewModels.Base.BaseViewModel, ISolution
     {
         #region fields
+        private static DispatcherPriority _ChildrenEditPrio = DispatcherPriority.DataBind;
+
         private ISolutionRootItem _SolutionRootItem = null;
-        private readonly ObservableCollection<IBaseItem> _Root = null;
+        private readonly ObservableCollection<IItem> _Root = null;
         private ICommand _RenameCommand = null;
         private ICommand _StartRenameCommand;
 
         private ICommand _SelectionChangedCommand;
-        private IBaseItem _SelectedItem;
+        private IItem _SelectedItem;
         private ICommand _ItemAddCommand;
         private ICommand _ItemRemoveCommand;
-        private ICommand _ItemClearCommand;
+        private ICommand _ItemRemoveAllCommand;
         #endregion fields
 
         #region constructors
@@ -34,7 +40,7 @@
         /// </summary>
         public SolutionViewModel()
         {
-            _Root = new ObservableCollection<IBaseItem>();
+            _Root = new ObservableCollection<IItem>();
         }
         #endregion constructors
 
@@ -43,10 +49,10 @@
         /// Gets the root of the treeview. That is, there is only
         /// 1 item in the ObservableCollection and that item is the root.
         /// 
-        /// The Children property of that one <see cref="IBaseItemChildren"/>
+        /// The Children property of that one <see cref="IItemChildren"/>
         /// represents the rest of the tree.
         /// </summary>
-        public ObservableCollection<IBaseItem> Root
+        public IEnumerable<IItem> Root
         {
             get
             {
@@ -72,7 +78,7 @@
         /// <summary>
         /// Gets a command that adds a new item into the treeview.
         /// 
-        /// Parameter is a Tuple with the <see cref="IBaseItemChildren"/> that is the
+        /// Parameter is a Tuple with the <see cref="IItemChildren"/> that is the
         /// parent of the to be creaed item and a <see cref="SolutionItemType"/>
         /// that is the type of the child that should be added here.
         /// </summary>
@@ -81,9 +87,9 @@
             get
             {
                 if (_ItemAddCommand == null)
-                    _ItemAddCommand = new Base.RelayCommand<object>(p =>
+                    _ItemAddCommand = new RelayCommand<object>(p =>
                     {
-                        var tuple = p as Tuple<IBaseItemChildren, SolutionItemType>;
+                        var tuple = p as Tuple<IItemChildren, SolutionItemType>;
 
                         if (tuple == null)
                             return;
@@ -96,7 +102,7 @@
                         if (string.IsNullOrEmpty(nextChildItemName) == true)
                             return;
 
-                        IBaseItem item = null;
+                        IItem item = null;
 
                         item = parentItem.AddChild(nextChildItemName, addType);
                         parentItem.IsItemExpanded = true;
@@ -105,16 +111,17 @@
                         if (item != null)
                         {
                             // Request EditMode will only work if this is done with LOW priority
-                            Dispatcher.CurrentDispatcher.BeginInvoke(DispatcherPriority.Background, (Action)delegate
+                            Dispatcher.CurrentDispatcher.Invoke(DispatcherPriority.Background, (Action)delegate
                             {
                                 item.IsItemSelected = true;
+                                this.SelectedItem = item;   // Is required for virtualized tree view
                                 item.RequestEditMode(InplaceEditBoxLib.Events.RequestEditEvent.StartEditMode);
                             });
                         }
                     },
                     ((p) =>
                     {
-                        var tuple = p as Tuple<IBaseItemChildren, SolutionItemType>;
+                        var tuple = p as Tuple<IItemChildren, SolutionItemType>;
 
                         if (tuple == null)
                             return false;
@@ -157,14 +164,14 @@
             get
             {
                 if (_ItemRemoveCommand == null)
-                    _ItemRemoveCommand = new Base.RelayCommand<object>(p =>
+                    _ItemRemoveCommand = new RelayCommand<object>(p =>
                     {
-                        var item = p as IBaseItem;
+                        var item = p as IItem;
 
                         if (p == null)
                             return;
 
-                        var parent = item.Parent as IBaseItemChildren;
+                        var parent = item.Parent as IItemChildren;
 
                         if (parent == null)
                             return;
@@ -172,14 +179,14 @@
                         parent.RemoveChild(item);
                     }, (p =>
                     {
-                        var item = p as IBaseItem;
+                        var item = p as IItem;
 
                         if (p == null)
                             return false;
 
                         // Lets disable removal of root since that does not
                         // seem to make a lot of sense here
-                        if (item.Parent is  IBaseItemChildren == false)
+                        if (item.Parent is  IItemChildren == false)
                             return false;
 
                         return true;
@@ -192,15 +199,15 @@
         /// <summary>
         /// Gets a command that removes all items below a given item.
         /// </summary>
-        public ICommand ItemClearCommand
+        public ICommand ItemRemoveAllCommand
         {
             get
             {
-                if (_ItemClearCommand == null)
+                if (_ItemRemoveAllCommand == null)
                 {
-                    _ItemClearCommand = new Base.RelayCommand<object>(p =>
+                    _ItemRemoveAllCommand = new RelayCommand<object>(p =>
                     {
-                        var item = p as IBaseItemChildren;
+                        var item = p as IItemChildren;
 
                         if (item == null)
                             return;
@@ -209,7 +216,7 @@
                     });
                 }
 
-                return _ItemClearCommand;
+                return _ItemRemoveAllCommand;
             }
         }
 
@@ -232,9 +239,9 @@
             get
             {
                 if (_StartRenameCommand == null)
-                    _StartRenameCommand = new Base.RelayCommand<object> (it =>
+                    _StartRenameCommand = new RelayCommand<object> (it =>
                     {
-                        var item = it as IBaseItem;
+                        var item = it as IItem;
 
                         if (item != null)
                         {
@@ -246,7 +253,7 @@
                     },
                     (it) =>
                     {
-                        var item = it as IBaseItem;
+                        var item = it as IItem;
 
                         if (item != null)
                         {
@@ -275,13 +282,13 @@
             {
                 if (_RenameCommand == null)
                 {
-                    _RenameCommand = new Base.RelayCommand<object>((p) =>
+                    _RenameCommand = new RelayCommand<object>((p) =>
                     {
                         var tuple = p as Tuple<string, object>;
 
                         if (tuple != null)
                         {
-                            var solutionItem = tuple.Item2 as IBaseItem;
+                            var solutionItem = tuple.Item2 as IItem;
 
                             if (tuple.Item1 != null && solutionItem != null)
                             {
@@ -297,7 +304,7 @@
                                     return;
                                 }
 
-                                var parent = solutionItem.Parent as IBaseItemChildren;
+                                var parent = solutionItem.Parent as IItemChildren;
 
                                 if (parent != null)
                                 {
@@ -348,9 +355,10 @@
             {
                 if (_SelectionChangedCommand == null)
                 {
-                    _SelectionChangedCommand = new Base.RelayCommand<object>((p) =>
+                    _SelectionChangedCommand = new RelayCommand<object>((p) =>
                     {
-                        SelectedItem = p as IBaseItem;
+                        var para = p as IItem;
+                        SelectedItem = para;
                     });
                 }
 
@@ -359,13 +367,13 @@
         }
 
         /// <summary>
-        /// Gets the currently selected from the collection of tree items.
+        /// Gets the currently selected item from the collection of tree items.
         /// </summary>
-        public IBaseItem SelectedItem
+        public IItem SelectedItem
         {
             get { return _SelectedItem; }
 
-            private set
+            set
             {
                 if (_SelectedItem != value)
                 {
@@ -379,14 +387,24 @@
 
         #region methods
         /// <summary>
+        /// Resets all viewmodel items to initial states of construction time.
+        /// </summary>
+        public void ResetToDefaults()
+        {
+            AddSolutionRootItem("New Solution");
+        }
+
+
+        /// <summary>
         /// Renames the  displayed string in the <paramref name="solutionItem"/>
         /// as requested in <paramref name="newDisplayName"/>.
         /// </summary>
         /// <param name="solutionItem"></param>
         /// <param name="newDisplayName"></param>
-        public void RenameItem(IBaseItem solutionItem, string newDisplayName)
+        public void RenameItem(IItem solutionItem, string newDisplayName)
         {
-            solutionItem.SetDisplayName(newDisplayName);
+            SelectedItem = null;
+            //solutionItem.SetDisplayName(newDisplayName);
         }
 
         /// <summary>
@@ -398,16 +416,27 @@
         /// </summary>
         /// <param name="displayName"></param>
         /// <returns></returns>
-        public IBaseItemChildren AddSolutionRootItem(string displayName)
+        public IItemChildren AddSolutionRootItem(string displayName)
         {
             if (_SolutionRootItem != null)
             {
-                _Root.Remove(_SolutionRootItem);
+                Application.Current.Dispatcher.Invoke(() =>
+                {
+                    _Root.Remove(_SolutionRootItem);
+                },
+                _ChildrenEditPrio);
+                
                 _SolutionRootItem = null;
             }
 
-            _SolutionRootItem = new SolutionRootItemViewModel(null, displayName);
-            _Root.Add(_SolutionRootItem);
+            var rootItem = new SolutionRootItemViewModel(null, displayName, false);
+
+            _SolutionRootItem = rootItem;
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                _Root.Add(_SolutionRootItem);
+            },
+            _ChildrenEditPrio);
 
             return _SolutionRootItem;
         }
@@ -419,7 +448,7 @@
         /// <param name="itemName"></param>
         /// <param name="itemType"></param>
         /// <returns></returns>
-        public IBaseItem AddRootChild(
+        public IItem AddRootChild(
             string itemName,
             SolutionItemType itemType)
         {
@@ -437,9 +466,9 @@
         /// <param name="parent"></param>
         /// <param name="itemType"></param>
         /// <returns></returns>
-        public IBaseItem AddChild(string itemName,
+        public IItem AddChild(string itemName,
                                   SolutionItemType itemType,
-                                  IBaseItemChildren parent)
+                                  IItemChildren parent)
         {
             if (parent == null)
                 throw new System.ArgumentException("Paremeter parent cannot have children.");
@@ -461,6 +490,21 @@
                 default:
                     throw new ArgumentOutOfRangeException(itemType.ToString());
             }
+        }
+
+        /// <summary>
+        /// Returns the first visible item in the treeview (if any) or null.
+        /// 
+        /// This method is a convinience wrapper that unwinds the <see cref="Root"/> property
+        /// since the viewmodel does support only ONE root at all times.
+        /// </summary>
+        /// <returns></returns>
+        public IItemChildren GetRootItem()
+        {
+            if (_Root.Count == 0)
+                return null;
+
+            return _Root.First() as IItemChildren;
         }
         #endregion methods
     }

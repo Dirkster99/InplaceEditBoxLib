@@ -1,4 +1,4 @@
-﻿namespace SolutionLib.ViewModels.Browser
+﻿namespace SolutionLib.ViewModels.Browser.Base
 {
     using SolutionLib.Interfaces;
     using SolutionLib.Models;
@@ -11,9 +11,11 @@
     /// have <see cref="Children"/> collections (typically bound to ItemSource
     /// in Treeview or HierarchicalDataTemplate).
     /// </summary>
-    internal abstract class BaseItemChildrenViewModel  : BaseItemViewModel, IBaseItemChildren
+    internal class ItemChildrenViewModel  : ItemViewModel, IItemChildren
     {
         #region fields
+        private static readonly ItemChildrenViewModel DummyChild = new ItemChildrenViewModel();
+
         private readonly SortableObservableDictionaryCollection _Children;
         #endregion fields
 
@@ -21,11 +23,32 @@
         /// <summary>
         /// Class constructor
         /// </summary>
-        protected BaseItemChildrenViewModel(IBaseItem parent
-                                          , SolutionItemType itemType)
+        /// <param name="parent"></param>
+        /// <param name="itemType"></param>
+        /// <param name="addDummyChild"></param>
+        protected ItemChildrenViewModel(IItem parent
+                                      , SolutionItemType itemType
+                                      , bool addDummyChild = true)
             : base(parent, itemType)
         {
             _Children = new SortableObservableDictionaryCollection();
+
+            ResetChildren(addDummyChild); // Lets lazy Load child items
+        }
+
+        /// <summary>
+        /// Hidden class constructor can only be used to instantiate static
+        /// <see cref="DummyChild"/> item.
+        /// </summary>
+        private ItemChildrenViewModel()
+            : base()
+        {
+            _Children = new SortableObservableDictionaryCollection();
+
+            // Don't do this with true as it will
+            // add a dummy child below the dummy child
+            // and so forth ...
+            ResetChildren(false); // Lets NOT lazy Load child items in this ctor
         }
         #endregion constructors
 
@@ -34,7 +57,7 @@
         /// Gets a sorted collection of child items that can
         /// be retreived from this parent item.
         /// </summary>
-        public IEnumerable<IBaseItem> Children
+        public IEnumerable<IItem> Children
         {
             get
             {
@@ -49,7 +72,7 @@
         /// </summary>
         /// <param name="displyName"></param>
         /// <returns></returns>
-        public IBaseItem FindChild(string displyName)
+        public IItem FindChild(string displyName)
         {
             return _Children.TryGet(displyName);
         }
@@ -103,12 +126,12 @@
         }
 
         /// <summary>
-        /// Adds a child item of type <see cref="IBaseItem"/> to this parent
-        /// which can also be typed with <see cref="IBaseItem"/>.
+        /// Adds a child item of type <see cref="IItem"/> to this parent
+        /// which can also be typed with <see cref="IItem"/>.
         /// </summary>
         /// <param name="item"></param>
         /// <returns></returns>
-        public IBaseItem AddChild(IBaseItem item)
+        public IItem AddChild(IItem item)
         {
             return AddChild(item.DisplayName, item);
         }
@@ -120,21 +143,25 @@
         /// <param name="displayName"></param>
         /// <param name="type"></param>
         /// <returns></returns>
-        public IBaseItem AddChild(string displayName, SolutionItemType type)
+        public IItem AddChild(string displayName, SolutionItemType type)
         {
+            if (HasDummyChild == true)
+                ResetChildren(false);
+
             switch (type)
             {
                 case SolutionItemType.File:
                     return AddChild(displayName, new FileViewModel(this, displayName));
 
                 case SolutionItemType.Folder:
-                    return AddChild(displayName, new FolderViewModel(this, displayName));
+                    return AddChild(displayName, new FolderViewModel(this, displayName, false));
 
                 case SolutionItemType.Project:
-                    return AddChild(displayName, new ProjectViewModel(this, displayName));
+                    return AddChild(displayName, new ProjectViewModel(this, displayName, false));
 
                 default:
                 case SolutionItemType.SolutionRootItem:
+                    // this is only constructed in the SolutionViewModel
                     throw new System.ArgumentOutOfRangeException(type.ToString());
             }
         }
@@ -144,7 +171,7 @@
         /// </summary>
         /// <param name="item"></param>
         /// <returns></returns>
-        public bool RemoveChild(IBaseItem item)
+        public bool RemoveChild(IItem item)
         {
             if (item == null)
                 return false;
@@ -176,7 +203,7 @@
         /// <param name="item"></param>
         /// <param name="newName"></param>
         /// <returns></returns>
-        public void RenameChild(IBaseItem item, string newName)
+        public void RenameChild(IItem item, string newName)
         {
             if (item == null)
                 return;
@@ -189,7 +216,7 @@
         /// </summary>
         public void RemoveAllChild()
         {
-            _Children.Clear();
+            ResetChildren(false);
         }
 
         /// <summary>
@@ -205,7 +232,7 @@
         /// </summary>
         /// <param name="displayName"></param>
         /// <returns></returns>
-        IBaseItem IBaseItemChildren.AddFolder(string displayName)
+        IItem IItemChildren.AddFolder(string displayName)
         {
             return AddChild(displayName, SolutionItemType.Folder);
         }
@@ -215,7 +242,7 @@
         /// </summary>
         /// <param name="displayName"></param>
         /// <returns></returns>
-        IBaseItem IBaseItemChildren.AddProject(string displayName)
+        IItem IItemChildren.AddProject(string displayName)
         {
             return AddChild(displayName, SolutionItemType.Project);
         }
@@ -225,21 +252,51 @@
         /// </summary>
         /// <param name="displayName"></param>
         /// <returns></returns>
-        IBaseItem IBaseItemChildren.AddFile(string displayName)
+        IItem IItemChildren.AddFile(string displayName)
         {
             return AddChild(displayName, SolutionItemType.File);
         }
 
+        protected virtual bool HasDummyChild
+        {
+            get
+            {
+                if (this._Children.Count == 1)
+                {
+                    if (this._Children[0] == DummyChild)
+                        return true;
+                }
+
+                return false;
+            }
+        }
+
+        protected virtual void ResetChildren(bool addDummyChild = true)
+        {
+            _Children.Clear();
+
+            if (addDummyChild == true)
+                _Children.Add(DummyChild);
+        }
+
         /// <summary>
-        /// Adds a child item of type <see cref="IBaseItem"/> to this parent
-        /// which can also be typed with <see cref="IBaseItem"/>.
+        /// Adds a child item of type <see cref="IItem"/> to this parent
+        /// which can also be typed with <see cref="IItem"/>.
         /// </summary>
         /// <param name="key"></param>
         /// <param name="value"></param>
         /// <returns></returns>
-        protected IBaseItem AddChild(string key, IBaseItem value)
+        protected IItem AddChild(string key, IItem value)
         {
-            _Children.AddItem(value);
+            try
+            {
+                _Children.AddItem(value);
+            }
+            catch (Exception)
+            {
+                throw new Exception(string.Format("Failed to add item key:{0} - '{1}' below {2} - '{3}'"
+                    , key, value, DisplayName, this));
+            }
 
             return value;
         }

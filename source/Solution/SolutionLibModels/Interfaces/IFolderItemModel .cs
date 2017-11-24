@@ -1,6 +1,6 @@
 ﻿namespace SolutionModelsLib.Interfaces
 {
-    public interface IFolderItemModel : IBaseItemChildrenModel
+    public interface IFolderItemModel : IItemChildrenModel
     {
     }
 }

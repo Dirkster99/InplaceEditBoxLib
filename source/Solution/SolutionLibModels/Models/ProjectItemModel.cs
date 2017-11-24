@@ -1,6 +1,7 @@
 ﻿namespace SolutionModelsLib.Models
 {
     using SolutionModelsLib.Interfaces;
+    using SolutionModelsLib.Models.Base;
 
     /// <summary>
     /// Implements an interface to a viewmodel of a project item in
@@ -15,9 +16,9 @@
     /// 
     /// 2) thrpigh enumeration in <see cref="SolutionLib.Models.SolutionItemType"/>.
     /// </summary>
-    public class ProjectItemModel : BaseItemChildrenModel, IPrjectItemModel
+    public class ProjectItemModel : ItemChildrenModel, IProjectItemModel
     {
-        public ProjectItemModel(BaseItemModel parent, string displayName)
+        public ProjectItemModel(IItemChildrenModel parent, string displayName)
             : base(parent, displayName, Enums.SolutionModelItemType.Project)
         {
         }

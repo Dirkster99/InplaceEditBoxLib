@@ -2,14 +2,19 @@
 {
     using SolutionLib.Interfaces;
 
-    internal class FolderViewModel : BaseItemChildrenViewModel, IFolder
+    internal class FolderViewModel : Base.ItemChildrenViewModel, IFolder
     {
         #region constructors
         /// <summary>
         /// Class constructor
         /// </summary>
-        public FolderViewModel(IBaseItem parent, string displayName)
-           : base(parent, Models.SolutionItemType.Folder)
+        /// <param name="parent"></param>
+        /// <param name="displayName"></param>
+        /// <param name="addDummyChild"></param>
+        public FolderViewModel(IItem parent
+                             , string displayName
+                             , bool addDummyChild = true)
+           : base(parent, Models.SolutionItemType.Folder, addDummyChild)
         {
             SetDisplayName(displayName);
         }

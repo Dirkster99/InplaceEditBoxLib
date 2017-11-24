@@ -196,11 +196,11 @@
     <Compile Include="Interfaces\IFolder.cs" />
     <Compile Include="Interfaces\IViewModelBase.cs" />
     <Compile Include="Interfaces\IProject.cs" />
-    <Compile Include="Interfaces\IBaseItem.cs" />
-    <Compile Include="Interfaces\IBaseItemChildren.cs" />
+    <Compile Include="Interfaces\IItem.cs" />
+    <Compile Include="Interfaces\IItemChildren.cs" />
     <Compile Include="Interfaces\ISolution.cs" />
     <Compile Include="Interfaces\ISolutionRootItem.cs" />
-    <Compile Include="Models\Convert.cs" />
+    <Compile Include="Interfaces\IParent.cs" />
     <Compile Include="Models\SolutionItemType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
@@ -216,17 +216,18 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <Compile Include="Factory.cs" />
-    <Compile Include="ViewModels\Browser\BaseItemChildrenViewModel.cs" />
+    <Compile Include="ViewModels\Browser\Base\ItemChildrenViewModel.cs" />
     <Compile Include="ViewModels\Collections\SortableObservableCollection.cs" />
     <Compile Include="ViewModels\Collections\SortableObservableDictionaryCollection.cs" />
     <Compile Include="ViewModels\Base\BaseViewModel.cs" />
     <Compile Include="ViewModels\Base\RelayCommand.cs" />
     <Compile Include="ViewModels\Browser\FileViewModel.cs" />
     <Compile Include="ViewModels\Browser\FolderViewModel.cs" />
-    <Compile Include="ViewModels\Browser\BaseItemViewModel.cs" />
+    <Compile Include="ViewModels\Browser\Base\ItemViewModel.cs" />
     <Compile Include="ViewModels\Browser\ProjectViewModel.cs" />
     <Compile Include="ViewModels\Browser\SolutionRootItemViewModel.cs" />
     <Compile Include="ViewModels\Browser\SolutionViewModel.cs" />
+    <Compile Include="Views\TreeViewItemSelector.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -353,10 +354,6 @@
     <ProjectReference Include="..\..\InplaceEditBoxLib\InplaceEditBoxLib.csproj">
       <Project>{b1f5cf22-f192-4dae-bdf3-c0c604a29c88}</Project>
       <Name>InplaceEditBoxLib</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\SolutionLibModels\SolutionModelsLib.csproj">
-      <Project>{2a48d068-6c21-4758-9a85-74f40c2ab068}</Project>
-      <Name>SolutionModelsLib</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

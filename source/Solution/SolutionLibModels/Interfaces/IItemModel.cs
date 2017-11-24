@@ -2,18 +2,18 @@
 {
     using SolutionModelsLib.Enums;
 
-    public interface IBaseItemModel : IModelBase
+    public interface IItemModel : IModelBase
     {
         #region properties
         /// <summary>
         /// Gets/Sets the Id for this item.
         /// </summary>
-        int Id { get; set; }
+        long Id { get; set; }
 
         /// <summary>
         /// Gets/sets the parent item of this item.
         /// </summary>
-        IBaseItemModel Parent { get; set; }
+        IItemModel Parent { get; set; }
 
         /// <summary>
         /// Gets/sets a technical type of this item to id the item
@@ -26,11 +26,11 @@
         /// </summary>
         string DisplayName { get; set; }
 
-        /// <summary>
-        /// Gets/sets whether the <see cref="DisplayName"/> of this treeview item
-        /// can be edit by the user or not.
-        /// </summary>
-        bool IsReadOnly { get; set; }
+////        /// <summary>
+////        /// Gets/sets whether the <see cref="DisplayName"/> of this treeview item
+////        /// can be edit by the user or not.
+////        /// </summary>
+////        bool IsReadOnly { get; set; }
         #endregion properties
 
         #region methods
@@ -41,7 +41,7 @@
         /// </summary>
         /// <param name="current"></param>
         /// <returns></returns>
-        string GetStackPath(IBaseItemModel current = null);
+        string GetStackPath(IItemModel current = null);
         #endregion methods
     }
 }

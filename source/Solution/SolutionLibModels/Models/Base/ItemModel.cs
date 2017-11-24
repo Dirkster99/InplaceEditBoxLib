@@ -1,4 +1,4 @@
-﻿namespace SolutionModelsLib.Models
+﻿namespace SolutionModelsLib.Models.Base
 {
     using SolutionModelsLib.Enums;
     using SolutionModelsLib.Interfaces;
@@ -6,13 +6,13 @@
     /// <summary>
     /// Defines a model with properties and members of all objects displayed in a solution.
     /// </summary>
-    public abstract class BaseItemModel : IBaseItemModel
+    public abstract class ItemModel : IItemModel
     {
         #region constructors
         /// <summary>
         /// Class constructor
         /// </summary>
-        protected BaseItemModel(IBaseItemModel parent
+        protected ItemModel(IItemModel parent
                                 , string displayName
                                 , SolutionModelItemType itemType)
             : this()
@@ -25,7 +25,7 @@
         /// <summary>
         /// Class constructor
         /// </summary>
-        protected BaseItemModel(SolutionModelItemType itemType)
+        protected ItemModel(SolutionModelItemType itemType)
             : this()
         {
             ItemType = itemType;
@@ -34,12 +34,12 @@
         /// <summary>
         /// Class constructor
         /// </summary>
-        protected BaseItemModel()
+        protected ItemModel()
         {
             //            IsItemExpanded = false;
             //            IsItemSelected = false;
 
-            IsReadOnly = false;
+////            IsReadOnly = false;
         }
         #endregion constructors
 
@@ -47,12 +47,12 @@
         /// <summary>
         /// Gets/Sets the Id for this item.
         /// </summary>
-        public int Id { get; set; }
+        public long Id { get; set; }
 
         /// <summary>
         /// Gets/sets the parent item of this item.
         /// </summary>
-        public IBaseItemModel Parent { get; set; }
+        public IItemModel Parent { get; set; }
 
         /// <summary>
         /// Gets/sets a technical type of this item to id the item
@@ -65,11 +65,11 @@
         /// </summary>
         public string DisplayName { get; set; }
 
-        /// <summary>
-        /// Gets/sets whether the <see cref="DisplayName"/> of this treeview item
-        /// can be edit by the user or not.
-        /// </summary>
-        public bool IsReadOnly { get; set; }
+////        /// <summary>
+////        /// Gets/sets whether the <see cref="DisplayName"/> of this treeview item
+////        /// can be edit by the user or not.
+////        /// </summary>
+////        public bool IsReadOnly { get; set; }
 
         /*/ <summary>
         /// Gets a description of the item - for usage in tool tip etc..
@@ -100,7 +100,7 @@
         /// </summary>
         /// <param name="current"></param>
         /// <returns></returns>
-        public string GetStackPath(IBaseItemModel current = null)
+        public string GetStackPath(IItemModel current = null)
         {
             if (current == null)
                 current = this;

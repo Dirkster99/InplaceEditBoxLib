@@ -1,6 +1,6 @@
 ﻿namespace SolutionModelsLib.Interfaces
 {
-    public interface ISolutionRootItemModel : IBaseItemChildrenModel
+    public interface ISolutionRootItemModel : IItemChildrenModel
     {
     }
 }

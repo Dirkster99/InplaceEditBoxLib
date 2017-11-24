@@ -4,12 +4,12 @@
 
     public interface ISolutionModel : IModelBase
     {
-        string Name { get; set; }
+        //string Name { get; set; }
 
         ISolutionRootItemModel Root { get; set; }
 
-        IBaseItemModel AddChild(string itemName, SolutionModelItemType itemType, IBaseItemChildrenModel parent);
-        IBaseItemModel AddRootChild(string itemName, SolutionModelItemType itemType);
-        IBaseItemModel AddSolutionRootItem(string displayName);
+        IItemModel AddChild(string itemName, SolutionModelItemType itemType, IItemChildrenModel parent);
+
+        IItemChildrenModel AddSolutionRootItem(string displayName);
     }
 }

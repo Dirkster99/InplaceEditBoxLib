@@ -13,7 +13,7 @@
     /// into <seealso cref="ImageSource"/> from ResourceDictionary or fallback from
     /// static resource.
     /// </summary>
-    [ValueConversion(typeof(IBaseItem), typeof(ImageSource))]
+    [ValueConversion(typeof(IItem), typeof(ImageSource))]
     public class ISolutionBaseItemToImageConverter : IValueConverter
     {
         /// <summary>
@@ -26,7 +26,7 @@
         /// <returns></returns>
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            var item = value as IBaseItem;
+            var item = value as IItem;
 
             if (item == null)
                 return Binding.DoNothing;

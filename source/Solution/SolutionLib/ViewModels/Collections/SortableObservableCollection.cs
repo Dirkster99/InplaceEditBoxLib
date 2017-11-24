@@ -4,6 +4,8 @@
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.Linq;
+    using System.Windows;
+    using System.Windows.Threading;
 
     /// <summary>
     /// Source: https://stackoverflow.com/questions/5487927/expand-wpf-treeview-to-support-sorting
@@ -11,6 +13,8 @@
     /// <typeparam name="T"></typeparam>
     public class SortableObservableCollection<T> : ObservableCollection<T>
     {
+        private static DispatcherPriority _ChildrenEditPrio = DispatcherPriority.DataBind;
+
         #region constructors
         /// <summary>
         /// Class constructor
@@ -70,7 +74,12 @@
 
             foreach (var item in sortedItemsList)
             {
-                Move(IndexOf(item), sortedItemsList.IndexOf(item));
+                Application.Current.Dispatcher.Invoke(() =>
+                {
+                    Move(IndexOf(item), sortedItemsList.IndexOf(item));
+                },
+                _ChildrenEditPrio);
+
             }
         }
         #endregion // Sorting

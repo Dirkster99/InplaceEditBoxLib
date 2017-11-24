@@ -1,49 +1,42 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
   <Class Name="SolutionLib.Converters.InvertedBooleanToVisibilityConverter" Collapsed="true" BaseTypeListCollapsed="true">
-    <Position X="4" Y="7.75" Width="1.5" />
+    <Position X="0.5" Y="6.75" Width="2.75" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAIAAAAAAAAgAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Converters\InvertedBooleanToVisibilityConverter.cs</FileName>
     </TypeIdentifier>
-    <Lollipop Position="0.2" Collapsed="true" />
+    <Lollipop Position="0.2" />
   </Class>
   <Class Name="SolutionLib.Converters.ISolutionBaseItemToImageConverter" Collapsed="true" BaseTypeListCollapsed="true">
-    <Position X="0.5" Y="8.75" Width="1.5" />
+    <Position X="0.5" Y="7.75" Width="2.75" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAIAAAAAQAAgAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Converters\ISolutionBaseItemToImageConverter.cs</FileName>
     </TypeIdentifier>
-    <Lollipop Position="0.2" Collapsed="true" />
+    <Lollipop Position="0.2" />
   </Class>
   <Class Name="SolutionLib.Factory" Collapsed="true">
-    <Position X="2.25" Y="7.75" Width="1.5" />
+    <Position X="9" Y="9.5" Width="1.25" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAA=</HashCode>
       <FileName>Factory.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="SolutionLib.Models.Convert" Collapsed="true">
-    <Position X="0.5" Y="7.75" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAA=</HashCode>
-      <FileName>Models\Convert.cs</FileName>
-    </TypeIdentifier>
-  </Class>
   <Class Name="SolutionLib.Properties.Resources" Collapsed="true">
-    <Position X="4" Y="8.75" Width="1.5" />
+    <Position X="7.25" Y="9.5" Width="1.25" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAABEAAAAQAAAAAAAAAAAAAAAIA=</HashCode>
     </TypeIdentifier>
   </Class>
   <Class Name="SolutionLib.Properties.Settings" Collapsed="true">
-    <Position X="0.5" Y="9.75" Width="1.5" />
+    <Position X="7.25" Y="10.25" Width="1.75" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAIAAAAAABAAAAAAAAAAAAAAA=</HashCode>
     </TypeIdentifier>
   </Class>
   <Class Name="SolutionLib.ViewModels.Base.BaseViewModel" Collapsed="true">
-    <Position X="8.75" Y="2" Width="2" />
+    <Position X="0.5" Y="1.5" Width="2" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAIAAIAAAAAAAgAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>ViewModels\Base\BaseViewModel.cs</FileName>
@@ -51,15 +44,23 @@
     <Lollipop Position="0.288" />
   </Class>
   <Class Name="SolutionLib.ViewModels.Base.RelayCommand&lt;T&gt;" Collapsed="true" BaseTypeListCollapsed="true">
-    <Position X="2.25" Y="8.75" Width="1.5" />
+    <Position X="7.25" Y="8.75" Width="3" />
     <TypeIdentifier>
       <HashCode>AACAAAAAAAACAAQAAEAAAAAAAAAAAAEAAAAAAAAAAAA=</HashCode>
       <FileName>ViewModels\Base\RelayCommand.cs</FileName>
     </TypeIdentifier>
-    <Lollipop Position="0.2" Collapsed="true" />
+    <Lollipop Position="0.2" />
   </Class>
   <Class Name="SolutionLib.ViewModels.Browser.FileViewModel" Collapsed="true">
-    <Position X="11.25" Y="3.25" Width="2" />
+    <Position X="5.5" Y="2.75" Width="2" />
+    <InheritanceLine Type="SolutionLib.ViewModels.Browser.Base.ItemViewModel" FixedFromPoint="true">
+      <Path>
+        <Point X="5" Y="2" />
+        <Point X="5.24" Y="2" />
+        <Point X="5.24" Y="3.096" />
+        <Point X="5.5" Y="3.096" />
+      </Path>
+    </InheritanceLine>
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>ViewModels\Browser\FileViewModel.cs</FileName>
@@ -67,7 +68,13 @@
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="SolutionLib.ViewModels.Browser.FolderViewModel" Collapsed="true">
-    <Position X="16.5" Y="2" Width="2" />
+    <Position X="8" Y="1.5" Width="2.25" />
+    <InheritanceLine Type="SolutionLib.ViewModels.Browser.Base.ItemChildrenViewModel" FixedFromPoint="true">
+      <Path>
+        <Point X="7.5" Y="1.875" />
+        <Point X="8" Y="1.875" />
+      </Path>
+    </InheritanceLine>
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>ViewModels\Browser\FolderViewModel.cs</FileName>
@@ -75,13 +82,13 @@
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="SolutionLib.ViewModels.Browser.ProjectViewModel" Collapsed="true">
-    <Position X="16.5" Y="3.25" Width="2" />
-    <InheritanceLine Type="SolutionLib.ViewModels.Browser.BaseItemChildrenViewModel" FixedFromPoint="true">
+    <Position X="8" Y="2.5" Width="2.25" />
+    <InheritanceLine Type="SolutionLib.ViewModels.Browser.Base.ItemChildrenViewModel" FixedFromPoint="true">
       <Path>
-        <Point X="15.75" Y="2.563" />
-        <Point X="16.125" Y="2.563" />
-        <Point X="16.125" Y="3.596" />
-        <Point X="16.5" Y="3.596" />
+        <Point X="7.5" Y="2.062" />
+        <Point X="7.74" Y="2.062" />
+        <Point X="7.74" Y="2.846" />
+        <Point X="8" Y="2.846" />
       </Path>
     </InheritanceLine>
     <TypeIdentifier>
@@ -90,22 +97,22 @@
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>
-  <Class Name="SolutionLib.ViewModels.Browser.BaseItemViewModel" Collapsed="true">
-    <Position X="11.25" Y="2" Width="2" />
+  <Class Name="SolutionLib.ViewModels.Browser.Base.ItemViewModel" Collapsed="true">
+    <Position X="3" Y="1.5" Width="2" />
     <TypeIdentifier>
-      <HashCode>AAAAEAgAAAgxAAAYgAACQAAAAAAAAAAExEAAAAUQAiE=</HashCode>
-      <FileName>ViewModels\Browser\BaseItemViewModel.cs</FileName>
+      <HashCode>AAAAEAgAAAgxAAAYgAACQgAAAAAAAAAExEAAAAUwAiE=</HashCode>
+      <FileName>ViewModels\Browser\Base\ItemViewModel.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="SolutionLib.ViewModels.Browser.SolutionRootItemViewModel" Collapsed="true">
-    <Position X="16.5" Y="0.75" Width="2" />
-    <InheritanceLine Type="SolutionLib.ViewModels.Browser.BaseItemChildrenViewModel" FixedFromPoint="true">
+    <Position X="8" Y="0.5" Width="2.25" />
+    <InheritanceLine Type="SolutionLib.ViewModels.Browser.Base.ItemChildrenViewModel" FixedFromPoint="true">
       <Path>
-        <Point X="15.75" Y="2.188" />
-        <Point X="16.125" Y="2.188" />
-        <Point X="16.125" Y="1.096" />
-        <Point X="16.5" Y="1.096" />
+        <Point X="7.5" Y="1.688" />
+        <Point X="7.74" Y="1.688" />
+        <Point X="7.74" Y="0.846" />
+        <Point X="8" Y="0.846" />
       </Path>
     </InheritanceLine>
     <TypeIdentifier>
@@ -115,99 +122,132 @@
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="SolutionLib.ViewModels.Browser.SolutionViewModel" Collapsed="true">
-    <Position X="8.75" Y="3.25" Width="2" />
-    <InheritanceLine Type="SolutionLib.ViewModels.Base.BaseViewModel" ManuallyRouted="true">
+    <Position X="3" Y="2.75" Width="2" />
+    <InheritanceLine Type="SolutionLib.ViewModels.Base.BaseViewModel" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
       <Path>
-        <Point X="9.75" Y="2.562" />
-        <Point X="9.75" Y="3.25" />
+        <Point X="2.5" Y="1.938" />
+        <Point X="2.817" Y="1.938" />
+        <Point X="2.817" Y="3.062" />
+        <Point X="3" Y="3.062" />
       </Path>
     </InheritanceLine>
     <TypeIdentifier>
-      <HashCode>ACgAQQAAAQACECAACAAAgAABAgAQAQAAABQBAACAACA=</HashCode>
+      <HashCode>ACgAQQAAAQACECAACAAAgAABAgEYAQAAABQBAACAASA=</HashCode>
       <FileName>ViewModels\Browser\SolutionViewModel.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="SolutionLib.ViewModels.Collections.SortableObservableCollection&lt;T&gt;" Collapsed="true">
-    <Position X="0.5" Y="11" Width="3" />
+    <Position X="7.25" Y="6.5" Width="3" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAQAAAAgAAABAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAAAAAQAAAAgAAIBAAAAAAAAAAAAAA=</HashCode>
       <FileName>ViewModels\Collections\SortableObservableCollection.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="SolutionLib.ViewModels.Collections.SortableObservableDictionaryCollection" Collapsed="true">
-    <Position X="0.5" Y="12" Width="3" />
+    <Position X="7.25" Y="7.5" Width="3" />
     <TypeIdentifier>
-      <HashCode>AAAAAABAAAAAAAAAAAAAAAAAgAAAIAEEAAABAACAAAA=</HashCode>
+      <HashCode>AAAAAABAAAAAAAAAAAAAAAAAgAAIIAEEAAABAACAAAA=</HashCode>
       <FileName>ViewModels\Collections\SortableObservableDictionaryCollection.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="SolutionLib.ViewModels.Browser.BaseItemChildrenViewModel" Collapsed="true">
-    <Position X="13.75" Y="2" Width="2" />
+  <Class Name="SolutionLib.ViewModels.Browser.Base.ItemChildrenViewModel" Collapsed="true">
+    <Position X="5.5" Y="1.5" Width="2" />
     <TypeIdentifier>
-      <HashCode>AAAAIIAAAEAQEAAAAAAUAIAIAAIQAAAAAAAAAAgAAAA=</HashCode>
-      <FileName>ViewModels\Browser\BaseItemChildrenViewModel.cs</FileName>
+      <HashCode>AAAEIAAgAEAAEAAAEAAUAKEAAAIQACAAAAAAAAgAAAA=</HashCode>
+      <FileName>ViewModels\Browser\Base\ItemChildrenViewModel.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.222" />
   </Class>
   <Interface Name="SolutionLib.Interfaces.IFile" Collapsed="true">
-    <Position X="0.5" Y="1.75" Width="1.5" />
+    <Position X="5.25" Y="5" Width="1.5" />
+    <InheritanceLine Type="SolutionLib.Interfaces.IItem" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="5" Y="4.688" />
+        <Point X="5.375" Y="4.688" />
+        <Point X="5.375" Y="5" />
+      </Path>
+    </InheritanceLine>
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Interfaces\IFile.cs</FileName>
     </TypeIdentifier>
   </Interface>
   <Interface Name="SolutionLib.Interfaces.IFolder" Collapsed="true">
-    <Position X="2.75" Y="4.5" Width="1.75" />
+    <Position X="8.5" Y="4.5" Width="1.75" />
+    <InheritanceLine Type="SolutionLib.Interfaces.IItemChildren" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="7.25" Y="4.375" />
+        <Point X="8.029" Y="4.375" />
+        <Point X="8.029" Y="4.812" />
+        <Point X="8.5" Y="4.812" />
+      </Path>
+    </InheritanceLine>
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Interfaces\IFolder.cs</FileName>
     </TypeIdentifier>
   </Interface>
   <Interface Name="SolutionLib.Interfaces.IProject" Collapsed="true">
-    <Position X="0.75" Y="4.5" Width="1.5" />
+    <Position X="8.5" Y="5.25" Width="1.75" />
+    <InheritanceLine Type="SolutionLib.Interfaces.IItemChildren" FixedFromPoint="true">
+      <Path>
+        <Point X="7.25" Y="4.625" />
+        <Point X="7.875" Y="4.625" />
+        <Point X="7.875" Y="5.596" />
+        <Point X="8.5" Y="5.596" />
+      </Path>
+    </InheritanceLine>
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Interfaces\IProject.cs</FileName>
     </TypeIdentifier>
   </Interface>
-  <Interface Name="SolutionLib.Interfaces.ISolution" Collapsed="true">
-    <Position X="5.25" Y="1.75" Width="1.75" />
+  <Interface Name="SolutionLib.Interfaces.ISolution" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="3" Y="5.25" Width="2" />
+    <InheritanceLine Type="SolutionLib.Interfaces.IViewModelBase" FixedFromPoint="true">
+      <Path>
+        <Point X="2.25" Y="4.538" />
+        <Point X="2.625" Y="4.538" />
+        <Point X="2.625" Y="5.596" />
+        <Point X="3" Y="5.596" />
+      </Path>
+    </InheritanceLine>
     <TypeIdentifier>
-      <HashCode>AAgAAAAAAAAAECAACAAAAAAAAgIAAAAAABABAAAAAAA=</HashCode>
+      <HashCode>AAgAAAAAAAAAECAACAAAAAAAAgMAAAAAABABAAAAAQA=</HashCode>
       <FileName>Interfaces\ISolution.cs</FileName>
     </TypeIdentifier>
   </Interface>
-  <Interface Name="SolutionLib.Interfaces.IBaseItem" Collapsed="true">
-    <Position X="2.5" Y="1.75" Width="2.25" />
+  <Interface Name="SolutionLib.Interfaces.IItem" Collapsed="true">
+    <Position X="3" Y="4" Width="2" />
     <TypeIdentifier>
-      <HashCode>AAAAEAAAAAAxAAAQAAACQAAAAAAAAAAAREAAAAEAAgE=</HashCode>
-      <FileName>Interfaces\IBaseItem.cs</FileName>
+      <HashCode>AAAAEAAAAAAxIAAQAAACAAAAAAAAAAAAREAAAAMAAgE=</HashCode>
+      <FileName>Interfaces\IItem.cs</FileName>
     </TypeIdentifier>
   </Interface>
-  <Interface Name="SolutionLib.Interfaces.IBaseItemChildren" Collapsed="true">
-    <Position X="2.5" Y="3" Width="2.25" />
+  <Interface Name="SolutionLib.Interfaces.IItemChildren" Collapsed="true">
+    <Position X="5.5" Y="4" Width="1.75" />
     <TypeIdentifier>
       <HashCode>AAAAIAAAAEAAEAIAAAAEAIAAAAIQAAAAAAAAAAgBACA=</HashCode>
-      <FileName>Interfaces\IBaseItemChildren.cs</FileName>
+      <FileName>Interfaces\IItemChildren.cs</FileName>
     </TypeIdentifier>
   </Interface>
   <Interface Name="SolutionLib.Interfaces.ISolutionRootItem" Collapsed="true">
-    <Position X="5" Y="4.5" Width="1.75" />
+    <Position X="8.5" Y="3.75" Width="1.75" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Interfaces\ISolutionRootItem.cs</FileName>
     </TypeIdentifier>
   </Interface>
   <Interface Name="SolutionLib.Interfaces.IViewModelBase" Collapsed="true">
-    <Position X="4" Y="0.5" Width="1.5" />
+    <Position X="0.5" Y="4" Width="1.75" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Interfaces\IViewModelBase.cs</FileName>
     </TypeIdentifier>
   </Interface>
   <Enum Name="SolutionLib.Models.SolutionItemType">
-    <Position X="7" Y="2.75" Width="1.5" />
+    <Position X="0.5" Y="2.25" Width="2" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAACAAAAAAEAAAAAAAAAAQABAA=</HashCode>
       <FileName>Models\SolutionItemType.cs</FileName>

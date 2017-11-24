@@ -764,6 +764,10 @@ namespace InplaceEditBoxLib.Views
 
             _Adorner = new EditBoxAdorner(_PART_MeasureTextBlock, _TextBox, this);
             AdornerLayer layer = AdornerLayer.GetAdornerLayer(_PART_MeasureTextBlock);
+
+            if (layer == null) // This layer does not always seem to be available?
+                return;
+
             layer.Add(_Adorner);
 
             // try to get the text box focused when layout finishes.

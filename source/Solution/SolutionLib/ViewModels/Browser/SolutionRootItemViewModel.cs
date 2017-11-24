@@ -7,7 +7,7 @@
     /// Normally, there is only one root in any given tree - so this class implements
     /// that one item visually representing that root (eg.: Computer item in Windows Explorer).
     /// </summary>
-    internal class SolutionRootItemViewModel : BaseItemChildrenViewModel, ISolutionRootItem
+    internal class SolutionRootItemViewModel : Base.ItemChildrenViewModel, ISolutionRootItem
     {
         #region constructors
         /// <summary>
@@ -15,8 +15,11 @@
         /// </summary>
         /// <param name="displayName"></param>
         /// <param name="parent"></param>
-        public SolutionRootItemViewModel(IBaseItem parent, string displayName)
-            : base(parent, Models.SolutionItemType.SolutionRootItem)
+        /// <param name="addDummyChild"></param>
+        public SolutionRootItemViewModel(IItem parent
+                                       , string displayName
+                                       , bool addDummyChild = true)
+            : base(parent, Models.SolutionItemType.SolutionRootItem, addDummyChild)
         {
             SetDisplayName(displayName);
         }
@@ -40,5 +43,5 @@
             SetDisplayName(newName);
         }
         #endregion methods
+        }
     }
-}

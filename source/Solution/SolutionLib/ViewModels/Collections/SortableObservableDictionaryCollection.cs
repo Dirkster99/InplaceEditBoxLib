@@ -3,46 +3,105 @@
     using SolutionLib.Interfaces;
     using SolutionLib.Models;
     using System.Collections.Generic;
+    using System.Windows;
+    using System.Windows.Threading;
 
-    internal class SortableObservableDictionaryCollection : SortableObservableCollection<IBaseItem>
+    /// <summary>
+    /// Implements a custom observable collection that can host items that are typed
+    /// through <see cref="SolutionItemType"/> - this items are sorted and kept unique
+    /// to resamble a similar structure as in the Solution Explorer of Visual Studio.
+    /// </summary>
+    internal class SortableObservableDictionaryCollection : SortableObservableCollection<IItem>
     {
-        Dictionary<string, IBaseItem> _dictionary = null;
+        #region fields
+        private Dictionary<string, IItem> _dictionary = null;
+        private static DispatcherPriority _ChildrenEditPrio = DispatcherPriority.DataBind;
+        #endregion fields
 
         #region constructors
+        /// <summary>
+        /// Class constructor.
+        /// </summary>
         public SortableObservableDictionaryCollection()
         {
-            _dictionary = new Dictionary<string, IBaseItem>();
+            _dictionary = new Dictionary<string, IItem>();
         }
         #endregion constructors
 
         #region methods
-        public bool AddItem(IBaseItem item)
+        /// <summary>
+        /// Adds a new item into the collection of items hosted.
+        /// The method throws an exception if the key of the new
+        /// item is already present in the current collection.
+        /// </summary>
+        /// <param name="item"></param>
+        /// <returns></returns>
+        public bool AddItem(IItem item)
         {
             item.SortKey = GenSortKey(item);
             _dictionary.Add(item.DisplayName, item);
-            this.Add(item);
 
-            return true;
-        }
-
-        public bool RemoveItem(IBaseItem item)
-        {
-            item.SortKey = GenSortKey(item);
-
-            _dictionary.Remove(item.DisplayName);
-            this.Remove(item);
+            Application.Current.Dispatcher.Invoke(() => { base.Add(item); }, _ChildrenEditPrio);
 
             return true;
         }
 
         /// <summary>
-        /// 
+        /// Adds a new item into the collection of items hosted.
+        /// The method throws an exception if the key of the new
+        /// item is already present in the current collection.
+        /// </summary>
+        /// <param name="item"></param>
+        /// <returns></returns>
+        public new bool Add(IItem item)
+        {
+            return AddItem(item);
+        }
+
+        /// <summary>
+        /// Removes an item from the collection of items hosted.
+        /// </summary>
+        /// <param name="item"></param>
+        /// <returns></returns>
+        public bool RemoveItem(IItem item)
+        {
+            item.SortKey = GenSortKey(item);
+
+            _dictionary.Remove(item.DisplayName);
+            
+            Application.Current.Dispatcher.Invoke(() => { base.Remove(item); }, _ChildrenEditPrio);
+
+            return true;
+        }
+
+        /// <summary>
+        /// Removes an item from the collection of items hosted.
+        /// </summary>
+        /// <param name="item"></param>
+        /// <returns></returns>
+        public new bool Remove(IItem item)
+        {
+            return RemoveItem(item);
+        }
+
+        /// <summary>
+        /// Removes all items in the collection.
+        /// </summary>
+        public new void Clear()
+        {
+            _dictionary.Clear();
+            Application.Current.Dispatcher.Invoke(() => { base.Clear(); }, _ChildrenEditPrio);
+        }
+
+        /// <summary>
+        /// Attempts to find an item in the internal dictionary and returns it or
+        /// returns null if item was not available.
         /// </summary>
         /// <param name="key"></param>
         /// <returns></returns>
-        public IBaseItem TryGet(string key)
+        public IItem TryGet(string key)
         {
-            IBaseItem o;
+            IItem o;
 
             if (_dictionary.TryGetValue(key, out o))
                 return o;
@@ -56,7 +115,7 @@
         /// </summary>
         /// <param name="item"></param>
         /// <param name="newName"></param>
-        public void RenameItem(IBaseItem item, string newName)
+        public void RenameItem(IItem item, string newName)
         {
             _dictionary.Remove(item.DisplayName);
             item.SetDisplayName(newName);
@@ -79,7 +138,7 @@
         /// </summary>
         /// <param name="item"></param>
         /// <returns></returns>
-        public string GenSortKey(IBaseItem item)
+        public string GenSortKey(IItem item)
         {
             string key = item.DisplayName;
             SolutionItemType itemType = item.ItemType;

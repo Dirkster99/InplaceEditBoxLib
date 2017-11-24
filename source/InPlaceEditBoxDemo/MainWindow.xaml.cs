@@ -14,7 +14,19 @@
             InitializeComponent();
 
             ServiceInjector.InjectServices();      // Start-up services
-            this.DataContext = new AppViewModel();
+
+            Loaded += MainWindow_LoadedAsync;
+        }
+
+        private async void MainWindow_LoadedAsync(object sender, RoutedEventArgs e)
+        {
+            Loaded -= MainWindow_LoadedAsync;
+
+            var appVM = new AppViewModel();
+            this.DataContext = appVM;
+
+            appVM.ResetDefaults();
+            await appVM.LoadSampleDataAsync();
         }
     }
 }
