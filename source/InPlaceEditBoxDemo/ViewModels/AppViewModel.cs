@@ -149,7 +149,18 @@
 
             // Convert to model and save model to file system
             var solutionModel = new ViewModelModelConverter().ToModel(solutionRoot);
-            var result = await SaveSolutionFileAsync(filepath, solutionModel);
+
+            var filename_ext = System.IO.Path.GetExtension(filepath);
+            switch (filename_ext)
+            {
+                case ".solxml":
+                    SolutionModelsLib.Xml.Storage.WriteXmlToFile(filepath, solutionModel);
+                    break;
+
+                default:
+                    var result = await SaveSolutionFileAsync(filepath, solutionModel);
+                    break;
+            }
         }
 
         /// <summary>

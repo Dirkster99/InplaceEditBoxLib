@@ -2,6 +2,8 @@
 {
     using SolutionModelsLib.Enums;
     using SolutionModelsLib.Interfaces;
+    using System.Xml;
+    using System.Xml.Schema;
 
     /// <summary>
     /// Defines a model with properties and members of all objects displayed in a solution.
@@ -118,6 +120,36 @@
 
             return result;
         }
+
+        #region IXmlSerializable methods
+        public abstract XmlSchema GetSchema();
+
+        public abstract void ReadXml(XmlReader reader);
+
+        public abstract void WriteXml(XmlWriter writer);
+
+        /// <summary>
+        /// Gets the name of the corresponding XML for each type of model.
+        /// </summary>
+        /// <param name="type"></param>
+        /// <returns></returns>
+        public string GetXmlName(SolutionModelItemType type)
+        {
+            switch (type)
+            {
+                case SolutionModelItemType.SolutionRootItem:
+                    return "Root";
+                case SolutionModelItemType.File:
+                    return "File";
+                case SolutionModelItemType.Folder:
+                    return "Folder";
+                case SolutionModelItemType.Project:
+                    return "Project";
+                default:
+                    throw new System.NotImplementedException(type.ToString());
+            }
+        }
+        #endregion IXmlSerializable methods
         #endregion methods
     }
 }

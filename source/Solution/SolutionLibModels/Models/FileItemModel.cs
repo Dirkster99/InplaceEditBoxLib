@@ -2,6 +2,8 @@
 {
     using SolutionModelsLib.Interfaces;
     using SolutionModelsLib.Models.Base;
+    using System.Xml;
+    using System.Xml.Schema;
 
     /// <summary>
     /// Implements an interface to a viewmodel of a file item in
@@ -18,9 +20,39 @@
     /// </summary>
     public class FileItemModel : ItemModel, IFileItemModel
     {
+        #region constructors
         public FileItemModel(IItemModel parent, string displayName)
             : base(parent, displayName, Enums.SolutionModelItemType.File)
         {
         }
+        #endregion constructors
+
+        #region methods
+        #region IXmlSerializable methods
+        public override XmlSchema GetSchema()
+        {
+            return null;
+        }
+
+        public override void ReadXml(XmlReader reader)
+        {
+        }
+
+        public override void WriteXml(XmlWriter writer)
+        {
+            try
+            {
+                writer.WriteStartElement(GetXmlName(ItemType));
+                writer.WriteAttributeString("name", this.DisplayName);
+                writer.WriteAttributeString("id", this.Id.ToString());
+                writer.WriteEndElement();
+            }
+            catch (System.Exception)
+            {
+                throw;
+            }
+        }
+        #endregion IXmlSerializable methods
+        #endregion methods
     }
 }

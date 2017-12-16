@@ -3,6 +3,8 @@
     using SolutionModelsLib.Enums;
     using SolutionModelsLib.Interfaces;
     using System;
+    using System.Xml;
+    using System.Xml.Schema;
 
     /// <summary>
     /// A Solution root is the class that hosts all other solution related items.
@@ -14,12 +16,21 @@
         #region constructors
         public SolutionModel()
         {
-////            Name = "DummyKeyName";
+            Version = 1;
+            MinorVersion = 0;
         }
         #endregion constructors
 
         #region properties
-////        public string Name { get; set; }
+        /// <summary>
+        /// Gets the version of this model.
+        /// </summary>
+        public int Version { get; private set; }
+
+        /// <summary>
+        /// Gets the minor version of this model.
+        /// </summary>
+        public int MinorVersion { get; private set; }
 
         /// <summary>
         /// Gets the root of the treeview. That is, there is only
@@ -32,10 +43,6 @@
         #endregion properties
 
         #region methods
-////        public IBaseItemModel AddRootChild(string itemName, SolutionModelItemType itemType)
-////        {
-////            return AddChild(itemName, itemType, Root);
-////        }
 
         public IItemModel AddSolutionRootItem(string displayName, long id = -1)
         {
@@ -109,6 +116,26 @@
             SolutionModelItemType type = (SolutionModelItemType)longType;
 
             return AddChild(displayName, type, parent);
+        }
+
+        public XmlSchema GetSchema()
+        {
+            return null;
+        }
+
+        public void ReadXml(XmlReader reader)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void WriteXml(XmlWriter writer)
+        {
+            writer.WriteAttributeString("Version", Version.ToString());
+            writer.WriteAttributeString("MinorVersion", MinorVersion.ToString());
+
+            // RootItems are written here...
+            if (Root != null)
+                Root.WriteXml(writer);
         }
         #endregion methods
     }

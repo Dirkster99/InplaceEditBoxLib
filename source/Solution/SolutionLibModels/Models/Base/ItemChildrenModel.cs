@@ -4,6 +4,8 @@
     using SolutionModelsLib.Interfaces;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Xml;
+    using System.Xml.Schema;
 
     public abstract class ItemChildrenModel : ItemModel, IItemChildrenModel
     {

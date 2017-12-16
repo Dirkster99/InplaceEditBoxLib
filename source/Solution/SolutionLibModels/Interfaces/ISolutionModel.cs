@@ -1,8 +1,9 @@
 ﻿namespace SolutionModelsLib.Interfaces
 {
     using SolutionModelsLib.Enums;
+    using System.Xml.Serialization;
 
-    public interface ISolutionModel : IModelBase
+    public interface ISolutionModel : IModelBase, IXmlSerializable
     {
         //string Name { get; set; }
 

@@ -1,8 +1,9 @@
 ﻿namespace SolutionModelsLib.Interfaces
 {
     using SolutionModelsLib.Enums;
+    using System.Xml.Serialization;
 
-    public interface IItemModel : IModelBase
+    public interface IItemModel : IModelBase, IXmlSerializable
     {
         #region properties
         /// <summary>

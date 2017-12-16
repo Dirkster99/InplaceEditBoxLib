@@ -1,5 +1,7 @@
 ﻿namespace SolutionModelsLib.Models
 {
+    using System.Xml;
+    using System.Xml.Schema;
     using SolutionModelsLib.Interfaces;
     using SolutionModelsLib.Models.Base;
 
@@ -31,5 +33,35 @@
         {
         }
         #endregion constructors
+
+        #region methods
+        #region IXmlSerializable methods
+        public override XmlSchema GetSchema()
+        {
+            return null;
+        }
+
+        public override void ReadXml(XmlReader reader)
+        {
+        }
+
+        public override void WriteXml(XmlWriter writer)
+        {
+            writer.WriteStartElement(GetXmlName(ItemType));
+            writer.WriteAttributeString("name", this.DisplayName);
+            writer.WriteAttributeString("id", this.Id.ToString());
+
+            // Child Items are written here...
+            writer.WriteStartElement("Items");
+            foreach (var item in Children)
+            {
+                item.WriteXml(writer);
+            }
+            writer.WriteEndElement();
+
+            writer.WriteEndElement();
+        }
+        #endregion IXmlSerializable methods
+        #endregion methods
     }
 }
