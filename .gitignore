@@ -2,6 +2,7 @@ source/packages/
 packages/
 00_Release/
 01_Nuget/
+02_SamplesData/
 debug/
 release/
 build/
