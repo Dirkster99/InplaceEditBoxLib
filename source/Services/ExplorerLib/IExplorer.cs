@@ -1,6 +1,5 @@
 ﻿namespace ExplorerLib
 {
-    using System;
     using System.Collections.Generic;
 
     /// <summary>
@@ -18,8 +17,14 @@
         /// <param name="fileFilter"></param>
         /// <param name="lastFilePath"></param>
         /// <param name="myDocumentsUserDir"></param>
+        /// <param name="defaultExtension"></param>
+        /// <param name="selectedExtensionIndex"></param>
         /// <returns></returns>
-        string FileOpen(string fileFilter, string lastFilePath, string myDocumentsUserDir = null);
+        IExplorerResult FileOpen(string fileFilter,
+                                string lastFilePath,
+                                string myDocumentsUserDir = null,
+                                string defaultExtension = null,
+                                int selectedExtensionIndex = 1);
 
         /// <summary>
         /// Method can be used to open mutlipe files via standard Windows Explorer
@@ -28,10 +33,14 @@
         /// <param name="fileFilter"></param>
         /// <param name="lastFilePath"></param>
         /// <param name="myDocumentsUserDir"></param>
+        /// <param name="defaultExtension"></param>
+        /// <param name="selectedExtensionIndex"></param>
         /// <returns></returns>
-        IEnumerable<string> FileOpenMultipleFiles(string fileFilter,
-                                                  string lastFilePath,
-                                                  string myDocumentsUserDir = null);
+        IExplorerMultiFileResult FileOpenMultipleFiles(string fileFilter,
+                                                       string lastFilePath,
+                                                       string myDocumentsUserDir = null,
+                                                       string defaultExtension = null,
+                                                       int selectedExtensionIndex = 1);
 
         /// <summary>
         /// Save a file with a given path <paramref name="path"/> (that may be ommited -> results in SaveAs)
@@ -62,9 +71,11 @@
         /// <param name="saveAsFlag"></param>
         /// <param name="FileExtensionFilter"></param>
         /// <returns></returns>
-        string SaveDocumentFile(string path,
-                                string myDocumentsUserDir = null,
-                                bool saveAsFlag = false,
-                                string FileExtensionFilter = "");
+        IExplorerResult SaveDocumentFile(string path,
+                                         string myDocumentsUserDir = null,
+                                         bool saveAsFlag = false,
+                                         string FileExtensionFilter = "",
+                                         string defaultExtension = null,
+                                         int selectedExtensionIndex = 1);
     }
 }

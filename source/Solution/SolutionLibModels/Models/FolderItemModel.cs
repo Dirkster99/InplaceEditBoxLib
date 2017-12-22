@@ -3,7 +3,7 @@
     using SolutionModelsLib.Interfaces;
     using SolutionModelsLib.Models.Base;
     using System.Xml;
-    using System.Xml.Schema;
+    using System.Xml.Serialization;
 
     /// <summary>
     /// Implements an interface to a viewmodel of a folder item in
@@ -16,31 +16,74 @@
     ///    
     /// or
     /// 
-    /// 2) thrpigh enumeration in <see cref="SolutionLib.Models.SolutionItemType"/>.
+    /// 2) through enumeration in <see cref="SolutionLib.Models.SolutionItemType"/>.
     /// </summary>
-    public class FolderItemModel : ItemChildrenModel, IFolderItemModel
+    [XmlRoot("Folder")]
+    internal class FolderItemModel : ItemChildrenModel, IFolderItemModel
     {
         #region constructors
+        /// <summary>
+        /// Parameterized constructor for normal usage when new elements are created
+        /// via other viewmodels through the UI.
+        /// </summary>
+        /// <param name="parent"></param>
+        /// <param name="displayName"></param>
         public FolderItemModel(IItemModel parent, string displayName)
             : base(parent, displayName, Enums.SolutionModelItemType.Folder)
         {
+        }
+
+        /// <summary>
+        /// Parameterless default constructor required for deserializing XML.
+        /// </summary>
+        internal FolderItemModel()
+            : base(null, string.Empty, Enums.SolutionModelItemType.Folder)
+        {
+
         }
         #endregion constructors
 
         #region methods
         #region IXmlSerializable methods
-        public override XmlSchema GetSchema()
+        /// <summary>
+        /// Implements the ReadXml() method of the <seealso cref="IXmlSerializable"/> interface.
+        /// </summary>
+        /// <param name="reader"></param>
+        void IXmlSerializable.ReadXml(XmlReader reader)
         {
-            return null;
+            try
+            {
+                while (reader.NodeType == System.Xml.XmlNodeType.Whitespace)
+                    reader.Read();
+
+                DisplayName = reader.GetAttribute("name");
+
+                long idValue = -1;
+                long.TryParse(reader.GetAttribute("id"), out idValue);
+                this.Id = idValue;
+
+                reader.ReadStartElement();  // Consum Folder Tag
+
+                reader.MoveToContent();
+                while (reader.NodeType == System.Xml.XmlNodeType.Whitespace)
+                    reader.Read();
+
+                // Read Items collection and items below it
+                if (reader.NodeType != System.Xml.XmlNodeType.EndElement)
+                    SolutionModel.ReadItemsCollection(reader, this);
+            }
+            catch (System.Exception)
+            {
+                throw;
+            }
         }
 
-        public override void ReadXml(XmlReader reader)
+        /// <summary>
+        /// Implements the WriteXml() method of the <seealso cref="IXmlSerializable"/> interface.
+        /// </summary>
+        /// <param name="writer"></param>
+        void IXmlSerializable.WriteXml(XmlWriter writer)
         {
-        }
-
-        public override void WriteXml(XmlWriter writer)
-        {
-            writer.WriteStartElement(GetXmlName(ItemType));
             writer.WriteAttributeString("name", this.DisplayName);
             writer.WriteAttributeString("id", this.Id.ToString());
 
@@ -48,10 +91,8 @@
             writer.WriteStartElement("Items");
             foreach (var item in Children)
             {
-                item.WriteXml(writer);
+                SolutionModel.SerializeItem(writer, item);
             }
-            writer.WriteEndElement();
-
             writer.WriteEndElement();
         }
         #endregion IXmlSerializable methods

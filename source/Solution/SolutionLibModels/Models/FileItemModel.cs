@@ -3,7 +3,7 @@
     using SolutionModelsLib.Interfaces;
     using SolutionModelsLib.Models.Base;
     using System.Xml;
-    using System.Xml.Schema;
+    using System.Xml.Serialization;
 
     /// <summary>
     /// Implements an interface to a viewmodel of a file item in
@@ -18,34 +18,61 @@
     /// 
     /// 2) thrpigh enumeration in <see cref="SolutionLib.Models.SolutionItemType"/>.
     /// </summary>
-    public class FileItemModel : ItemModel, IFileItemModel
+    [XmlRoot("File")]
+    internal class FileItemModel : ItemModel, IFileItemModel
     {
         #region constructors
+        /// <summary>
+        /// Parameterized constructor for normal usage when new elements are created
+        /// via other viewmodels through the UI.
+        /// </summary>
+        /// <param name="parent"></param>
+        /// <param name="displayName"></param>
         public FileItemModel(IItemModel parent, string displayName)
             : base(parent, displayName, Enums.SolutionModelItemType.File)
         {
+        }
+
+        /// <summary>
+        /// Parameterless default constructor required for deserializing XML.
+        /// </summary>
+        internal FileItemModel()
+            : base(null, string.Empty, Enums.SolutionModelItemType.File)
+        {
+
         }
         #endregion constructors
 
         #region methods
         #region IXmlSerializable methods
-        public override XmlSchema GetSchema()
+        /// <summary>
+        /// Implements the ReadXml() method of the <seealso cref="IXmlSerializable"/> interface.
+        /// </summary>
+        /// <param name="reader"></param>
+        void IXmlSerializable.ReadXml(XmlReader reader)
         {
-            return null;
+            while (reader.NodeType == System.Xml.XmlNodeType.Whitespace)
+                reader.Read();
+
+            DisplayName = reader.GetAttribute("name");
+
+            long idValue = -1;
+            long.TryParse(reader.GetAttribute("id"), out idValue);
+            this.Id = idValue;
+
+            reader.ReadStartElement();  // Consum File Tag
         }
 
-        public override void ReadXml(XmlReader reader)
-        {
-        }
-
-        public override void WriteXml(XmlWriter writer)
+        /// <summary>
+        /// Implements the WriteXml() method of the <seealso cref="IXmlSerializable"/> interface.
+        /// </summary>
+        /// <param name="writer"></param>
+        void IXmlSerializable.WriteXml(XmlWriter writer)
         {
             try
             {
-                writer.WriteStartElement(GetXmlName(ItemType));
                 writer.WriteAttributeString("name", this.DisplayName);
                 writer.WriteAttributeString("id", this.Id.ToString());
-                writer.WriteEndElement();
             }
             catch (System.Exception)
             {

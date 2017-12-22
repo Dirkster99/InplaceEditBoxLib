@@ -2,6 +2,10 @@
 {
     using System.Collections.Generic;
 
+    /// <summary>
+    /// Implements an interface for an abstract class that implements items
+    /// that can have child items of their own.
+    /// </summary>
     public interface IItemChildrenModel : IItemModel
     {
         #region properties

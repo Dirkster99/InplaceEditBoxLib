@@ -3,6 +3,12 @@
     using SolutionModelsLib.Enums;
     using System.Xml.Serialization;
 
+    /// <summary>
+    /// Implements an interface for an abstract class that implements items
+    /// that CANNOT have child items of their own. These items typically have
+    /// just a name and an id (a file for example) but no item collections of
+    /// their owm.
+    /// </summary>
     public interface IItemModel : IModelBase, IXmlSerializable
     {
         #region properties

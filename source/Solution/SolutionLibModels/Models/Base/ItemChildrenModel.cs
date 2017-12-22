@@ -4,10 +4,13 @@
     using SolutionModelsLib.Interfaces;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Xml;
-    using System.Xml.Schema;
 
-    public abstract class ItemChildrenModel : ItemModel, IItemChildrenModel
+    /// <summary>
+    /// Defines a model with properties and members of all objects displayed in a solution -
+    /// this type also provides basic functions to manage (add, remove, maintain) child items
+    /// below this item.
+    /// </summary>
+    internal abstract class ItemChildrenModel : ItemModel, IItemChildrenModel
     {
         private readonly Dictionary<string, IItemModel> _Children = new Dictionary<string, IItemModel>();
 
@@ -61,7 +64,6 @@
         public IItemModel FindChild(string displayName)
         {
             IItemModel rs = null;
-
             _Children.TryGetValue(displayName, out rs);
 
             return rs;
@@ -70,6 +72,22 @@
         public void AddChild(IItemModel newItem)
         {
             _Children.Add(newItem.DisplayName, newItem);
+        }
+
+        internal bool RenameChild(string newDisplayName)
+        {
+            IItemModel rs = null;
+            _Children.TryGetValue(newDisplayName, out rs);
+
+            if (rs != null)
+            {
+                _Children.Remove(rs.DisplayName);
+                rs.DisplayName = newDisplayName;
+                AddChild(rs);
+                return true;
+            }
+
+            return false;
         }
         #endregion methods
     }

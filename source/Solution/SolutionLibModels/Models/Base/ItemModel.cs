@@ -4,11 +4,12 @@
     using SolutionModelsLib.Interfaces;
     using System.Xml;
     using System.Xml.Schema;
+    using System.Xml.Serialization;
 
     /// <summary>
     /// Defines a model with properties and members of all objects displayed in a solution.
     /// </summary>
-    public abstract class ItemModel : IItemModel
+    internal abstract class ItemModel : IItemModel
     {
         #region constructors
         /// <summary>
@@ -122,32 +123,34 @@
         }
 
         #region IXmlSerializable methods
-        public abstract XmlSchema GetSchema();
-
-        public abstract void ReadXml(XmlReader reader);
-
-        public abstract void WriteXml(XmlWriter writer);
+        /// <summary>
+        /// Implements the GetSchema() method of the <seealso cref="IXmlSerializable"/>
+        /// interface - deriving classes do not need to implement this method since it
+        /// already returns null as required.
+        /// </summary>
+        /// <returns></returns>
+        XmlSchema IXmlSerializable.GetSchema() { return null; }
 
         /// <summary>
-        /// Gets the name of the corresponding XML for each type of model.
+        /// Implements the ReadXml() method of the <seealso cref="IXmlSerializable"/>
+        /// interface - deriving classes required to implement their own interface method
+        /// since this implementation will throw a <see cref="System.NotImplementedException"/>.
         /// </summary>
-        /// <param name="type"></param>
-        /// <returns></returns>
-        public string GetXmlName(SolutionModelItemType type)
+        /// <param name="reader"></param>
+        void IXmlSerializable.ReadXml(XmlReader reader)
         {
-            switch (type)
-            {
-                case SolutionModelItemType.SolutionRootItem:
-                    return "Root";
-                case SolutionModelItemType.File:
-                    return "File";
-                case SolutionModelItemType.Folder:
-                    return "Folder";
-                case SolutionModelItemType.Project:
-                    return "Project";
-                default:
-                    throw new System.NotImplementedException(type.ToString());
-            }
+            throw new System.NotImplementedException();
+        }
+
+        /// <summary>
+        /// Implements the WriteXml() method of the <seealso cref="IXmlSerializable"/>
+        /// interface - deriving classes required to implement their own interface method
+        /// since this implementation will throw a <see cref="System.NotImplementedException"/>.
+        /// </summary>
+        /// <param name="writer"></param>
+        void IXmlSerializable.WriteXml(XmlWriter writer)
+        {
+            throw new System.NotImplementedException();
         }
         #endregion IXmlSerializable methods
         #endregion methods

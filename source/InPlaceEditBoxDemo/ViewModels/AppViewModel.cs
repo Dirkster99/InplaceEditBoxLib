@@ -8,6 +8,8 @@
     using System.Threading.Tasks;
     using System.Collections.Generic;
     using System.Windows;
+    using SolutionModelsLib.Interfaces;
+    using SolutionModelsLib.Xml;
 
     /// <summary>
     /// Manages backend objects and functions for the Application.
@@ -30,6 +32,11 @@
         {
             _IsProcessing = false;
             _SolutionBrowser = SolutionLib.Factory.RootViewModel();
+
+            LastFileAccess = UserDocDir + "\\" + "New Solution";
+
+            // This is the Selected FilterIndex + 1 (starting at 1)
+            SelectedFileExtFilterIndex = 1;
         }
         #endregion constructors
 
@@ -107,6 +114,10 @@
             }
         }
 
+        private string LastFileAccess { get; set; }
+
+        private int SelectedFileExtFilterIndex { get; set; }
+
         /// <summary>
         /// Gets the default directory for opening the Save As ... dialog.
         /// </summary>
@@ -139,26 +150,31 @@
         {
             var explorer = ServiceLocator.ServiceContainer.Instance.GetService<IExplorer>();
 
-            var filepath = explorer.SaveDocumentFile(UserDocDir + "\\" + "New Solution",
-                                                     UserDocDir,
-                                                     true,
-                                                     solutionRoot.SolutionFileFilter);
+            var result = explorer.SaveDocumentFile(LastFileAccess,
+                                                   UserDocDir,
+                                                   true,
+                                                   solutionRoot.SolutionFileFilter,
+                                                   solutionRoot.SolutionFileFilterDefault,
+                                                   SelectedFileExtFilterIndex);
 
-            if (string.IsNullOrEmpty(filepath) == true) // User clicked Cancel ...
+            if (result == null) // User clicked Cancel ...
                 return;
+
+            LastFileAccess = result.Filepath;
+            SelectedFileExtFilterIndex = result.SelectedFilterIndex;
 
             // Convert to model and save model to file system
             var solutionModel = new ViewModelModelConverter().ToModel(solutionRoot);
 
-            var filename_ext = System.IO.Path.GetExtension(filepath);
+            var filename_ext = System.IO.Path.GetExtension(result.Filepath);
             switch (filename_ext)
             {
                 case ".solxml":
-                    SolutionModelsLib.Xml.Storage.WriteXmlToFile(filepath, solutionModel);
+                    SolutionModelsLib.Xml.Storage.WriteXmlToFile(result.Filepath, solutionModel);
                     break;
 
                 default:
-                    var result = await SaveSolutionFileAsync(filepath, solutionModel);
+                    var st_result = await SaveSolutionFileAsync(result.Filepath, solutionModel);
                     break;
             }
         }
@@ -173,7 +189,7 @@
         /// <param name="solutionRoot"></param>
         /// <returns></returns>
         private async Task<bool> SaveSolutionFileAsync(string sourcePath
-                                                   , SolutionModel solutionRoot)
+                                                     , ISolutionModel solutionRoot)
         {
             return await Task.Run<bool>(() =>
             {
@@ -199,7 +215,7 @@
         /// <param name="solutionRoot"></param>
         /// <returns></returns>
         private bool SaveSolutionFile(string sourcePath
-                                     ,SolutionModel solutionRoot)
+                                     ,ISolutionModel solutionRoot)
         {
             SolutionModelsLib.SQLite.SolutionDB db = new SolutionModelsLib.SQLite.SolutionDB();
             db.SetFileNameAndPath(sourcePath);
@@ -248,15 +264,32 @@
         {
             var explorer = ServiceLocator.ServiceContainer.Instance.GetService<IExplorer>();
 
-            var filepath = explorer.FileOpen(solutionRoot.SolutionFileFilter,
-                                             UserDocDir + "\\" + "New Solution", UserDocDir);
+            var result = explorer.FileOpen(solutionRoot.SolutionFileFilter,
+                                            LastFileAccess,
+                                            UserDocDir,
+                                            solutionRoot.SolutionFileFilterDefault,
+                                            SelectedFileExtFilterIndex);
 
-            if (string.IsNullOrEmpty(filepath) == true) // User clicked Cancel ...
+            if (result == null) // User clicked Cancel ...
                 return;
 
+            LastFileAccess = result.Filepath;
+            SelectedFileExtFilterIndex = result.SelectedFilterIndex;
+
             // Read model from file system and convert model to viewmodel
+            var filename_ext = result.FileExtension;
             int recordCount = 0;
-            var solutionModel = LoadSolutionFile(filepath, out recordCount);
+            ISolutionModel solutionModel = null;
+            switch (filename_ext)
+            {
+                case ".solxml":
+                    solutionModel = Storage.ReadXmlFromFile<ISolutionModel>(result.Filepath);
+                    break;
+
+                default:
+                    solutionModel = LoadSolutionFile(result.Filepath, out recordCount);
+                    break;
+            }
 
             new ViewModelModelConverter().ToViewModel(solutionModel, solutionRoot);
 
@@ -272,10 +305,10 @@
         /// <param name="sourcePath"></param>
         /// <param name="recordCount"></param>
         /// <returns></returns>
-        private SolutionModel LoadSolutionFile(string sourcePath, out int recordCount)
+        private ISolutionModel LoadSolutionFile(string sourcePath, out int recordCount)
         {
             recordCount = 0;
-            SolutionModel solutionRoot = null;
+            ISolutionModel solutionRoot = null;
 
             var db = new SolutionModelsLib.SQLite.SolutionDB();
             try
@@ -290,7 +323,7 @@
                     return null;
                 }
 
-                solutionRoot = new SolutionModel();  // Select Result from Database
+                solutionRoot = SolutionModelsLib.Factory.CreateSolutionModel();  // Select Result from Database
 
                 var mapKeyToItem = db.ReadItemTypeEnum();
                 bool checkResult = CompareItemTypeEnums(mapKeyToItem);

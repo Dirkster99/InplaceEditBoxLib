@@ -23,7 +23,7 @@
         /// </summary>
         /// <param name="solutionRoot"></param>
         /// <returns></returns>
-        public SolutionModelsLib.Models.SolutionModel ToModel(ISolution solutionRoot)
+        public ISolutionModel ToModel(ISolution solutionRoot)
         {
             IItem treeRootVM = solutionRoot.GetRootItem();
             long itemId = 0;
@@ -41,7 +41,7 @@
                         });
 
             var dstIdItems = new Dictionary<long, IItemChildrenModel>();
-            var solutionModel = new SolutionModel();
+            var solutionModel = SolutionModelsLib.Factory.CreateSolutionModel();
 
             foreach (var item in items.Select(i => i.Node))
             {
@@ -79,7 +79,7 @@
         /// <param name="model"></param>
         /// <param name="solutionRoot"></param>
         /// <returns></returns>
-        public ISolution ToViewModel(SolutionModelsLib.Models.SolutionModel model
+        public ISolution ToViewModel(ISolutionModel model
                                     ,ISolution solutionRoot)
         {
             solutionRoot.ResetToDefaults(); // Reset current viewmodel to construction time defaults
@@ -140,7 +140,7 @@
         /// <param name="item"></param>
         /// <returns></returns>
         private IItemModel ConvertToModel(
-              SolutionModel solutionModel
+              ISolutionModel solutionModel
             , IItemChildrenModel parent
             , IItem item)
         {

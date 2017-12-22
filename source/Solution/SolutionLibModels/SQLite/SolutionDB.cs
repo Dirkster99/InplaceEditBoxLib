@@ -123,7 +123,7 @@
         /// <param name="solutionRoot"></param>
         /// <param name="db"></param>
         /// <returns></returns>
-        public int InsertSolutionData(SolutionModel solutionRoot
+        public int InsertSolutionData(ISolutionModel solutionRoot
                                     , SQLiteDatabase db = null)
         {
             int recordCount = 0;
@@ -154,7 +154,7 @@
         /// into a SQLite database file.
         /// </summary>
         /// <param name="solutionRoot"></param>
-        private int WriteToFile(SolutionModel solutionRoot
+        private int WriteToFile(ISolutionModel solutionRoot
                               , SQLiteCommand cmd)
         {
             int result = 0;
@@ -242,7 +242,7 @@
         /// <param name="solutionRoot"></param>
         /// <param name="db"></param>
         /// <returns></returns>
-        public int ReadSolutionData(SolutionModel solutionRoot
+        public int ReadSolutionData(ISolutionModel solutionRoot
                                   , SQLiteDatabase db = null)
         {
             if (db == null)

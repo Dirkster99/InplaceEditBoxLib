@@ -48,6 +48,12 @@
         /// dialog view to save/load the solution's treeview content.
         /// </summary>
         string SolutionFileFilter { get; }
+
+        /// <summary>
+        /// Gets the default file filter that is applied when the user opens a save/load
+        /// dialog view to save/load the solution's treeview content for the first time.
+        /// </summary>
+        string SolutionFileFilterDefault { get; }
         #endregion properties
 
         #region methods

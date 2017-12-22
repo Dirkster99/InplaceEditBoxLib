@@ -20,6 +20,18 @@
     internal class SolutionViewModel : ViewModels.Base.BaseViewModel, ISolution
     {
         #region fields
+        /// <summary>
+        /// Gets the file extensions that can be used to load or save the tree view data
+        /// in Xml or SQLite.
+        /// </summary>
+        public readonly string[] fileExtensions = { "solxml", "solsqllite" };
+
+        /// <summary>
+        /// Gets a human-readable description for each file extensions that can
+        /// be used to load or save the tree view data in Xml or SQLite.
+        /// </summary>
+        public readonly string[] fileExtensionDescripts = { "XML Solution files", "SQLite Solution files" };
+
         private static DispatcherPriority _ChildrenEditPrio = DispatcherPriority.DataBind;
 
         private ISolutionRootItem _SolutionRootItem = null;
@@ -68,9 +80,31 @@
         {
             get
             {
-                return "((*.solsqllite) | *.solsqllite" +
-                       "|*.solxml)|*.solxml" +
-                       "|" + "All Files (*.*)|*.*";
+                string sret = "All Files (*.*) | *.*";
+
+                for (int i = fileExtensions.Length-1; i >= 0; i--)
+                {
+                     sret = string.Format("{0} (*.{1}) | *.{1}",
+                        fileExtensionDescripts[i], fileExtensions[i]) + "|" + sret;
+                }
+
+                return sret;
+
+                //// return "((*.solsqllite) | *.solsqllite" +
+                ////        "|*.solxml)|*.solxml" +
+                ////        "|" + "All Files (*.*)|*.*";
+            }
+        }
+
+        /// <summary>
+        /// Gets the default file filter that is applied when the user opens a save/load
+        /// dialog view to save/load the solution's treeview content for the first time.
+        /// </summary>
+        string ISolution.SolutionFileFilterDefault
+        {
+            get
+            {
+                return fileExtensions[1];
             }
         }
 

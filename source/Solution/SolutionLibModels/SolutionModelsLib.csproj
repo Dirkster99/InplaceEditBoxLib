@@ -66,6 +66,7 @@
     <Compile Include="Models\SolutionRootItemModel.cs" />
     <Compile Include="Models\SolutionModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Factory.cs" />
     <Compile Include="SQLite\SolutionDB.cs" />
     <Compile Include="SQLite\JournalMode.cs" />
     <Compile Include="SQLite\SQLiteDatabase.cs" />

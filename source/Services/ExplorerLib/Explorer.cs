@@ -21,10 +21,14 @@
         /// <param name="fileFilter"></param>
         /// <param name="lastFilePath"></param>
         /// <param name="myDocumentsUserDir"></param>
+        /// <param name="defaultExtension"></param>
+        /// <param name="selectedExtensionIndex"></param>
         /// <returns></returns>
-        public string FileOpen(string fileFilter,
-                               string lastFilePath,
-                               string myDocumentsUserDir = null)
+        public IExplorerResult FileOpen(string fileFilter,
+                                        string lastFilePath,
+                                        string myDocumentsUserDir = null,
+                                        string defaultExtension = null,
+                                        int selectedExtensionIndex = 1)
         {
             if (string.IsNullOrEmpty(myDocumentsUserDir) == true)
                 myDocumentsUserDir = DefaultDocumentsUserDir;
@@ -47,9 +51,22 @@
             dlg.InitialDirectory = (dir == null ? myDocumentsUserDir : dir);
 
             dlg.Filter = fileFilter;
+            dlg.FilterIndex = selectedExtensionIndex;
 
-            if (dlg.ShowDialog().GetValueOrDefault())
-                return dlg.FileName;
+            if (string.IsNullOrEmpty(defaultExtension) == false)
+            {
+                try
+                {
+                    dlg.DefaultExt = "." + defaultExtension;
+                }
+                catch {}
+            }
+
+            if (dlg.ShowDialog().GetValueOrDefault() == true)
+            {
+                if (string.IsNullOrEmpty(dlg.FileName) == false)
+                    return new ExplorerResult(dlg.FileName, dlg.FilterIndex);
+            }
 
             return null;
         }
@@ -62,9 +79,11 @@
         /// <param name="lastFilePath"></param>
         /// <param name="myDocumentsUserDir"></param>
         /// <returns></returns>
-        public IEnumerable<string> FileOpenMultipleFiles(string fileFilter,
-                                                         string lastFilePath,
-                                                         string myDocumentsUserDir = null)
+        public IExplorerMultiFileResult FileOpenMultipleFiles(string fileFilter,
+                                                              string lastFilePath,
+                                                              string myDocumentsUserDir = null,
+                                                              string defaultExtension = null,
+                                                              int selectedExtensionIndex = 1)
         {
             if (string.IsNullOrEmpty(myDocumentsUserDir) == true)
                 myDocumentsUserDir = DefaultDocumentsUserDir;
@@ -87,9 +106,19 @@
             dlg.InitialDirectory = (dir == null ? myDocumentsUserDir : dir);
             dlg.Multiselect = true;
             dlg.Filter = fileFilter;
+            dlg.FilterIndex = selectedExtensionIndex;
+
+            if (string.IsNullOrEmpty(defaultExtension) == false)
+            {
+                try
+                {
+                    dlg.DefaultExt = "." + defaultExtension;
+                }
+                catch { }
+            }
 
             if (dlg.ShowDialog().GetValueOrDefault())
-                return dlg.FileNames;
+                return new ExplorerMultiFileResult(dlg.FileNames, dlg.FilterIndex);
 
             return null;
         }
@@ -108,10 +137,12 @@
         /// <param name="saveAsFlag"></param>
         /// <param name="FileExtensionFilter"></param>
         /// <returns></returns>
-        public string SaveDocumentFile(string path,
-                                       string myDocumentsUserDir = null,
-                                       bool saveAsFlag = false,
-                                       string FileExtensionFilter = "")
+        public IExplorerResult SaveDocumentFile(string path,
+                                                string myDocumentsUserDir = null,
+                                                bool saveAsFlag = false,
+                                                string FileExtensionFilter = "",
+                                                string defaultExtension = null,
+                                                int selectedExtensionIndex = 1)
         {
             if (string.IsNullOrEmpty(myDocumentsUserDir) == true)
                 myDocumentsUserDir = DefaultDocumentsUserDir;
@@ -139,19 +170,31 @@
                     dlg.InitialDirectory = (dir == null ? myDocumentsUserDir : dir);
 
                     if (string.IsNullOrEmpty(FileExtensionFilter) == false)
+                    {
                         dlg.Filter = FileExtensionFilter;
+                        dlg.FilterIndex = selectedExtensionIndex;
+
+                        if (string.IsNullOrEmpty(defaultExtension) == false)
+                        {
+                            try
+                            {
+                                dlg.DefaultExt = "." + defaultExtension;
+                            }
+                            catch { }
+                        }
+                    }
 
                     if (dlg.ShowDialog().GetValueOrDefault() == true)     // SaveAs file if user OK'ed it so
                     {
                         filePath = dlg.FileName;
 
-                        return filePath;
+                        return new ExplorerResult(dlg.FileName, dlg.FilterIndex);
                     }
                     else
                         return null;
-                }
-                else                                                  // Execute Save function
-                    return filePath;
+                }                      // Execute Save function
+
+                return null;
             }
             catch (Exception Exp)
             {

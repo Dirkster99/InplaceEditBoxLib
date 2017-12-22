@@ -1,7 +1,8 @@
 ﻿namespace SolutionModelsLib.Models
 {
     using System.Xml;
-    using System.Xml.Schema;
+    using System.Xml.Serialization;
+    using SolutionModelsLib.Enums;
     using SolutionModelsLib.Interfaces;
     using SolutionModelsLib.Models.Base;
 
@@ -11,11 +12,13 @@
     /// Normally, there is only one root in any given tree - so this class implements
     /// that one item visually representing that root (eg.: Computer item in Windows Explorer).
     /// </summary>
-    public class SolutionRootItemModel : ItemChildrenModel, ISolutionRootItemModel
+    [XmlRoot("RootItem")]
+    internal class SolutionRootItemModel : ItemChildrenModel, ISolutionRootItemModel
     {
         #region constructors
         /// <summary>
-        /// Class constructor
+        /// Parameterized constructor for normal usage when new elements are created
+        /// via other viewmodels through the UI.
         /// </summary>
         /// <param name="displayName"></param>
         /// <param name="parent"></param>
@@ -26,7 +29,7 @@
         }
 
         /// <summary>
-        /// Class constructor
+        /// Parameterless default constructor required for deserializing XML.
         /// </summary>
         protected SolutionRootItemModel()
             : base(Enums.SolutionModelItemType.SolutionRootItem)
@@ -36,18 +39,45 @@
 
         #region methods
         #region IXmlSerializable methods
-        public override XmlSchema GetSchema()
+        /// <summary>
+        /// Implements the ReadXml() method of the <seealso cref="IXmlSerializable"/> interface.
+        /// </summary>
+        /// <param name="reader"></param>
+        void IXmlSerializable.ReadXml(XmlReader reader)
         {
-            return null;
+            try
+            {
+                while (reader.NodeType == System.Xml.XmlNodeType.Whitespace)
+                    reader.Read();
+
+                this.DisplayName = reader.GetAttribute("name");
+
+                long idValue = -1;
+                long.TryParse(reader.GetAttribute("id"), out idValue);
+                this.Id = idValue;
+
+                reader.ReadStartElement();  // Consum RootItem Tag
+
+                reader.MoveToContent();
+                while (reader.NodeType == System.Xml.XmlNodeType.Whitespace)
+                    reader.Read();
+
+                // Read Items collection and items below it
+                if (reader.NodeType != System.Xml.XmlNodeType.EndElement)
+                    SolutionModel.ReadItemsCollection(reader, this);
+            }
+            catch (System.Exception)
+            {
+                throw;
+            }
         }
 
-        public override void ReadXml(XmlReader reader)
+        /// <summary>
+        /// Implements the WriteXml() method of the <seealso cref="IXmlSerializable"/> interface.
+        /// </summary>
+        /// <param name="writer"></param>
+        void IXmlSerializable.WriteXml(XmlWriter writer)
         {
-        }
-
-        public override void WriteXml(XmlWriter writer)
-        {
-            writer.WriteStartElement(GetXmlName(ItemType));
             writer.WriteAttributeString("name", this.DisplayName);
             writer.WriteAttributeString("id", this.Id.ToString());
 
@@ -55,10 +85,8 @@
             writer.WriteStartElement("Items");
             foreach (var item in Children)
             {
-                item.WriteXml(writer);
+                SolutionModel.SerializeItem(writer, item);
             }
-            writer.WriteEndElement();
-
             writer.WriteEndElement();
         }
         #endregion IXmlSerializable methods

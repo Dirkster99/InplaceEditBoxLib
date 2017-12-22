@@ -78,7 +78,7 @@
         }
 
         /// <summary>
-        /// Adding a new next child item via Inplace Edit Box requires that
+        /// Adding a new next child item via In-place Edit Box requires that
         /// we know whether 'New Folder','New Folder 1', 'New Folder 2' ...
         /// is the next appropriate name - this method determines that name
         /// and returns it for a given type of a (to be created) child item.

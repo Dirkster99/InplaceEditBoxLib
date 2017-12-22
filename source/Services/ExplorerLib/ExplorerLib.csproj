@@ -42,6 +42,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Explorer.cs" />
+    <Compile Include="ExplorerMultiFileResult.cs" />
+    <Compile Include="ExplorerResult.cs" />
+    <Compile Include="IExplorerMultiFileResult.cs" />
+    <Compile Include="IExplorerResult.cs" />
     <Compile Include="IExplorer.cs" />
     <Compile Include="Local\Strings.Designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
