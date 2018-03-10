@@ -160,22 +160,30 @@
             if (result == null) // User clicked Cancel ...
                 return;
 
-            LastFileAccess = result.Filepath;
-            SelectedFileExtFilterIndex = result.SelectedFilterIndex;
-
-            // Convert to model and save model to file system
-            var solutionModel = new ViewModelModelConverter().ToModel(solutionRoot);
-
-            var filename_ext = System.IO.Path.GetExtension(result.Filepath);
-            switch (filename_ext)
+            IsProcessing = true;
+            try
             {
-                case ".solxml":
-                    SolutionModelsLib.Xml.Storage.WriteXmlToFile(result.Filepath, solutionModel);
-                    break;
+                LastFileAccess = result.Filepath;
+                SelectedFileExtFilterIndex = result.SelectedFilterIndex;
 
-                default:
-                    var st_result = await SaveSolutionFileAsync(result.Filepath, solutionModel);
-                    break;
+                // Convert to model and save model to file system
+                var solutionModel = new ViewModelModelConverter().ToModel(solutionRoot);
+
+                var filename_ext = System.IO.Path.GetExtension(result.Filepath);
+                switch (filename_ext)
+                {
+                    case ".solxml":
+                        SolutionModelsLib.Xml.Storage.WriteXmlToFile(result.Filepath, solutionModel);
+                        break;
+
+                    default:
+                        var st_result = await SaveSolutionFileAsync(result.Filepath, solutionModel);
+                        break;
+                }
+            }
+            finally
+            {
+                IsProcessing = false;
             }
         }
 
@@ -193,15 +201,7 @@
         {
             return await Task.Run<bool>(() =>
             {
-                try
-                {
-                    IsProcessing = true;
-                    return SaveSolutionFile(sourcePath, solutionRoot);
-                }
-                finally
-                {
-                    IsProcessing = false;
-                }
+                return SaveSolutionFile(sourcePath, solutionRoot);
             });
         }
 

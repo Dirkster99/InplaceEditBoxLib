@@ -24,7 +24,7 @@
         /// Gets the file extensions that can be used to load or save the tree view data
         /// in Xml or SQLite.
         /// </summary>
-        public readonly string[] fileExtensions = { "solxml", "solsqllite" };
+        public readonly string[] fileExtensions = { "solxml", "solsqlite" };
 
         /// <summary>
         /// Gets a human-readable description for each file extensions that can
