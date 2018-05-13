@@ -156,10 +156,10 @@ namespace InplaceEditBoxLib.Views
             // if in editing mode, measure the space the adorner element should cover.
             if (_IsVisible == true)
             {
-                if (double.IsInfinity(_TextBoxMaxWidth) == true)
+                if (double.IsInfinity(_TextBoxMaxWidth) == true && _EditBox.ParentScrollViewer != null)
                 {
-                    Point position = _TextBox.PointToScreen(new Point(0, 0)),
-                    controlPosition = _EditBox.ParentScrollViewer.PointToScreen(new Point(0, 0));
+                    Point position = GetDeviceIndepententTargetPoints(_TextBox);
+                    Point controlPosition = GetDeviceIndepententTargetPoints(_EditBox);
 
                     position.X = Math.Abs(controlPosition.X - position.X);
                     position.Y = Math.Abs(controlPosition.Y - position.Y);
@@ -194,6 +194,26 @@ namespace InplaceEditBoxLib.Views
             }
             else  // no need to show anything if it is not in editable mode.
                 return new Size(0, 0);
+        }
+
+        /// <summary>
+        /// Gets the device independent target points of a WPF visual
+        /// and returns its target point position.
+        /// 
+        /// More details:
+        /// https://social.msdn.microsoft.com/Forums/vstudio/de-DE/281a8cdd-69a9-4a4a-9fc3-c039119af8ed/absolute-screen-coordinates-of-wpf-user-control?forum=wpf
+        /// </summary>
+        /// <param name="visual"></param>
+        /// <returns></returns>
+        private Point GetDeviceIndepententTargetPoints(Visual visual)
+        {
+            // Compute TextBox Position
+            Point position = visual.PointToScreen(new Point(0, 0));
+
+            // Transform screen point to WPF device independent point
+            PresentationSource textboxSrc = PresentationSource.FromVisual(visual);
+
+            return textboxSrc.CompositionTarget.TransformFromDevice.Transform(position);
         }
 
         /// <summary>
