@@ -184,6 +184,9 @@
             
                   VirtualizingStackPanel.IsVirtualizing="True"
                   VirtualizingStackPanel.VirtualizationMode="Standard"
+                  VirtualizingStackPanel.CacheLengthUnit="Page"
+                  VirtualizingStackPanel.CacheLength="0,4"
+                  
                   Style="{StaticResource TreeViewStyle}"
                   ItemTemplateSelector="{StaticResource TreeItemSelector}"
                   behav:TreeViewSelectionChangedBehavior.ChangedCommand="{Binding Solution.SelectionChangedCommand}"

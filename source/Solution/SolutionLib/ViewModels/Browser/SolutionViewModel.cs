@@ -9,6 +9,7 @@
     using System.Collections.ObjectModel;
     using System.Linq;
     using System.Windows;
+    using System.Windows.Data;
     using System.Windows.Input;
     using System.Windows.Threading;
 
@@ -32,8 +33,6 @@
         /// </summary>
         public readonly string[] fileExtensionDescripts = { "XML Solution files", "SQLite Solution files" };
 
-        private static DispatcherPriority _ChildrenEditPrio = DispatcherPriority.DataBind;
-
         private ISolutionRootItem _SolutionRootItem = null;
         private readonly ObservableCollection<IItem> _Root = null;
         private ICommand _RenameCommand = null;
@@ -44,6 +43,8 @@
         private ICommand _ItemAddCommand;
         private ICommand _ItemRemoveCommand;
         private ICommand _ItemRemoveAllCommand;
+
+        private object _itemsLock = new object();
         #endregion fields
 
         #region constructors
@@ -53,6 +54,7 @@
         public SolutionViewModel()
         {
             _Root = new ObservableCollection<IItem>();
+            BindingOperations.EnableCollectionSynchronization(_Root, _itemsLock);
         }
         #endregion constructors
 
@@ -454,11 +456,10 @@
         {
             if (_SolutionRootItem != null)
             {
-                Application.Current.Dispatcher.Invoke(() =>
+                lock(_itemsLock)
                 {
                     _Root.Remove(_SolutionRootItem);
-                },
-                _ChildrenEditPrio);
+                }
                 
                 _SolutionRootItem = null;
             }
@@ -466,11 +467,10 @@
             var rootItem = new SolutionRootItemViewModel(null, displayName, false);
 
             _SolutionRootItem = rootItem;
-            Application.Current.Dispatcher.Invoke(() =>
+            lock(_itemsLock)
             {
                 _Root.Add(_SolutionRootItem);
-            },
-            _ChildrenEditPrio);
+            }
 
             return _SolutionRootItem;
         }
