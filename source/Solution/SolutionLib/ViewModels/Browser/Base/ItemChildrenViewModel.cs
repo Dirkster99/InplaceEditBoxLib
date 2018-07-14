@@ -5,6 +5,7 @@
     using SolutionLib.ViewModels.Collections;
     using System;
     using System.Collections.Generic;
+    using System.Windows.Data;
 
     /// <summary>
     /// Implements the base functionality for all items that can in turn
@@ -17,6 +18,7 @@
         private static readonly ItemChildrenViewModel DummyChild = new ItemChildrenViewModel();
 
         private readonly SortableObservableDictionaryCollection _Children;
+        private readonly object _itemsLock = new object();
         #endregion fields
 
         #region constructors
@@ -32,6 +34,7 @@
             : base(parent, itemType)
         {
             _Children = new SortableObservableDictionaryCollection();
+            BindingOperations.EnableCollectionSynchronization(_Children, _itemsLock);
 
             ResetChildren(addDummyChild); // Lets lazy Load child items
         }
@@ -44,6 +47,7 @@
             : base()
         {
             _Children = new SortableObservableDictionaryCollection();
+            BindingOperations.EnableCollectionSynchronization(_Children, _itemsLock);
 
             // Don't do this with true as it will
             // add a dummy child below the dummy child
@@ -176,22 +180,25 @@
             if (item == null)
                 return false;
 
-            item.SetParent(null);
+            lock (_itemsLock)
+            {
+                item.SetParent(null);
 
-            var itemIsSelected = item.IsItemSelected;
-            var idx = _Children.IndexOf(item);
-            var removedItem = _Children.RemoveItem(item);
+                var itemIsSelected = item.IsItemSelected;
+                var idx = _Children.IndexOf(item);
+                var removedItem = _Children.RemoveItem(item);
 
-            if (itemIsSelected == false)
+                if (itemIsSelected == false)
+                    return removedItem;
+
+                // Removed item was selected so lets try and select something nearby
+                if (idx <= 0)
+                    this.IsItemSelected = true;
+                else
+                    _Children[idx - 1].IsItemSelected = true;
+
                 return removedItem;
-
-            // Removed item was selected so lets try and select something nearby
-            if (idx <= 0)
-                this.IsItemSelected = true;
-            else
-                _Children[idx - 1].IsItemSelected = true;
-
-            return removedItem;
+            }
         }
 
         /// <summary>
@@ -208,7 +215,10 @@
             if (item == null)
                 return;
 
-            _Children.RenameItem(item, newName);
+            lock (_itemsLock)
+            {
+                _Children.RenameItem(item, newName);
+            }
         }
 
         /// <summary>
@@ -224,7 +234,10 @@
         /// </summary>
         public void SortChildren()
         {
-            _Children.SortItems();
+            lock (_itemsLock)
+            {
+                _Children.SortItems();
+            }
         }
 
         /// <summary>
@@ -273,10 +286,18 @@
 
         protected virtual void ResetChildren(bool addDummyChild = true)
         {
-            _Children.Clear();
+            lock (_itemsLock)
+            {
+                _Children.Clear();
+            }
 
             if (addDummyChild == true)
-                _Children.Add(DummyChild);
+            {
+                lock (_itemsLock)
+                {
+                    _Children.Add(DummyChild);
+                }
+            }
         }
 
         /// <summary>
@@ -290,7 +311,10 @@
         {
             try
             {
-                _Children.AddItem(value);
+                lock (_itemsLock)
+                {
+                    _Children.AddItem(value);
+                }
             }
             catch (Exception)
             {

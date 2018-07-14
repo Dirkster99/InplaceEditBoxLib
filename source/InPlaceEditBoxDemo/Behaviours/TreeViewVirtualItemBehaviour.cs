@@ -3,6 +3,7 @@
     using SolutionLib.Interfaces;
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel;
     using System.Diagnostics;
     using System.Reflection;
     using System.Windows;
@@ -63,6 +64,10 @@
         {
             try
             {
+                // do not implement interaction logic for WPF Design-Time
+                if (DesignerProperties.GetIsInDesignMode(new System.Windows.DependencyObject()))
+                    return;
+
                 var tree = d as TreeView;
 
                 // Sanity check: Are we looking at the least required data we need?
@@ -94,36 +99,44 @@
                     var newParent = currentParent.ItemContainerGenerator.ContainerFromItem(node) as TreeViewItem;
                     if (newParent == null)
                     {
-                        // if this failed, it's probably because of virtualization, and we will have to do it the hard way.
-                        // this code is influenced by TreeViewItem.ExpandRecursive decompiled code, and the MSDN sample at
-                        // http://code.msdn.microsoft.com/Changing-selection-in-a-6a6242c8/sourcecode?fileId=18862&pathId=753647475
-                        // see also the question at http://stackoverflow.com/q/183636/46635
-                        currentParent.ApplyTemplate();
-                        var itemsPresenter = (ItemsPresenter)currentParent.Template.FindName("ItemsHost", currentParent);
-                        if (itemsPresenter != null)
-                            itemsPresenter.ApplyTemplate();
-                        else
-                            currentParent.UpdateLayout();
-
-                        var virtualizingPanel = GetItemsHost(currentParent) as VirtualizingPanel;
-
-                        CallEnsureGenerator(virtualizingPanel);
-                        var index = currentParent.Items.IndexOf(node);
-                        if (index < 0)
+                        try
                         {
-                            // This is raised when the item in the path array is not part of the tree collection
-                            // This can be tricky, because Binding an ObservableDictionary to the treeview will
-                            // require that we need an array of KeyValuePairs<K,T>[] here :-(
+                            // if this failed, it's probably because of virtualization, and we will have to do it the hard way.
+                            // this code is influenced by TreeViewItem.ExpandRecursive decompiled code, and the MSDN sample at
+                            // http://code.msdn.microsoft.com/Changing-selection-in-a-6a6242c8/sourcecode?fileId=18862&pathId=753647475
+                            // see also the question at http://stackoverflow.com/q/183636/46635
+                            currentParent.ApplyTemplate();
+                            var itemsPresenter = (ItemsPresenter)currentParent.Template.FindName("ItemsHost", currentParent);
+                            if (itemsPresenter != null)
+                                itemsPresenter.ApplyTemplate();
+                            else
+                                currentParent.UpdateLayout();
+
+                            var virtualizingPanel = GetItemsHost(currentParent) as VirtualizingPanel;
+
+                            CallEnsureGenerator(virtualizingPanel);
+                            var index = currentParent.Items.IndexOf(node);
+                            if (index < 0)
+                            {
+                                // This is raised when the item in the path array is not part of the tree collection
+                                // This can be tricky, because Binding an ObservableDictionary to the treeview will
+                                // require that we need an array of KeyValuePairs<K,T>[] here :-(
 #if DEBUG
                             System.Console.WriteLine("Node '" + node + "' cannot be fount in container");
                             ////                    throw new InvalidOperationException("Node '" + node + "' cannot be fount in container");
 #else
-                        // Use your favourite logger here since the exception will otherwise kill the appliaction
-                        System.Console.WriteLine("Node '" + node + "' cannot be fount in container");
+                                // Use your favourite logger here since the exception will otherwise kill the appliaction
+                                System.Console.WriteLine("Node '" + node + "' cannot be fount in container");
 #endif
+                            }
+                            virtualizingPanel.BringIndexIntoViewPublic(index);
+
+                            newParent = currentParent.ItemContainerGenerator.ContainerFromIndex(index) as TreeViewItem;
                         }
-                        virtualizingPanel.BringIndexIntoViewPublic(index);
-                        newParent = currentParent.ItemContainerGenerator.ContainerFromIndex(index) as TreeViewItem;
+                        catch
+                        {
+                            return;
+                        }
                     }
 
                     if (newParent == null)

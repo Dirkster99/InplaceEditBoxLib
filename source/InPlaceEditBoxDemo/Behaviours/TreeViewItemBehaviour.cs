@@ -1,5 +1,6 @@
 ﻿namespace InPlaceEditBoxDemo.Behaviours
 {
+    using System.ComponentModel;
     using System.Windows;
     using System.Windows.Controls;
 
@@ -59,6 +60,10 @@
         #region methods
         private static void OnIsBroughtIntoViewWhenSelectedChanged(DependencyObject depObj, DependencyPropertyChangedEventArgs e)
         {
+            // do not implement interaction logic for WPF Design-Time
+            if (DesignerProperties.GetIsInDesignMode(new System.Windows.DependencyObject()))
+                return;
+
             TreeViewItem item = depObj as TreeViewItem;
             if (item == null)
                 return;
