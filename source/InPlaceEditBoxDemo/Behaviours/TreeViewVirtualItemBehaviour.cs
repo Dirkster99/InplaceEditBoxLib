@@ -3,6 +3,7 @@
     using SolutionLib.Interfaces;
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel;
     using System.Diagnostics;
     using System.Reflection;
     using System.Windows;
@@ -63,6 +64,10 @@
         {
             try
             {
+                // do not implement interaction logic for WPF Design-Time
+                if (DesignerProperties.GetIsInDesignMode(new System.Windows.DependencyObject()))
+                    return;
+
                 var tree = d as TreeView;
 
                 // Sanity check: Are we looking at the least required data we need?
