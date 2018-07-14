@@ -1,6 +1,7 @@
 namespace InplaceEditBoxLib.Views
 {
     using System;
+    using System.ComponentModel;
     using System.Diagnostics;
     using System.Windows;
     using System.Windows.Controls;
@@ -211,6 +212,10 @@ namespace InplaceEditBoxLib.Views
         public EditBox()
         {
             _TextBox = null;
+
+            // do not implement interaction logic for WPF Design-Time
+            if (DesignerProperties.GetIsInDesignMode(new System.Windows.DependencyObject()))
+                return;
 
             this.DataContextChanged += this.OnDataContextChanged;
 
