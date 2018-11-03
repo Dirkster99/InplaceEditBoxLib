@@ -12,11 +12,6 @@
     public class EditInPlaceViewModel : Base.ViewModelBase, IEditBox
     {
         #region fields
-        /// <summary>
-        /// Log4net logger facility for this class.
-        /// </summary>
-        protected static readonly log4net.ILog Logger = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-
         private bool _IsReadOnly;
         #endregion fields
 
