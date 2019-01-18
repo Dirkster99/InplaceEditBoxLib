@@ -90,7 +90,7 @@
         public new void Clear()
         {
             _dictionary.Clear();
-            Application.Current.Dispatcher.Invoke(() => { base.Clear(); }, _ChildrenEditPrio);
+            base.Clear();
         }
 
         /// <summary>

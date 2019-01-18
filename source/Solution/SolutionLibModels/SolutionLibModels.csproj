@@ -6,10 +6,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-      <ProjectReference Include="..\ExplorerLib\ExplorerLib.csproj">
-        <Project>{5a90b227-3c80-4b85-ae40-ee17fccd246d}</Project>
-        <Name>ExplorerLib</Name>
-      </ProjectReference>
+    <PackageReference Include="Dirkster.TreeLib" version="1.1.0" />
+    <PackageReference Include="System.Data.SQLite.Core" version="1.0.109.2" />
   </ItemGroup>
 
 </Project>
