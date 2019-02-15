@@ -36,6 +36,15 @@ namespace InplaceEditBoxLib.Views
 
         #region dependency properties
         /// <summary>
+        /// Implements the backing store of the <see cref="DisplayTextForegroundBrush"/>
+        /// dependency property which can be used to set the foreground color of the textblock
+        /// portion in the control.
+        /// </summary>
+        public static readonly DependencyProperty DisplayTextForegroundBrushProperty =
+            DependencyProperty.Register("DisplayTextForegroundBrush", typeof(SolidColorBrush),
+                typeof(EditBox), new PropertyMetadata(new SolidColorBrush(Color.FromRgb(0,0,0))));
+
+        /// <summary>
         /// TextProperty DependencyProperty should be used to indicate
         /// the string that should be edit in the <seealso cref="EditBox"/> control.
         /// </summary>
@@ -239,6 +248,15 @@ namespace InplaceEditBoxLib.Views
         #endregion constructor
 
         #region properties
+        /// <summary>
+        /// Gets/sets the foreground color of the textblock portion in the control.
+        /// </summary>
+        public SolidColorBrush DisplayTextForegroundBrush
+        {
+            get { return (SolidColorBrush)GetValue(DisplayTextForegroundBrushProperty); }
+            set { SetValue(DisplayTextForegroundBrushProperty, value); }
+        }
+
         /// <summary>
         /// Gets the text value for editing in the
         /// text portion of the EditBox.

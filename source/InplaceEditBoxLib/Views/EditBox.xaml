@@ -14,6 +14,7 @@
     <Style TargetType="{x:Type local:EditBox}" >
         <Setter Property="HorizontalAlignment" Value="Left"  />
         <Setter Property="VerticalAlignment"   Value="Center" />
+        <Setter Property="DisplayTextForegroundBrush" Value="{DynamicResource {x:Static reskeys:ResourceKeys.NormalForegroundBrushKey}}"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type local:EditBox}">
@@ -21,12 +22,12 @@
                         <TextBlock x:Name="PART_TextBlock" MinWidth="10"
                                    HorizontalAlignment="Left"
                                    VerticalAlignment="Center"
-                                   Foreground="{DynamicResource {x:Static reskeys:ResourceKeys.NormalForegroundBrushKey}}"
+                                   Foreground="{TemplateBinding DisplayTextForegroundBrush}"
                      />
 
                         <!-- The measurment textblock is never visible it's simply there to tell the length of a string to the textbox
-                 but it should have the same font and layout as the visbile textblock and the in place textbox (!)
-            -->
+                             but it should have the same font and layout as the visbile textblock and the in place textbox (!)
+                        -->
                         <TextBlock x:Name="PART_MeasureTextBlock" MinWidth="10"
                                    HorizontalAlignment="Left"
                                    VerticalAlignment="Center"
