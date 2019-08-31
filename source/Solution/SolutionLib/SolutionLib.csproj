@@ -1,15 +1,98 @@
-<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.0</TargetFramework>
+    <TargetFrameworks>net461;netcoreapp3.0</TargetFrameworks>
     <UseWPF>true</UseWPF>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Resources\Files\Light\Document_128x.png" />
+    <None Remove="Resources\Files\Light\Document_16x.png" />
+    <None Remove="Resources\Files\Light\Document_24x..png" />
+    <None Remove="Resources\Files\Light\Document_256x.png" />
+    <None Remove="Resources\Files\Light\Document_32x.png" />
+    <None Remove="Resources\Files\Light\Document_48x.png" />
+    <None Remove="Resources\Files\Light\Document_64x.png" />
+    <None Remove="Resources\Folders\Light\FolderOpen_128x.png" />
+    <None Remove="Resources\Folders\Light\FolderOpen_256x.png" />
+    <None Remove="Resources\Folders\Light\FolderOpen_32x.png" />
+    <None Remove="Resources\Folders\Light\FolderOpen_32xLG.png" />
+    <None Remove="Resources\Folders\Light\FolderOpen_32xMD.png" />
+    <None Remove="Resources\Folders\Light\FolderOpen_32xSM.png" />
+    <None Remove="Resources\Folders\Light\FolderOpen_48x.png" />
+    <None Remove="Resources\Folders\Light\FolderOpen_64x.png" />
+    <None Remove="Resources\Folders\Light\Folder_128x.png" />
+    <None Remove="Resources\Folders\Light\Folder_256x.png" />
+    <None Remove="Resources\Folders\Light\Folder_25x.png" />
+    <None Remove="Resources\Folders\Light\Folder_32x.png" />
+    <None Remove="Resources\Folders\Light\Folder_32xLG.png" />
+    <None Remove="Resources\Folders\Light\Folder_32xMD.png" />
+    <None Remove="Resources\Folders\Light\Folder_32xSM.png" />
+    <None Remove="Resources\Folders\Light\Folder_48x.png" />
+    <None Remove="Resources\Folders\Light\Folder_64x.png" />
+    <None Remove="Resources\Projects\Light\Application_128x.png" />
+    <None Remove="Resources\Projects\Light\Application_12x.png" />
+    <None Remove="Resources\Projects\Light\Application_16x.png" />
+    <None Remove="Resources\Projects\Light\Application_256x.png" />
+    <None Remove="Resources\Projects\Light\Application_32x.png" />
+    <None Remove="Resources\Projects\Light\Application_64x.png" />
+    <None Remove="Resources\Solutions\Light\AppFlyout_128x.png" />
+    <None Remove="Resources\Solutions\Light\AppFlyout_12x.png" />
+    <None Remove="Resources\Solutions\Light\AppFlyout_16x.png" />
+    <None Remove="Resources\Solutions\Light\AppFlyout_256x.png" />
+    <None Remove="Resources\Solutions\Light\AppFlyout_32x.png" />
+    <None Remove="Resources\Solutions\Light\AppFlyout_48x.png" />
+    <None Remove="Resources\Solutions\Light\AppFlyout_64x.png" />
+  </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\InplaceEditBoxLib\InplaceEditBoxLib.csproj">
       <Project>{b1f5cf22-f192-4dae-bdf3-c0c604a29c88}</Project>
       <Name>InplaceEditBoxLib</Name>
     </ProjectReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Resources\Files\Light\Document_128x.png" />
+    <Resource Include="Resources\Files\Light\Document_16x.png" />
+    <Resource Include="Resources\Files\Light\Document_24x..png" />
+    <Resource Include="Resources\Files\Light\Document_256x.png" />
+    <Resource Include="Resources\Files\Light\Document_32x.png" />
+    <Resource Include="Resources\Files\Light\Document_48x.png" />
+    <Resource Include="Resources\Files\Light\Document_64x.png" />
+    <Resource Include="Resources\Folders\Light\FolderOpen_128x.png" />
+    <Resource Include="Resources\Folders\Light\FolderOpen_256x.png" />
+    <Resource Include="Resources\Folders\Light\FolderOpen_32x.png" />
+    <Resource Include="Resources\Folders\Light\FolderOpen_32xLG.png" />
+    <Resource Include="Resources\Folders\Light\FolderOpen_32xMD.png" />
+    <Resource Include="Resources\Folders\Light\FolderOpen_32xSM.png" />
+    <Resource Include="Resources\Folders\Light\FolderOpen_48x.png" />
+    <Resource Include="Resources\Folders\Light\FolderOpen_64x.png" />
+    <Resource Include="Resources\Folders\Light\Folder_128x.png" />
+    <Resource Include="Resources\Folders\Light\Folder_256x.png" />
+    <Resource Include="Resources\Folders\Light\Folder_25x.png" />
+    <Resource Include="Resources\Folders\Light\Folder_32x.png" />
+    <Resource Include="Resources\Folders\Light\Folder_32xLG.png" />
+    <Resource Include="Resources\Folders\Light\Folder_32xMD.png" />
+    <Resource Include="Resources\Folders\Light\Folder_32xSM.png" />
+    <Resource Include="Resources\Folders\Light\Folder_48x.png" />
+    <Resource Include="Resources\Folders\Light\Folder_64x.png" />
+    <Resource Include="Resources\Projects\Light\Application_128x.png" />
+    <Resource Include="Resources\Projects\Light\Application_12x.png" />
+    <Resource Include="Resources\Projects\Light\Application_16x.png" />
+    <Resource Include="Resources\Projects\Light\Application_256x.png" />
+    <Resource Include="Resources\Projects\Light\Application_32x.png" />
+    <Resource Include="Resources\Projects\Light\Application_64x.png" />
+    <Resource Include="Resources\Solutions\Light\AppFlyout_16x.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Resources\Solutions\Light\AppFlyout_128x.png" />
+    <Resource Include="Resources\Solutions\Light\AppFlyout_12x.png" />
+    <Resource Include="Resources\Solutions\Light\AppFlyout_256x.png" />
+    <Resource Include="Resources\Solutions\Light\AppFlyout_32x.png" />
+    <Resource Include="Resources\Solutions\Light\AppFlyout_48x.png" />
+    <Resource Include="Resources\Solutions\Light\AppFlyout_64x.png" />
   </ItemGroup>
 
 </Project>

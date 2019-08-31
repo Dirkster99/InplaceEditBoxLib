@@ -1,8 +1,8 @@
-<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>netcoreapp3.0</TargetFramework>
+    <TargetFrameworks>net461;netcoreapp3.0</TargetFrameworks>
     <UseWPF>true</UseWPF>
   </PropertyGroup>
 
@@ -30,13 +30,17 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Dirkster.UserNotifications" Version="1.5.0" />
-    <PackageReference Include="log4net" Version="2.0.8" />
-    <PackageReference Include="Dirkster.TreeLib" Version="1.1.0" />
-    <PackageReference Include="System.Data.SQLite" Version="1.0.109.2" />
+    <PackageReference Include="Dirkster.UserNotifications" Version="1.5.1" />
+    <PackageReference Include="Dirkster.TreeLib" Version="1.2.0" />
+    <PackageReference Include="System.Data.SQLite" Version="1.0.111" />
   </ItemGroup>
 
-  <!-- Begin issue 255: The following section can be removed penging the bug: https://github.com/dotnet/wpf/issues/255 -->
+  <!-- This is for testing NetCore3 Preview 8 only -->
+  <!--PropertyGroup>
+    <WarningsAsErrors></WarningsAsErrors>
+  </PropertyGroup-->
+  
+  <!-- Begin issue 255: The following section can be removed penging the bug: https://github.com/dotnet/wpf/issues/255 
   <PropertyGroup>
     <DisableImplicitFrameworkReferences Condition="'$(TargetFramework)' == 'net40' or '$(TargetFramework)' == 'net35'">true</DisableImplicitFrameworkReferences>
   </PropertyGroup>
@@ -50,6 +54,6 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Xaml" />
   </ItemGroup>
-<!-- End issue 255 -->
+ End issue 255 -->
 
 </Project>
