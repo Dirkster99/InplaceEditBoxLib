@@ -1,10 +1,29 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
 
   <PropertyGroup>
-    <TargetFrameworks>net40;netcoreapp3.0</TargetFrameworks>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Version>1.4.0</Version>
+    <AssemblyVersion>1.4.0.0</AssemblyVersion>
+    <FileVersion>1.4.0.0</FileVersion>
+    <Company>Open Source</Company>
+    <Product>InplaceEditBoxLib</Product>
+    <Copyright>2014-2019</Copyright>
+    <Description>InplaceEditBoxLib provides a WPF overlay textbox control</Description>
+    <PackageProjectUrl>https://github.com/Dirkster99/InplaceEditBoxLib</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/Dirkster99/InplaceEditBoxLib</RepositoryUrl>
+    <PackageId>Dirkster.InplaceEditBoxLib</PackageId>
+    <Authors>https://github.com/Dirkster99/InplaceEditBoxLib</Authors>
+
+    <TargetFrameworks>net452;netcoreapp3.0</TargetFrameworks>
     <UseWPF>true</UseWPF>
-    <AssemblyVersion>1.3.2.0</AssemblyVersion>
-    <FileVersion>1.3.2.0</FileVersion>
+
+    <PackageProjectUrl>https://github.com/Dirkster99/InplaceEditBoxLib</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/Dirkster99/InplaceEditBoxLib</RepositoryUrl>
+    <PackageIconUrl>https://raw.githubusercontent.com/Dirkster99/InplaceEditBoxLib/master/SwitchToDesignMode_64x.png</PackageIconUrl>
+    <PackageTags>wpf inplace-edit text overlay mvvm c# .net metro black light themed control library</PackageTags>
+    <PackageReleaseNotes>Adding multitarget support for NetCore 3 and .Net4.5.2</PackageReleaseNotes>
+    <NeutralLanguage>en</NeutralLanguage>
+    
   </PropertyGroup>
 
   <ItemGroup>

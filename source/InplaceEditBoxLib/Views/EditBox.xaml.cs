@@ -42,7 +42,7 @@ namespace InplaceEditBoxLib.Views
         /// </summary>
         public static readonly DependencyProperty DisplayTextForegroundBrushProperty =
             DependencyProperty.Register("DisplayTextForegroundBrush", typeof(SolidColorBrush),
-                typeof(EditBox), new PropertyMetadata(new SolidColorBrush(Color.FromRgb(0, 0, 0))));
+                typeof(EditBox), new PropertyMetadata(new SolidColorBrush(Color.FromRgb(0,0,0))));
 
         /// <summary>
         /// TextProperty DependencyProperty should be used to indicate

@@ -46,10 +46,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\InplaceEditBoxLib\InplaceEditBoxLib.csproj">
-      <Project>{b1f5cf22-f192-4dae-bdf3-c0c604a29c88}</Project>
-      <Name>InplaceEditBoxLib</Name>
-    </ProjectReference>
+    <ProjectReference Include="..\..\InplaceEditBoxLib\InplaceEditBoxLib.csproj" />
   </ItemGroup>
 
   <ItemGroup>
