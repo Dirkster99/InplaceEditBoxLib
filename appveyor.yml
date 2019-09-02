@@ -17,4 +17,7 @@ build:
 
 artifacts:
 - path: source\InPlaceEditBoxDemo\bin\Release
+  name: InPlaceEditBoxDemo
+
 - path: source\InplaceEditBoxLib\bin\Release
+  name: InplaceEditBoxLib
