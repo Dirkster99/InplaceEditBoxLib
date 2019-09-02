@@ -16,4 +16,5 @@ build:
   verbosity: minimal
 
 artifacts:
-- path: source\InPlaceEditTextBoxDemo\bin\Release
+- path: source\InPlaceEditBoxDemo\bin\Release
+- path: F:\MyFiles\CSharp\00_GitHub\InplaceEditBoxLib\source\InplaceEditBoxLib\bin\Release

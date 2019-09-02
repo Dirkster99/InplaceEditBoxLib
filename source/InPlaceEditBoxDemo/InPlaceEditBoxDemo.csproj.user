@@ -5,6 +5,6 @@
   </PropertyGroup>
   <PropertyGroup>
     <ActiveDebugProfile>InPlaceEditBoxDemo</ActiveDebugProfile>
-    <ActiveDebugFramework>netcoreapp3.0</ActiveDebugFramework>
+    <ActiveDebugFramework>net461</ActiveDebugFramework>
   </PropertyGroup>
 </Project>
