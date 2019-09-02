@@ -14,3 +14,6 @@ before_build:
 
 build:
   verbosity: minimal
+
+artifacts:
+- path: source\InPlaceEditTextBoxDemo\bin\Release
