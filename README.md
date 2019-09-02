@@ -9,6 +9,8 @@ TreeViewItem or ListViewItem (use case: perform in place edit of a displayed ite
 [![Release](https://img.shields.io/github/release/Dirkster99/inplaceeditboxlib.svg)](https://github.com/Dirkster99/inplaceeditboxlib/releases/latest)
 [![NuGet](https://img.shields.io/nuget/dt/Dirkster.inplaceeditboxlib.svg)](http://nuget.org/packages/Dirkster.inplaceeditboxlib)
 
+![Net4](https://badgen.net/badge/Framework/.Net&nbsp;4/blue) ![NetCore3](https://badgen.net/badge/Framework/NetCore&nbsp;3/blue)
+
 # Use Case: Edit-In-Place
 
 The edit-in-place text control contained in this project can be used as a base for developing applications where users would like to edit text strings as overlay over the normally displayed string.

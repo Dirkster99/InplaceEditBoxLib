@@ -1,22 +1,22 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27004.2009
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.28407.52
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InPlaceEditBoxDemo", "InPlaceEditBoxDemo\InPlaceEditBoxDemo.csproj", "{BA1C7851-45F1-41D5-B9FC-486D89424B20}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InPlaceEditBoxDemo", "InPlaceEditBoxDemo\InPlaceEditBoxDemo.csproj", "{BA1C7851-45F1-41D5-B9FC-486D89424B20}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InplaceEditBoxLib", "InplaceEditBoxLib\InplaceEditBoxLib.csproj", "{B1F5CF22-F192-4DAE-BDF3-C0C604A29C88}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SolutionLib", "Solution\SolutionLib\SolutionLib.csproj", "{21809114-6C3F-41CC-8A72-649AC4A214BB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SolutionLib", "Solution\SolutionLib\SolutionLib.csproj", "{21809114-6C3F-41CC-8A72-649AC4A214BB}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExplorerLib", "Services\ExplorerLib\ExplorerLib.csproj", "{5A90B227-3C80-4B85-AE40-EE17FCCD246D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExplorerLib", "Services\ExplorerLib\ExplorerLib.csproj", "{5A90B227-3C80-4B85-AE40-EE17FCCD246D}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{0D3704E0-6B66-4110-81C0-ACF8906E7CC1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceLocator", "Services\ServiceLocator\ServiceLocator.csproj", "{B17BD968-1684-4F3A-B55A-6F42DA4A6830}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServiceLocator", "Services\ServiceLocator\ServiceLocator.csproj", "{B17BD968-1684-4F3A-B55A-6F42DA4A6830}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution", "Solution", "{DEEEC2A9-7724-48C9-9C75-7A9540B7600D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SolutionModelsLib", "Solution\SolutionLibModels\SolutionModelsLib.csproj", "{2A48D068-6C21-4758-9A85-74F40C2AB068}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SolutionLibModels", "Solution\SolutionLibModels\SolutionLibModels.csproj", "{2A48D068-6C21-4758-9A85-74F40C2AB068}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InplaceEditBoxLib", "InplaceEditBoxLib\InplaceEditBoxLib.csproj", "{A8BB5702-1A2F-46B3-AAC2-D62E2E16A722}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -40,18 +40,6 @@ Global
 		{BA1C7851-45F1-41D5-B9FC-486D89424B20}.Release|x64.Build.0 = Release|Any CPU
 		{BA1C7851-45F1-41D5-B9FC-486D89424B20}.Release|x86.ActiveCfg = Release|Any CPU
 		{BA1C7851-45F1-41D5-B9FC-486D89424B20}.Release|x86.Build.0 = Release|Any CPU
-		{B1F5CF22-F192-4DAE-BDF3-C0C604A29C88}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B1F5CF22-F192-4DAE-BDF3-C0C604A29C88}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B1F5CF22-F192-4DAE-BDF3-C0C604A29C88}.Debug|x64.ActiveCfg = Debug|x64
-		{B1F5CF22-F192-4DAE-BDF3-C0C604A29C88}.Debug|x64.Build.0 = Debug|x64
-		{B1F5CF22-F192-4DAE-BDF3-C0C604A29C88}.Debug|x86.ActiveCfg = Debug|x86
-		{B1F5CF22-F192-4DAE-BDF3-C0C604A29C88}.Debug|x86.Build.0 = Debug|x86
-		{B1F5CF22-F192-4DAE-BDF3-C0C604A29C88}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B1F5CF22-F192-4DAE-BDF3-C0C604A29C88}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B1F5CF22-F192-4DAE-BDF3-C0C604A29C88}.Release|x64.ActiveCfg = Release|x64
-		{B1F5CF22-F192-4DAE-BDF3-C0C604A29C88}.Release|x64.Build.0 = Release|x64
-		{B1F5CF22-F192-4DAE-BDF3-C0C604A29C88}.Release|x86.ActiveCfg = Release|x86
-		{B1F5CF22-F192-4DAE-BDF3-C0C604A29C88}.Release|x86.Build.0 = Release|x86
 		{21809114-6C3F-41CC-8A72-649AC4A214BB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{21809114-6C3F-41CC-8A72-649AC4A214BB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{21809114-6C3F-41CC-8A72-649AC4A214BB}.Debug|x64.ActiveCfg = Debug|Any CPU
@@ -100,6 +88,18 @@ Global
 		{2A48D068-6C21-4758-9A85-74F40C2AB068}.Release|x64.Build.0 = Release|Any CPU
 		{2A48D068-6C21-4758-9A85-74F40C2AB068}.Release|x86.ActiveCfg = Release|Any CPU
 		{2A48D068-6C21-4758-9A85-74F40C2AB068}.Release|x86.Build.0 = Release|Any CPU
+		{A8BB5702-1A2F-46B3-AAC2-D62E2E16A722}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A8BB5702-1A2F-46B3-AAC2-D62E2E16A722}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A8BB5702-1A2F-46B3-AAC2-D62E2E16A722}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{A8BB5702-1A2F-46B3-AAC2-D62E2E16A722}.Debug|x64.Build.0 = Debug|Any CPU
+		{A8BB5702-1A2F-46B3-AAC2-D62E2E16A722}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{A8BB5702-1A2F-46B3-AAC2-D62E2E16A722}.Debug|x86.Build.0 = Debug|Any CPU
+		{A8BB5702-1A2F-46B3-AAC2-D62E2E16A722}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A8BB5702-1A2F-46B3-AAC2-D62E2E16A722}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A8BB5702-1A2F-46B3-AAC2-D62E2E16A722}.Release|x64.ActiveCfg = Release|Any CPU
+		{A8BB5702-1A2F-46B3-AAC2-D62E2E16A722}.Release|x64.Build.0 = Release|Any CPU
+		{A8BB5702-1A2F-46B3-AAC2-D62E2E16A722}.Release|x86.ActiveCfg = Release|Any CPU
+		{A8BB5702-1A2F-46B3-AAC2-D62E2E16A722}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -117,6 +117,12 @@
                                Source="{Binding Converter={StaticResource ISolutionBaseItemToImageConverter}}"
                                VerticalAlignment="Center" />
 
+                    <!-- Debugging actual EditInPlace:EditBox
+                    <TextBlock Grid.Column="1"
+                               Text="{Binding Path=DisplayName, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                               ToolTip="{Binding Description, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                               /-->
+                    
                     <EditInPlace:EditBox Grid.Column="1" Name="EditItemBox"
                                              Text="{Binding Path=DisplayName, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                              ToolTip="{Binding Description, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
