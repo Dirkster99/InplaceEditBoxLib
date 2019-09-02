@@ -17,4 +17,4 @@ build:
 
 artifacts:
 - path: source\InPlaceEditBoxDemo\bin\Release
-- path: F:\MyFiles\CSharp\00_GitHub\InplaceEditBoxLib\source\InplaceEditBoxLib\bin\Release
+- path: source\InplaceEditBoxLib\bin\Release
