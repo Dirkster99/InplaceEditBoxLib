@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
 
   <PropertyGroup>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
@@ -23,6 +23,7 @@
     <PackageTags>wpf inplace-edit text overlay mvvm c# .net metro black light themed control library</PackageTags>
     <PackageReleaseNotes>Adding multitarget support for NetCore 3 and .Net4.5.2</PackageReleaseNotes>
     <NeutralLanguage>en</NeutralLanguage>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
   </PropertyGroup>
 
   <ItemGroup>
