@@ -1,3 +1,7 @@
+| NuGet Packages                                                                  | Downloads
+| :------------------------------------------------------------------------------ | :---------------------------------
+| [InplaceEditboxlib](https://www.nuget.org/packages/Dirkster.inplaceeditboxlib)  | [![NuGet](https://img.shields.io/nuget/dt/Dirkster.inplaceeditboxlib.svg)](http://nuget.org/packages/Dirkster.inplaceeditboxlib)
+
 # InplaceEditBoxLib
 WPF/MVVM control to implement a textbox on top of other elements like a
 TreeViewItem or ListViewItem (use case: perform in place edit of a displayed item)
@@ -10,6 +14,8 @@ TreeViewItem or ListViewItem (use case: perform in place edit of a displayed ite
 [![NuGet](https://img.shields.io/nuget/dt/Dirkster.inplaceeditboxlib.svg)](http://nuget.org/packages/Dirkster.inplaceeditboxlib)
 
 ![Net4](https://badgen.net/badge/Framework/.Net&nbsp;4/blue) ![NetCore3](https://badgen.net/badge/Framework/NetCore&nbsp;3/blue)
+
+
 
 # Use Case: Edit-In-Place
 
