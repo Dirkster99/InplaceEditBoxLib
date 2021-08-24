@@ -684,8 +684,11 @@ namespace InplaceEditBoxLib.Views
         /// If an EditBox is in editing mode and the content of a ListView is
         /// scrolled, then the EditBox switches to normal mode.
         /// </summary>
-        private void OnScrollViewerChanged(object sender, RoutedEventArgs args)
+        private void OnScrollViewerChanged(object sender, ScrollChangedEventArgs args)
         {
+            if (args.HorizontalOffset == 0 && args.VerticalOffset == 0)
+                return;
+
             if (this.IsEditing && Mouse.PrimaryDevice.LeftButton == MouseButtonState.Pressed)
                 this.OnSwitchToNormalMode();
         }
@@ -811,7 +814,7 @@ namespace InplaceEditBoxLib.Views
             if (_ParentItemsControl != null)
             {
                 // Handle events on parent control and determine whether to switch to Normal mode or stay in editing mode
-                _ParentItemsControl.AddHandler(ScrollViewer.ScrollChangedEvent, new RoutedEventHandler(this.OnScrollViewerChanged));
+                _ParentItemsControl.AddHandler(ScrollViewer.ScrollChangedEvent, new ScrollChangedEventHandler(this.OnScrollViewerChanged));
                 _ParentItemsControl.AddHandler(ScrollViewer.MouseWheelEvent, new RoutedEventHandler((s, e) => this.OnSwitchToNormalMode()), true);
 
                 _ParentItemsControl.MouseDown += new MouseButtonEventHandler((s, e) => this.OnSwitchToNormalMode());
