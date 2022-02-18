@@ -117,6 +117,34 @@ namespace InplaceEditBoxLib.Views
                 typeof(object),
                 typeof(EditBox), new PropertyMetadata(null));
 
+        /// <summary>
+        /// Send a Rename cancelled command request to the ViewModel if renaming has been cancelled
+        /// 
+        /// 1> Control entered Edit mode
+        /// 2> Control left Edit Mode (with Escape)
+        /// </summary>
+        public static readonly DependencyProperty RenameCancelledCommandProperty =
+            DependencyProperty.Register( "RenameCancelledCommand",
+                                          typeof( ICommand ),
+                                          typeof( EditBox ),
+                                          new UIPropertyMetadata( null ) );
+
+        /// <summary>
+        /// Bind this parameter to supply additional information (such as item being renamed)
+        /// in rename cancelled command binding.
+        /// </summary>
+        public object RenameCancelledCommandParameter
+        {
+            get { return (object) GetValue( RenameCancelledCommandParameterProperty ); }
+            set { SetValue( RenameCancelledCommandParameterProperty, value ); }
+        }
+
+        // Using a DependencyProperty as the backing store for RenameCancelledCommandParameter.  This enables animation, styling, binding, etc...
+        private static readonly DependencyProperty RenameCancelledCommandParameterProperty =
+            DependencyProperty.Register( "RenameCancelledCommandParameter",
+                typeof( object ),
+                typeof( EditBox ), new PropertyMetadata( null ) );
+
         #region InvalidCharacters dependency properties
         /// <summary>
         /// Backing store of dependency property
@@ -335,6 +363,20 @@ namespace InplaceEditBoxLib.Views
         {
             get { return (ICommand)GetValue(RenameCommandProperty); }
             set { SetValue(RenameCommandProperty, value); }
+        }
+
+        /// <summary>
+        /// Gets the command that is executed (if any is bound)
+        /// when the rename process is cancelled.
+        /// 
+        /// The command parameter is the bound viewmodel on the datacontext
+        /// of this control (as object). The CommandParameter is
+        /// created by the control itself an needs no extra binding statement.
+        /// </summary>
+        public ICommand RenameCancelledCommand
+        {
+            get { return (ICommand) GetValue( RenameCancelledCommandProperty ); }
+            set { SetValue( RenameCancelledCommandProperty, value ); }
         }
 
         #region InvalidCharacters dependency properties
@@ -726,7 +768,15 @@ namespace InplaceEditBoxLib.Views
                     else
                     {
                         if (_TextBox != null)
+                        {
                             _TextBox.Text = this.Text;
+
+                            // Tell the ViewModel (if any) that renaming of this item has been cancelled
+                            if (RenameCancelledCommand != null)
+                            {
+                                RenameCancelledCommand.Execute(RenameCommandParameter);
+                            }
+                        }
                     }
 
                     IsEditing = false;
