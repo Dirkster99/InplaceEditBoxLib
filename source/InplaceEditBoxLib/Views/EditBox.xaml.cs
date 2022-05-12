@@ -145,6 +145,10 @@ namespace InplaceEditBoxLib.Views
                 typeof( object ),
                 typeof( EditBox ), new PropertyMetadata( null ) );
 
+        public static readonly DependencyProperty RenameWhenClickOutsideProperty =
+            DependencyProperty.Register("RenameWhenClickOutside", typeof(bool), typeof(EditBox), new PropertyMetadata(false));
+
+
         #region InvalidCharacters dependency properties
         /// <summary>
         /// Backing store of dependency property
@@ -377,6 +381,12 @@ namespace InplaceEditBoxLib.Views
         {
             get { return (ICommand) GetValue( RenameCancelledCommandProperty ); }
             set { SetValue( RenameCancelledCommandProperty, value ); }
+        }
+
+        public bool RenameWhenClickOutside
+        {
+            get { return (bool)GetValue(RenameWhenClickOutsideProperty); }
+            set { SetValue(RenameWhenClickOutsideProperty, value); }
         }
 
         #region InvalidCharacters dependency properties
@@ -977,7 +987,9 @@ namespace InplaceEditBoxLib.Views
         private void OnMouseDownOutsideElement(object sender, MouseButtonEventArgs e)
         {
             e.Handled = true;
-            OnSwitchToNormalMode();
+
+            var cancelEdit = !RenameWhenClickOutside;
+            OnSwitchToNormalMode(cancelEdit);
         }
         #endregion methods
     }
